@@ -1,11 +1,7 @@
-import { ChakraProvider } from "@chakra-ui/react";
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
+'use client'
 
-export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-    </ChakraProvider>
-  );
+import { ChakraProvider } from '@chakra-ui/react'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <ChakraProvider>{children}</ChakraProvider>
 }
