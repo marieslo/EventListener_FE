@@ -1,5 +1,10 @@
+import { Box, Heading } from "@chakra-ui/layout"
 import "./main.css"
 
 export default function Welcome () {
-    return <h1>Welcome!</h1>
+    return (<Box>
+      <Heading color="red">Welcome!</Heading>  
+    </Box>
+    
+    )
 }
