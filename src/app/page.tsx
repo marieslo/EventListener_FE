@@ -1,7 +1,6 @@
 'use client'
 
 import { Box, Flex, Heading} from "@chakra-ui/layout"
-import "./main.css"
 import SignUpModal from "@/Components/SignUpModal/SignUpModal"
 import { useState } from "react";
 import { Button } from "@chakra-ui/button";
