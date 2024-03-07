@@ -54,13 +54,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent 
-                position="absolute"
-                top="50%"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                width="50vw"
-                height="50vh">
+            <ModalContent>
                 <ModalHeader>Sign Up</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
