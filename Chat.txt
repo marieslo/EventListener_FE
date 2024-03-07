@@ -1,0 +1,19 @@
+Marie: 
+npm i
+Pages: welcome(/), Main(/home) 
+Components: Navbar 
+
+Daria:
+Next.js: npx create-next-app my-next-app: YES TypeScript, YES ESLint, YES src directory, YES App Router
+npm run dev - запускает на localhost:3000
+Chakra: npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion 
+ROUTES: for each rout 1 folder with page.tsx file
+PAGES: Welcome: /, Home: /home, Profile and SingleUser /users/:id?, All users for admin: /users 
+MyEvents: /users/:id/events 
+All events: /events Single Event: /events/:id, CreateEvent /events/create_event,
+
+COMPONENTS: SignUp/Login MODAL
+
+Oleg:
+
+Stas:
