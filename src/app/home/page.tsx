@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Flex, Box } from "@chakra-ui/react";
 import NavBar from "@/Components/NavBar/NavBar";
 import EventButton from "@/Components/EventButton/EventButton";
+import Calendar from "@/Components/Calendar/Calendar";
 
 export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); 
@@ -39,7 +40,7 @@ export default function Home() {
 
   
                 <Box p={4}>
-                    {/* calendar */}
+                   <Calendar/>
                 </Box>
 
    
