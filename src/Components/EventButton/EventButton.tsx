@@ -18,6 +18,7 @@ const EventButton: React.FC<EventButtonProps> = ({ id, topic, date, time, backgr
         borderRadius="lg"
         overflow="hidden"
         boxShadow="md"
+        backgroundColor='#fff'
         position="relative"
         transition="transform 0.2s"
         _hover={{ transform: 'scale(1.05)' }}

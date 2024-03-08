@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, Link } from '@chakra-ui/react';
 import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import './Calendar.css'
 
 const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -107,7 +108,7 @@ const Calendar = () => {
   };
 
   return (
-    <Box border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={4} position="relative" top='60px'>
+    <Box className='calendar-container' border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={1} position="relative" backgroundColor='#fff'>
       <Flex direction="column" alignItems="center">
         <Flex alignItems="center" mt={4}>
           <IconButton icon={<ArrowBackIcon />} mb={6} variant='outline' onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
@@ -120,7 +121,7 @@ const Calendar = () => {
         <Modal isOpen={modalOpen} onClose={handleCloseModal}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>
+            <ModalHeader color="red.500">
               {selectedDay?.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
             </ModalHeader>
             <ModalCloseButton />
