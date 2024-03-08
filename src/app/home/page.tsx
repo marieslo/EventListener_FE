@@ -18,17 +18,19 @@ export default function Home() {
             alignItems="center"
             justifyContent="center"
             minHeight="100vh"
+            
             width="100%"
         >
+            <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} />
+            
             <Flex
-                direction="row"
-                alignItems="center"
+                direction={{ base: "column", md: "row" }}
+                alignItems="flex-start"
                 justifyContent="center"
                 width="100%"
+                overflow="hidden"
             >
-                <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} />
-
-                <Box p={4} position='relative' top='5px'>
+                <Box p={4} position='relative' top='50px' flex="1" overflowY="auto" maxHeight="calc(100vh - 80px)" display="flex" flexWrap="wrap">
                 <EventButton
                         id="1"
                         topic="Встреча анонимных безработных"
@@ -36,22 +38,43 @@ export default function Home() {
                         time="10:00 AM"
                         backgroundImageUrl="https://example.com/image.jpg"
                     />
-                      <EventButton
+                    <EventButton
                         id="2"
                         topic="Sample Event 2"
                         date="2024-03-10"
                         time="10:00 AM"
                         backgroundImageUrl="https://example.com/image.jpg"
                     />
-                       <EventButton
+                    <EventButton
                         id="3"
                         topic="Sample Event 3"
                         date="2024-03-11"
                         time="10:00 AM"
                         backgroundImageUrl="https://example.com/image.jpg"
                     />
-                       <EventButton
+                    <EventButton
                         id="4"
+                        topic="Sample Event 4"
+                        date="2024-03-12"
+                        time="10:00 AM"
+                        backgroundImageUrl="https://example.com/image.jpg"
+                    />
+                    <EventButton
+                        id="5"
+                        topic="Sample Event 2"
+                        date="2024-03-10"
+                        time="10:00 AM"
+                        backgroundImageUrl="https://example.com/image.jpg"
+                    />
+                    <EventButton
+                        id="6"
+                        topic="Sample Event 3"
+                        date="2024-03-11"
+                        time="10:00 AM"
+                        backgroundImageUrl="https://example.com/image.jpg"
+                    />
+                    <EventButton
+                        id="7"
                         topic="Sample Event 4"
                         date="2024-03-12"
                         time="10:00 AM"
@@ -59,12 +82,10 @@ export default function Home() {
                     />
                 </Box>
 
-  
-                <Box p={4}>
-                   <Calendar/>
+                <Box p={4} position={{ base: 'relative', md: 'static' }} top={{ base: '80px', md: '0' }}>
+                    <Calendar/>
                 </Box>
 
-   
                 <Box p={4}>
                     {/* map */}
                 </Box>

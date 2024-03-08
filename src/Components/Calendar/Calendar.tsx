@@ -107,14 +107,14 @@ const Calendar = () => {
   };
 
   return (
-    <Box border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={4} position="relative" top="-100px">
+    <Box border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={4} position="relative" top='60px'>
       <Flex direction="column" alignItems="center">
         <Flex alignItems="center" mt={4}>
-          <IconButton mb={6} icon={<ArrowBackIcon />} onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
-          <Text fontSize="2xl" mx={4} color="red.500" mb={6}>
+          <IconButton icon={<ArrowBackIcon />} mb={6} variant='outline' onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
+          <Text fontSize="xl" mx={4} color="red.500" mb={6}>
             {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </Text>
-          <IconButton mb={6} icon={<ArrowForwardIcon />} onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} aria-label="Next month" />
+          <IconButton icon={<ArrowForwardIcon />} mb={6} variant='outline' onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} aria-label="Next month" />
         </Flex>
         {renderDays()}
         <Modal isOpen={modalOpen} onClose={handleCloseModal}>
