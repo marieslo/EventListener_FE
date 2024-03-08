@@ -107,7 +107,7 @@ const Calendar = () => {
   };
 
   return (
-    <Box border="1px solid" borderColor="gray.200" borderRadius="md" p={4}>
+    <Box border="1px solid" borderColor="gray.200" borderRadius="md" p={4} position="relative" top="-100px">
       <Flex direction="column" alignItems="center">
         <Flex alignItems="center" mt={4}>
           <IconButton mb={6} icon={<ArrowBackIcon />} onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
