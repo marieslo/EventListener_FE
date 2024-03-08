@@ -71,7 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn }) => {
         <Flex as="nav" align="center" justify="space-around" p={4} flexWrap="wrap" pr={150} pl={6}>
           <Box>
             <Flex align="center">
-              <div className="navbar-brand" style={{ color: 'red', fontSize: '4rem', marginRight: '2rem' }}>EventListener</div>
+              <div className="navbar-brand" style={{ color: 'red', fontSize: '4rem', marginRight: '2rem', marginLeft: '50px' }}>EventListener</div>
             </Flex>
           </Box>
           <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
@@ -103,7 +103,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn }) => {
                 <Avatar bg='red.500' icon={<AiOutlineUser fontSize='1.5rem' />} onClick={handleProfileClick} />
               </>
             ) : (
-              <Button variant="outlineRound" marginLeft="10px" colorScheme="red" onClick={handleOpenModal} size="md" fontSize='xs'>
+              <Button variant="outlineRound" backgroundColor='white' marginLeft="10px" colorScheme="red" onClick={handleOpenModal} size="md" fontSize='xs'>
                 Sign Up /
                 <br /> Log In
               </Button>

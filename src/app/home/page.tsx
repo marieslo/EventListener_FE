@@ -28,7 +28,7 @@ const Home = () => {
     ];
 
     return (
-        <Flex className="home-container" marginLeft='50px'> 
+        <Flex className="home-container" > 
             <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} />
             <Flex
                 direction={{ base: "column", md: "row" }}
@@ -37,6 +37,7 @@ const Home = () => {
                 minHeight="100vh"
                 width="80%"
                 marginTop='150px'
+                marginLeft='50px'
             >
                  {!isMobile && (
                  <Box p={4} position={{ base: 'relative', md: 'static' }}>
