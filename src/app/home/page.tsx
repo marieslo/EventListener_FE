@@ -28,7 +28,7 @@ export default function Home() {
             >
                 <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} />
 
-                <Box p={4}>
+                <Box p={4} position='relative' top='5px'>
                 <EventButton
                         id="1"
                         topic="Встреча анонимных безработных"

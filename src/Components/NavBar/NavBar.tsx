@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Flex, Box, FormControl, Input, Button, extendTheme, ChakraProvider, InputGroup, InputRightElement, IconButton } from '@chakra-ui/react';
+import { Flex, Box, FormControl, Input, Button, extendTheme, ChakraProvider, InputGroup, IconButton, Link } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import SignUpModal from '@/Components/SignUpModal/SignUpModal';
 import './NavBar.css';
 import { Avatar } from '@chakra-ui/react';
 import { AiOutlineUser } from 'react-icons/ai';
-// import { useRouter } from 'next/router'; 
 
 interface NavBarProps {
   onSearch: (query: string) => void;
@@ -44,7 +43,6 @@ const theme = extendTheme({
 });
 
 const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn }) => {
-  // const router = useRouter();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
@@ -67,37 +65,35 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn }) => {
 
   const handleProfileClick = () => { };
 
-  const handleSearchButtonClick = () => {
-    // router.push('/events');
+  const handleSearchButtonClick = () => { 
+
   };
 
   return (
     <ChakraProvider theme={theme}>
-      <header style={{ position: 'fixed', top: 0, width: '100%', maxWidth: '50%', backgroundColor: '#fff', zIndex: 1000 }}>
-        <Flex as="nav" align="center" justify="space-around" p={4} flexWrap="wrap" pr={6} pl={6}>
+      <header style={{ position: 'fixed', top: 0, width: '100%', maxWidth: '100%', backgroundColor: '#fff', zIndex: 1000 }}>
+        <Flex as="nav" align="center" justify="space-between" p={4} flexWrap="wrap" pr={6} pl={6}>
           <Box>
             <Flex align="center">
-              <div className="navbar-brand" style={{ color: 'red', fontSize: '2rem' }}>Event Listener</div>
+              <div className="navbar-brand" style={{ color: 'red', fontSize: '2rem', marginRight: '2rem' }}>EventListener</div>
             </Flex>
           </Box>
-          <Box flex="1">
+          <Box flex="1" display="flex" justifyContent="center" alignItems="center"> 
             <FormControl mr={4} mb={4} mt={4}>
               <InputGroup>
                 <Input
                   type="text"
-                  placeholder="Listen to events..."
+                  placeholder="Search..."
                   onChange={handleSearchChange}
-                  width="100%"
-                  marginLeft="10px"
                 />
-                <InputRightElement>
+                <Link href={`/events/`} _hover={{ textDecoration: 'none' }}>
                   <IconButton
                     aria-label="Search"
                     colorScheme="red"
                     icon={<SearchIcon />}
                     onClick={handleSearchButtonClick} 
                   />
-                </InputRightElement>
+                   </Link>
               </InputGroup>
             </FormControl>
           </Box>
