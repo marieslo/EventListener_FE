@@ -1,92 +1,95 @@
 import React, { useState } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Grid, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import {Step,StepDescription,StepIcon,StepIndicator,StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Button, Box} from "@chakra-ui/react";
+import Step1 from './SignUpStep1';
+import Step3 from './SignUpStep3';
+import Step2 from './SignUpStep2';
 
 interface SignUpModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-interface FormData {
-    name: string;
-    password: string;
-    confirmPassword: string;
-    email: string;
-    location: string;
-    interests: string[];
-}
-
 const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
-    const [step, setStep] = useState<number>(1);
-    const [formData, setFormData] = useState<FormData>({
-        name: '',
-        password: '',
-        confirmPassword: '',
-        email: '',
-        location: '',
-        interests: []
-    });
+    const [activeStep, setActiveStep] = useState<number>(0);
 
-    const handleNext = () => {
-        setStep(step + 1);
+    const handleNextStep = () => {
+        setActiveStep(prevStep => prevStep + 1);
     };
 
-    const handlePrevious = () => {
-        setStep(step - 1);
+    const handlePrevStep = () => {
+        setActiveStep(prevStep => prevStep - 1);
     };
 
-    const handleConfirm = () => {
-        // Handle confirmation logic
-        // Open login modal
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleInterestToggle = (interest: string) => {
-        const updatedInterests = formData.interests.includes(interest)
-            ? formData.interests.filter(item => item !== interest)
-            : [...formData.interests, interest];
-        setFormData({ ...formData, interests: updatedInterests });
+    const handleReset = () => {
+        setActiveStep(0);
     };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent 
-                position="absolute"
-                top="50%"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                width="50vw"
-                height="50vh">
-                <ModalHeader>Sign Up</ModalHeader>
-                <ModalCloseButton />
+            <ModalContent width='fit-content'>
+                <Box backgroundColor='red.500' borderRadius='2px' mb='1rem'>
+                <ModalHeader color='white' >Sign Up</ModalHeader>
+                <ModalCloseButton color='white' /></Box>
                 <ModalBody>
-                    {step === 1 && (
-                        <form>
-                            <FormControl>
-                                <FormLabel>Name</FormLabel>
-                                <Input name="name" value={formData.name} onChange={handleChange} />
-                            </FormControl>
-                            {/* Other form fields */}
-                        </form>
-                    )}
-                    {step === 2 && (
-                        <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-                            {/* Render interests */}
-                        </Grid>
-                    )}
-                    {step === 3 && (
-                        <p>Confirmation message</p>
-                    )}
-                </ModalBody>
+                    <Stepper size='lg' colorScheme='red' index={activeStep}>
+                        <Step>
+                            <StepIndicator>
+                                <StepStatus
+                                    complete={<StepIcon />}
+                                    incomplete={<StepNumber />}
+                                    active={<StepNumber />}
+                                />
+                            </StepIndicator>
+                            <Box flexShrink='0'>
+                                <StepTitle>Profile</StepTitle>
+                                <StepDescription>Details</StepDescription>
+                            </Box>
+                            <StepSeparator />
+                        </Step>
+                        <Step>
+                            <StepIndicator>
+                                <StepStatus
+                                    complete={<StepIcon />}
+                                    incomplete={<StepNumber />}
+                                    active={<StepNumber />}
+                                />
+                            </StepIndicator>
+                            <Box flexShrink='0'>
+                                <StepTitle>Picture</StepTitle>
+                                <StepDescription>and Location</StepDescription>
+                            </Box>
+                            <StepSeparator />
+                        </Step>
+                        <Step>
+                            <StepIndicator>
+                                <StepStatus
+                                    complete={<StepIcon />}
+                                    incomplete={<StepNumber />}
+                                    active={<StepNumber />}
+                                />
+                            </StepIndicator>
+                            <Box flexShrink='0'>
+                                <StepTitle>Add</StepTitle>
+                                <StepDescription>Categories</StepDescription>
+                            </Box>
+                            <StepSeparator />
+                        </Step>
 
+                    </Stepper>
+                    {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
+                    {activeStep === 1 && <Step2 onNextStep={handleNextStep} />}
+                    {activeStep === 2 && <Step3 onNextStep={handleNextStep} />}
+
+                    {/* ШАГИ ТУТ БЛЕАТЬ */}
+                </ModalBody>
                 <ModalFooter>
-                    {step > 1 && <Button onClick={handlePrevious}>Previous</Button>}
-                    {step < 3 && <Button ml={3} onClick={handleNext}>Next</Button>}
-                    {step === 3 && <Button ml={3} onClick={handleConfirm}>Confirm</Button>}
+                    {activeStep !== 0 && (
+                        <Button onClick={handlePrevStep} mr={3}>
+                            Previous
+                        </Button>
+                    )}
+                    {activeStep < 2 ? <Button colorScheme='red' onClick={handleNextStep}>Next</Button> : <Button colorScheme='red' onClick={onClose}>SignUp</Button>}
                 </ModalFooter>
             </ModalContent>
         </Modal>
