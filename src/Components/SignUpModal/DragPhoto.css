@@ -1,0 +1,15 @@
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: #4FD1C5; /* Цвет фона */
+    color: #ffffff; /* Цвет текста */
+    border: none; /* Убираем границу */
+    padding: 8px 16px; /* Паддинг */
+    border-radius: 8px; /* Закругляем углы */
+    cursor: pointer; /* Изменяем курсор при наведении */
+    outline: none; /* Убираем обводку */
+  }
+  
+  input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #38A89D; /* Изменяем цвет фона при наведении */
+  }
+  
