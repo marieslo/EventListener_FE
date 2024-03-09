@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Calistoga&display=swap');
+
+.home-container, .welcome-container {
+    font-family: "Calistoga", serif;
+    background: rgba(204, 255, 0, 0.076);
+}
+
+.about-platform-text {
+    font-family: "Calistoga", serif;
+    color: #00000096;
+    font-size: 20px;
+    text-align: center;
+    background-color: beige;
+    width: 300px;
+    padding: 20px; 
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fade-in 1s forwards;
+    margin-bottom: 20px; 
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.about-platform-text-1 {
+    animation-delay: 0.5s; 
+}
+
+.about-platform-text-2 {
+    animation-delay: 1.5s;
+}
+
+.about-platform-text-3 {
+    animation-delay: 2.5s; 
+}
