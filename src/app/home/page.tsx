@@ -27,6 +27,30 @@ const Home = () => {
         { id: "7", topic: "Sample Event 4", date: "2024-03-12", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1646783365/EventListener/xcl5utlhes78ywzrvbih.jpg" }
       ];
 
+      const addresses = [
+        {
+            city: 'Haifa',
+            street: 'Derech Allenby',
+            place: 'Fake Event 1',
+            lon: '34.995950',
+            lat: '32.818734'
+          },
+          {
+            city: 'Haifa',
+            street: 'HaNassi Blvd',
+            place: 'Fake Event 2',
+            lon: '34.996458',
+            lat: '32.818623'
+          },
+          {
+            city: 'Haifa',
+            street: 'HaGefen St',
+            place: 'Fake Event 3',
+            lon: '34.992296',
+            lat: '32.815585'
+          }
+      ];
+
     return (
         <Flex className="home-container" > 
             <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} userId={""} />
@@ -54,7 +78,7 @@ const Home = () => {
                         marginRight='50px'
                     >
                        <Box p={4} width={{ base: "100%", md: "40%" }}>
-                            <DynamicMap userCity="Haifa" /> 
+                            <DynamicMap userCity="Haifa" addresses={addresses} /> 
                         </Box>
                     </Flex>
                 )}
