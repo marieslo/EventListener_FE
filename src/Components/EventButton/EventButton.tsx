@@ -24,7 +24,7 @@ const EventButton: React.FC<EventButtonProps> = ({ id, topic, date, time, backgr
         _hover={{ transform: 'scale(1.05)' }}
         margin={4}
       >
-        <Image src={backgroundImageUrl} alt={topic} />
+        <Image src={backgroundImageUrl} alt={topic} width="100%" height="200px" objectFit="cover" />
 
         <Box p="6">
           <Box display="flex" alignItems="baseline">

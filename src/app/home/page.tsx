@@ -18,18 +18,18 @@ const Home = () => {
 
 
     const events = [
-        { id: "1", topic: "Встреча анонимных безработных", date: "2024-03-09", time: "10:00 AM", backgroundImageUrl: "https://example.com/image.jpg" },
-        { id: "2", topic: "Sample Event 2", date: "2024-03-10", time: "10:00 AM", backgroundImageUrl: "https://example.com/image.jpg" },
-        { id: "3", topic: "Sample Event 3", date: "2024-03-11", time: "10:00 AM", backgroundImageUrl: "https://example.com/image.jpg" },
-        { id: "4", topic: "Sample Event 4", date: "2024-03-12", time: "10:00 AM", backgroundImageUrl: "https://example.com/image.jpg" },
-        { id: "5", topic: "Sample Event 2", date: "2024-03-10", time: "10:00 AM", backgroundImageUrl: "https://example.com/image.jpg" },
-        { id: "6", topic: "Sample Event 3", date: "2024-03-11", time: "10:00 AM", backgroundImageUrl: "https://example.com/image.jpg" },
-        { id: "7", topic: "Sample Event 4", date: "2024-03-12", time: "10:00 AM", backgroundImageUrl: "https://example.com/image.jpg" }
-    ];
+        { id: "1", topic: "Встреча анонимных безработных", date: "2024-03-09", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1646783365/EventListener/xcl5utlhes78ywzrvbih.jpg" },
+        { id: "2", topic: "Sample Event 2", date: "2024-03-10", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927251/EventListener/i7yilfvv8lbspi6vqgxq.jpg" },
+        { id: "3", topic: "Sample Event 3", date: "2024-03-11", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/uribu8yo4gv98xnq55ff.jpg" },
+        { id: "4", topic: "Sample Event 4", date: "2024-03-12", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/qqteu92gytilc9lpgdla.jpg" },
+        { id: "5", topic: "Sample Event 2", date: "2024-03-10", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/w3srysqive1es9rweiyh.webp" },
+        { id: "6", topic: "Sample Event 3", date: "2024-03-11", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/op9uiwu6efqnhfuux75l.jpg" },
+        { id: "7", topic: "Sample Event 4", date: "2024-03-12", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1646783365/EventListener/xcl5utlhes78ywzrvbih.jpg" }
+      ];
 
     return (
         <Flex className="home-container" > 
-            <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} />
+            <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} userId={""} />
             <Flex
                 direction={{ base: "column", md: "row" }}
                 alignItems="flex-start"

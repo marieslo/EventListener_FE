@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { Flex, Box, FormControl, Input, Button, extendTheme, ChakraProvider, InputGroup, IconButton, Link } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
+import { Flex, Box, Button, extendTheme, ChakraProvider, Avatar, Link } from '@chakra-ui/react';
+import { AiOutlineUser, AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai'; 
 import SignUpModal from '@/Components/SignUpModal/SignUpModal';
-import { Avatar } from '@chakra-ui/react';
-import { AiOutlineUser } from 'react-icons/ai';
+import Search from '@/Components/Search/Search';
 
 interface NavBarProps {
   onSearch: (query: string) => void;
   isLoggedIn: boolean;
+  userId: string; 
 }
+
+const handleLogout = () => {
+  
+};
 
 const theme = extendTheme({
   styles: {
@@ -41,14 +45,7 @@ const theme = extendTheme({
   },
 });
 
-const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn }) => {
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    onSearch(query);
-  };
-
-
+const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn, userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -59,79 +56,44 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn }) => {
     setIsModalOpen(false);
   };
 
-  const handleProfileClick = () => { };
-
-  const handleSearchButtonClick = () => { 
-
-  };
-
   return (
     <ChakraProvider theme={theme}>
       <header className='navbar-containter' style={{ position: 'fixed', top: 0, width: '100%', maxWidth: '100%', zIndex: 1000}}>
         <Flex as="nav" align="center" justify="space-around" p={4} flexWrap="wrap" pr={150} pl={6}>
           <Box>
             <Flex align="center">
-              <div className="navbar-brand" style={{ color: 'red', fontSize: '4rem', marginRight: '2rem', marginLeft: '50px' }}>EventListener</div>
+              <div className="navbar-brand" style={{ color: 'white', fontSize: '4rem', marginRight: '2rem', marginLeft: '50px' }}>EventListener</div>
             </Flex>
           </Box>
           <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
-            <FormControl mr={4} mb={4} mt={4}>
-              <InputGroup
-              minWidth='200px'>
-                <Input
-                minWidth='200px'
-                maxWidth='720px'
-                  type="text"
-                  placeholder="Search..."
-                  backgroundColor='#fff'
-                  onChange={handleSearchChange}
-                />
-                <Link href={`/events/`} _hover={{ textDecoration: 'none' }}>
-                  <IconButton
-                    aria-label="Search"
-                    colorScheme="red"
-                    icon={<SearchIcon />}
-                    onClick={handleSearchButtonClick} 
-                  />
-                </Link>
-              </InputGroup>
-            </FormControl>
+            <Search onSearchChange={onSearch} searchResults={undefined} />
           </Box>
           <Box>
             {isLoggedIn ? (
               <>
-                <Avatar bg='red.500' icon={<AiOutlineUser fontSize='1.5rem' />} onClick={handleProfileClick} />
+                <Link href={`/events/create_event`} _hover={{ textDecoration: 'none' }}>
+                  <Button as="a" size="xs" colorScheme="red" variant="outline" leftIcon={<AiOutlinePlus />} ml={2}>
+                    Add Event
+                  </Button>
+                </Link>
+                <Link href={`/users/${userId}`} _hover={{ textDecoration: 'none' }}>
+                  <Avatar bg='red.500' icon={<AiOutlineUser fontSize='1.5rem' />} />
+                </Link>
+                <Link href="#" onClick={handleLogout} _hover={{ textDecoration: 'none' }} ml={2}>
+                <Avatar bg='red.500' icon={<AiOutlineLogout fontSize='1.5rem' />} />
+              </Link>
               </>
             ) : (
-              <Button variant="outlineRound" backgroundColor='white' marginLeft="10px" colorScheme="red" onClick={handleOpenModal} size="md" fontSize='xs'>
-                Sign Up /
-                <br /> Log In
-              </Button>
+              <>
+                <Button variant="outlineRound" backgroundColor='white' marginLeft="10px" colorScheme="red" onClick={handleOpenModal} size="md" fontSize='xs' leftIcon={<AiOutlineLogin />} >
+                  Sign Up / Log In
+                </Button>
+              </>
             )}
           </Box>
         </Flex>
         <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </header>
-      <Box display={{ base: 'block', md: 'none' }} pt="90px">
-        <FormControl mr={4} mb={4} mt={4} textAlign="center">
-          <InputGroup>
-            <Input
-              type="text"
-              placeholder="Search..."
-              backgroundColor='#fff'
-              onChange={handleSearchChange}
-            />
-            <Link href={`/events/`} _hover={{ textDecoration: 'none' }}>
-              <IconButton
-                aria-label="Search"
-                colorScheme="red"
-                icon={<SearchIcon />}
-                onClick={handleSearchButtonClick} 
-              />
-            </Link>
-          </InputGroup>
-        </FormControl>
-      </Box>
     </ChakraProvider>
   );
 };
