@@ -37,6 +37,7 @@ const Step3: React.FC = () => {
           </GridItem>
         ))}
       </Grid>
+      
     </Box>
   );
 };

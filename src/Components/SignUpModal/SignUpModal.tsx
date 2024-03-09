@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {Step,StepDescription,StepIcon,StepIndicator,StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Button, Box} from "@chakra-ui/react";
 import Step1 from './SignUpStep1';
-import Step3 from './SignUpStep3';
 import Step2 from './SignUpStep2';
+import Step3 from './SignUpStep3';
 
 interface SignUpModalProps {
     isOpen: boolean;
@@ -70,7 +70,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                                 />
                             </StepIndicator>
                             <Box flexShrink='0'>
-                                <StepTitle>Add</StepTitle>
+                                <StepTitle>Choose</StepTitle>
                                 <StepDescription>Categories</StepDescription>
                             </Box>
                             <StepSeparator />
