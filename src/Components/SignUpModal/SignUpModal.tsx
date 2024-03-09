@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import {Step,StepDescription,StepIcon,StepIndicator,StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Button, Box} from "@chakra-ui/react";
+import { Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box } from "@chakra-ui/react";
 import Step1 from './SignUpStep1';
 import Step2 from './SignUpStep2';
 import Step3 from './SignUpStep3';
+import Link from 'next/link';
 
 interface SignUpModalProps {
     isOpen: boolean;
@@ -20,8 +21,16 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
         setActiveStep(prevStep => prevStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
+
+    const handleCategorySelection = (selectedCategories: string[]) => {
+        console.log("Selected categories:", selectedCategories);
+        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        currentUser.interests = selectedCategories;
+        localStorage.setItem('user', JSON.stringify(currentUser));
+    };
+    const handleSignUpButtonClick = () => {
+    // ./auth/signup POST СЮДА jwt  (middleware - data validation)
+        onClose(); // Закрываем модальное окно
     };
 
     return (
@@ -29,8 +38,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             <ModalOverlay />
             <ModalContent width='fit-content'>
                 <Box backgroundColor='red.500' borderRadius='2px' mb='1rem'>
-                <ModalHeader color='white' >Sign Up</ModalHeader>
-                <ModalCloseButton color='white' /></Box>
+                    <ModalHeader color='white' >Sign Up</ModalHeader>
+                    <ModalCloseButton color='white' /></Box>
                 <ModalBody>
                     <Stepper size='lg' colorScheme='red' index={activeStep}>
                         <Step>
@@ -78,19 +87,23 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
 
                     </Stepper>
                     {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
-                    {activeStep === 1 && <Step2 onNextStep={handleNextStep} />}
-                    {activeStep === 2 && <Step3 onNextStep={handleNextStep} />}
-
-                    {/* ШАГИ ТУТ БЛЕАТЬ */}
+                    {activeStep === 1 && <Step2 onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
+                    {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
                 </ModalBody>
-                <ModalFooter>
-                    {activeStep !== 0 && (
-                        <Button onClick={handlePrevStep} mr={3}>
-                            Previous
-                        </Button>
-                    )}
-                    {activeStep < 2 ? <Button colorScheme='red' onClick={handleNextStep}>Next</Button> : <Button colorScheme='red' onClick={onClose}>SignUp</Button>}
-                </ModalFooter>
+
+                {activeStep === 2 && (
+                    <>
+                        <ModalFooter>
+                            <Button onClick={handlePrevStep} mr={3}>
+                                Previous
+                            </Button>
+                            <Link href="/home" passHref>
+                                <Button onClick={handleSignUpButtonClick} colorScheme="red" as="a">SignUp</Button>
+                            </Link>
+                        </ModalFooter>
+                    </>
+                )}
+
             </ModalContent>
         </Modal>
     );

@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormControl, FormLabel, Input, Button, Box, InputGroup, InputRightElement, Alert, AlertIcon, AlertTitle, AlertDescription, ModalFooter } from "@chakra-ui/react";
 
 
+interface User {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+}
 
 interface Step1Props {
     onNextStep: () => void;
 }
 
 const Step1: React.FC<Step1Props> = ({ onNextStep }) => {
-    const [error, setError] = useState("")
-    const [formData, setFormData] = useState({
+    const [error, setError] = useState<string>("");
+    const [formData, setFormData] = useState<User>({
         email: '',
         password: '',
         firstName: '',
         lastName: '',
         phone: ''
     });
+
+    useEffect(() => {
+        // Получаем данные из локального хранилища
+        const userDataString = localStorage.getItem('user');
+        if (userDataString) {
+            const user: User = JSON.parse(userDataString);
+            setFormData(user);
+        }
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -52,7 +68,6 @@ const Step1: React.FC<Step1Props> = ({ onNextStep }) => {
         localStorage.setItem('user', JSON.stringify(formData));//пишем юзера в локальное хранилище
         console.log('user', JSON.stringify(formData))
         onNextStep(); // Переход к следующему шагу, если нет ошибки
-
     };
 
     const [show, setShow] = React.useState(false)
