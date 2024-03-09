@@ -36,7 +36,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange, searchResults }) => {
       <InputGroup minWidth='200px'>
         <Input
           type="text"
-          placeholder="Search..."
+          placeholder="Search event..."
           backgroundColor='#fff'
           value={searchTerm}
           onChange={handleInputChange}
