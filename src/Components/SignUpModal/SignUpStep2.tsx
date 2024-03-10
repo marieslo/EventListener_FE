@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Box, Button, Flex, FormControl, FormLabel, Grid, GridItem, Input, ModalFooter } from "@chakra-ui/react";
 import PictureInput from "./DragPhoto";
+import MapComponent from "./MapComponent";
 
 
 interface Step2Props {
@@ -101,6 +102,18 @@ const Step2: React.FC<Step2Props> = ({ onNextStep, onPrevStep }) => {
                             onChange={handleLocationChange}
                         />
                         {/* MAP HERE ? */}
+                        <div>
+                {/* Проверяем, есть ли координаты */}
+                {latitude !== null && longitude !== null && (
+                    <a
+                        href={`https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Open Map
+                    </a>
+                )}
+            </div>
                     </FormControl>
                 </GridItem>
             </Grid>
