@@ -1,69 +1,90 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Box } from '@chakra-ui/react';
-import tt, { NavigationControl } from '@tomtom-international/web-sdk-maps';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import './Map.css';
+import axios from 'axios';
 
-interface MapProps {
-  userCity: string;
+interface Event {
+  _id: string;
+  creator: string;
+  date: string;
+  address: string;
+  topic: string;
+  category: string[];
+  joinedBy: string[];
+  membersAmount: number;
+  budget: number;
+  imageURL: string;
 }
 
-const Map: React.FC<MapProps> = ({ userCity }) => {
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const markersRef = useRef<tt.Marker[]>([]);
+interface MapProps {
+  events: Event[];
+}
+
+const Map: React.FC<MapProps> = ({ events }) => {
+  const mapContainerRef = useRef<any>(null);
+  const [coordinates, setCoordinates] = useState<{ [key: string]: { lat: string, lon: string } }>({});
 
   useEffect(() => {
-    if (!mapContainerRef.current) return;
+    const fetchCoordinates = async () => {
+      const newCoordinates: { [key: string]: { lat: string, lon: string } } = {};
 
-    const apiKey = process.env.NEXT_PUBLIC_TOMTOM_API_KEY;
-
-    if (!apiKey) {
-      console.error('TomTom API key is not provided.');
-      return;
-    }
-
-    const map = tt.map({
-      key: apiKey,
-      container: mapContainerRef.current,
-      zoom: 5,
-      center: [32.7941, 34.9896], // Haifa
-      language: 'en'
-    });
-
-    const navigationControl = new NavigationControl({
-      showZoom: true,
-      showPitch: false
-    });
-
-    map.addControl(navigationControl, 'top-left');
-
-    const events = [
-      { name: 'Technion - Israel Institute of Technology', address: 'Technion City, Haifa, Israel', coordinates: [32.7779, 35.0214] as [number, number] },
-      { name: 'Bahai Gardens', address: 'Hatzionut Avenue, Haifa, Israel', coordinates: [32.8196, 34.9887] as [number, number] },
-      { name: 'German Colony', address: 'Haifa, Israel', coordinates: [32.8156, 34.9937] as [number, number] }
-    ];
-
-    events.forEach(event => {
-      const marker = new tt.Marker().setLngLat(event.coordinates);
-      const popup = new tt.Popup({ offset: 35 }).setHTML(`<b>${event.name}</b><br>${event.address}`);
-      marker.setPopup(popup).addTo(map);
-      markersRef.current.push(marker);
-    });
-
-    return () => {
-      map.remove();
+      try {
+        for (const event of events) {
+          const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(event.address)}&format=json`);
+          const data = response.data;
+          if (data.length > 0) {
+            newCoordinates[event._id] = { lat: data[0].lat, lon: data[0].lon };
+          }
+        }
+        setCoordinates(newCoordinates);
+      } catch (error) {
+        console.error("Error fetching coordinates:", error);
+      }
     };
-  }, []);
+
+    fetchCoordinates();
+  }, [events]);
 
   return (
-    <Box
-      border="1px solid"
-      borderColor="gray.200"
-      borderRadius="md"
-      boxShadow="md"
-      position="static"
-      ref={mapContainerRef}
-      style={{ width: '25vw', height: '70vh', marginRight: '50px' }} 
-    />
+    <Box>
+      <div style={{ width: '380px', height: '65vh', marginRight: '100px', borderRadius: '5px' }} ref={mapContainerRef}>
+        <MapContainer center={[32.7941, 34.9896]} zoom={12} style={{ width: '100%', height: '100%', border: '1px', borderRadius: '5px' }}>
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          {events.map(event => {
+            const { lat, lon } = coordinates[event._id] || { lat: '', lon: '' };
+            const latitude = parseFloat(lat);
+            const longitude = parseFloat(lon);
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+              return (
+                <Marker
+                  position={[latitude, longitude]}
+                  icon={
+                    new L.Icon({
+                      iconUrl: 'https://res.cloudinary.com/diunuo4xf/image/upload/v1710009519/pet-adoption/letter-e2_gyn0sw.png',
+                      iconSize: [30, 30],
+                      iconAnchor: [10, 10],
+                    })
+                  }
+                  key={event._id}
+                >
+                  <Popup>
+                    <strong>{event.topic}</strong>
+                    <br />
+                    {event.address}
+                  </Popup>
+                </Marker>
+              );
+            } else {
+              console.error(`Invalid latitude or longitude for event '${event.topic}'`);
+              return null;
+            }
+})}
+        </MapContainer>
+      </div>
+    </Box>
   );
 };
 
