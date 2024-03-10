@@ -2,12 +2,14 @@
 
 .home-container, .welcome-container {
     font-family: "Calistoga", serif;
-     background: linear-gradient(180deg, #f43737, #ffd500);
+    margin-right: 50px;
+    margin-top: 50px;
+     /* background: linear-gradient(180deg, #f43737, #ffd500); */
 }
 
 .about-platform-text {
     font-family: "Calistoga", serif;
-    color: #fff;
+    color: #E53E3E;
     font-size: 20px;
     text-align: center;
     width: 300px;

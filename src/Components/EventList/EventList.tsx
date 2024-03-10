@@ -1,48 +1,40 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 import EventButton from '@/Components/EventButton/EventButton';
 import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
 
+interface Event {
+  _id: string;
+  creator: string;
+  date: string;
+  category: string[]; 
+  joinedBy: string[];
+  membersAmount: number;
+  budget: number;
+  imageURL: string;
+  lat: string;
+  lon: string;
+  place: string;
+  topic: string;
+  address: string;
+}
+
 interface EventListProps {
-  events: {
-    id: string;
-    topic: string;
-    date: string;
-    time: string;
-    backgroundImageUrl: string;
-    category?: string; 
-  }[];
+  events: Event[];
 }
 
 const EventList: React.FC<EventListProps> = ({ events }) => {
-  if (!events || !Array.isArray(events)) {
-    return null;
+  if (!events || events.length === 0) {
+    return <Spinner color="red.500" size="xl" />;
   }
 
-
-  const categories = Object.keys(CATEGORY_URLS);
-  const fakeEvents = Array.from({ length: 7 }, (_, index) => {
-    const categoryIndex = index % categories.length;
-    return {
-      id: `event-${index + 1}`,
-      topic: `Event ${index + 1}`,
-      date: '2024-03-15',
-      time: '10:00 AM',
-      backgroundImageUrl: 'https://example.com/image.jpg',
-      category: categories[categoryIndex],
-    };
-  });
-
   return (
-    <Box p={4} flex="1" overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
-      {fakeEvents.map(event => (
+    <Box p={4} flex="1" overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" marginLeft='100px' flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
+      {events.map(event => (
         <EventButton
-          key={event.id}
-          id={event.id}
-          topic={event.topic}
-          date={event.date}
-          time={event.time}
-          backgroundImageUrl={event.category ? (CATEGORY_URLS as Record<string, string>)[event.category] : ''}
+          key={event._id}
+          event={event}
+          imageUrl={event.category ? (CATEGORY_URLS as Record<string, string>)[event.category[0]] : ''}
         />
       ))}
     </Box>

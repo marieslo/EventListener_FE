@@ -62,7 +62,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn, userId }) => {
         <Flex as="nav" align="center" justify="space-around" p={4} flexWrap="wrap" pr={150} pl={6}>
           <Box>
             <Flex align="center">
-              <div className="navbar-brand" style={{ color: 'white', fontSize: '4rem', marginRight: '2rem', marginLeft: '50px' }}>EventListener</div>
+              <div className="navbar-brand" style={{ color: 'red', fontSize: '4rem', marginRight: '2rem', marginLeft: '50px' }}>EventListener</div>
             </Flex>
           </Box>
           <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
@@ -85,8 +85,8 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn, userId }) => {
               </>
             ) : (
               <>
-                <Button variant="outlineRound" backgroundColor='white' marginLeft="10px" colorScheme="red" onClick={handleOpenModal} size="md" fontSize='xs' leftIcon={<AiOutlineLogin />} >
-                  Sign Up / Log In
+                <Button variant="outlineRound" backgroundColor='white' marginLeft="10px" colorScheme="red" onClick={handleOpenModal} size="md" fontSize='xs' borderRadius="full" p={2} >
+                  <AiOutlineLogin style={{ transform: 'rotate(-90deg)', fontSize: '1.5rem' }} /> 
                 </Button>
               </>
             )}

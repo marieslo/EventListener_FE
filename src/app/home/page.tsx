@@ -1,58 +1,49 @@
 'use client'
-import React, { useState } from "react";
-import { Flex, Box } from "@chakra-ui/react";
-import NavBar from "@/Components/NavBar/NavBar";
-import Calendar from "@/Components/Calendar/Calendar";
-import { useBreakpointValue } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Flex, Box, useBreakpointValue } from '@chakra-ui/react';
+import NavBar from '@/Components/NavBar/NavBar';
+import Calendar from '@/Components/Calendar/Calendar';
 import dynamic from 'next/dynamic';
+import axios from 'axios';
 import EventList from '@/Components/EventList/EventList';
-import './Home.css'
+import { SERVER_URL } from '../../../api';
+import './Home.css';
 
-const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
 
-const Home = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false); 
-
-    const handleSearch = () => {};
+  const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
+  
+  const Home = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [events, setEvents] = useState([]);
+    const [addresses, setAddresses] = useState([]);
     const isMobile = useBreakpointValue({ base: true, md: false });
 
+    const fetchEventData = async () => {
+        try {
+            const response = await axios.get(`${SERVER_URL}/events`);
+            setEvents(response.data);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
 
-    const events = [
-        { id: "1", topic: "Встреча анонимных безработных", date: "2024-03-09", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1646783365/EventListener/xcl5utlhes78ywzrvbih.jpg" },
-        { id: "2", topic: "Sample Event 2", date: "2024-03-10", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927251/EventListener/i7yilfvv8lbspi6vqgxq.jpg" },
-        { id: "3", topic: "Sample Event 3", date: "2024-03-11", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/uribu8yo4gv98xnq55ff.jpg" },
-        { id: "4", topic: "Sample Event 4", date: "2024-03-12", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/qqteu92gytilc9lpgdla.jpg" },
-        { id: "5", topic: "Sample Event 2", date: "2024-03-10", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/w3srysqive1es9rweiyh.webp" },
-        { id: "6", topic: "Sample Event 3", date: "2024-03-11", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/op9uiwu6efqnhfuux75l.jpg" },
-        { id: "7", topic: "Sample Event 4", date: "2024-03-12", time: "10:00 AM", backgroundImageUrl: "https://res.cloudinary.com/dvora9zgj/image/upload/v1646783365/EventListener/xcl5utlhes78ywzrvbih.jpg" }
-      ];
+    const fetchAddressData = async () => {
+        try {
+            const response = await axios.get(`${SERVER_URL}/addresses`);
+            setAddresses(response.data);
+        } catch (error) {
+            console.error('Error fetching addresses:', error);
+        }
+    };
 
-      const addresses = [
-        {
-            city: 'Haifa',
-            street: 'Derech Allenby',
-            place: 'Fake Event 1',
-            lon: '34.995950',
-            lat: '32.818734'
-          },
-          {
-            city: 'Haifa',
-            street: 'HaNassi Blvd',
-            place: 'Fake Event 2',
-            lon: '34.996458',
-            lat: '32.818623'
-          },
-          {
-            city: 'Haifa',
-            street: 'HaGefen St',
-            place: 'Fake Event 3',
-            lon: '34.992296',
-            lat: '32.815585'
-          }
-      ];
+    useEffect(() => {
+        fetchEventData();
+        fetchAddressData();
+    }, []);
 
-    return (
-        <Flex className="home-container" > 
+    const handleSearch = () => {};
+return (
+        <Flex className="home-container">
             <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} userId={""} />
             <Flex
                 direction={{ base: "column", md: "row" }}
@@ -62,29 +53,29 @@ const Home = () => {
                 width="80%"
                 marginTop='150px'
                 marginLeft='50px'
-            >
-                 {!isMobile && (
+                >
+            {!isMobile && (
                  <Box p={4} position={{ base: 'relative', md: 'static' }}>
                         <Calendar/>
                     </Box>
                  )}
-                 <EventList events={events} />
-                {!isMobile && (
-                    <Flex    
-                        direction={{ base: "row", md: "column" }}
-                        alignItems="flex-start" 
-                        justifyContent="flex-start"
-                        width={{ base: "10%", md: "10%" }}
-                        marginRight='50px'
-                    >
-                       <Box p={4} width={{ base: "100%", md: "40%" }}>
-                            <DynamicMap userCity="Haifa" addresses={addresses} /> 
-                        </Box>
-                    </Flex>
-                )}
-            </Flex>
+          <EventList events={events} />
+          {!isMobile && (
+                      <Flex    
+                          direction={{ base: "row", md: "column" }}
+                          alignItems="flex-start" 
+                          justifyContent="flex-start"
+                          width={{ base: "10%", md: "10%" }}
+                          marginRight='50px'
+                      >
+          <Box p={4} width="100%">
+            <DynamicMap events={events} />
+          </Box>
         </Flex>
+         )}
+      </Flex>
+      </Flex>
     );
-}
+  };
 
 export default Home;

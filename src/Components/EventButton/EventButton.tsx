@@ -1,18 +1,27 @@
 import React from 'react';
 import { Box, Text, Image, Link } from '@chakra-ui/react';
 
-interface EventButtonProps {
-  id: string;
-  topic: string;
+interface Event {
+  _id: string;
   date: string;
-  time: string;
-  backgroundImageUrl: string;
+  address: string;
+  topic: string;
+  place: string;
+  imageURL: string;
 }
 
-const EventButton: React.FC<EventButtonProps> = ({ id, topic, date, time, backgroundImageUrl }) => {
+interface EventButtonProps {
+  event: Event;
+  imageUrl: string;
+}
+
+const EventButton: React.FC<EventButtonProps> = ({ event }) => {
+  const { _id, date, address, topic, place, imageURL } = event;
+
+  const formattedDate = new Date(date).toLocaleDateString(); 
   return (
-    <Link href={`/events/${id}`} _hover={{ textDecoration: 'none' }}>
-      <Box 
+    <Link href={`/events/${_id}`} _hover={{ textDecoration: 'none' }}>
+      <Box
         width="sm"
         borderWidth="1px"
         borderRadius="lg"
@@ -24,18 +33,17 @@ const EventButton: React.FC<EventButtonProps> = ({ id, topic, date, time, backgr
         _hover={{ transform: 'scale(1.05)' }}
         margin={4}
       >
-        <Image src={backgroundImageUrl} alt={topic} width="100%" height="200px" objectFit="cover" />
+        <Image src={imageURL} alt={topic} width="100%" height="175px" objectFit="cover" />
 
         <Box p="6">
-          <Box display="flex" alignItems="baseline">
-            <Text color="gray.500" fontWeight="semibold">
-              {date} at {time}
-            </Text>
-          </Box>
-
-          <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+          <Text color="gray.500" fontWeight="semibold" mb={2}>
+            {formattedDate}
+          </Text>
+          <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated mb={2}>
             {topic}
-          </Box>
+          </Text>
+          <Text color="gray.600">{place}</Text>
+          <Text color="gray.600">{address}</Text>
         </Box>
       </Box>
     </Link>
