@@ -23,21 +23,17 @@ import {
     Button,
     Spacer,
     Center,
+    useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import CustomDatePicker from '@/Components/create_event_components/DatePickerComponent';
-import { setHours, setMinutes } from 'date-fns';
+import DatePicker from "react-datepicker";
 
 export default function CreateEvent() {
     // const [startDate, setStartDate] = useState(new Date());
-    const [isEndDate, setIsEndDate] = useState(false);
-    const [startDate, setStartDate] = useState(
-        setHours(setMinutes(new Date(), 30), 16),
-    );
-
-    const [endDate, setEndDate] = useState(
-        setHours(setMinutes(new Date(), 30), 16),
-    );
+    // const [isEndDate, setIsEndDate] = useState(false);
+    const [startDateTime, setStartDateTime] = useState(new Date());
+    const [endDateTime, setEndDateTime] = useState(new Date());
+    const toast = useToast();
 
     const [addressObj, setAddressObj] = useState({
         city: '', street: '', place: ''
@@ -45,18 +41,36 @@ export default function CreateEvent() {
     const [event, setEvent] = useState({
         topic: '',
         category: '',
-        membersAmount: 2,
-        budget: 0,
-        startTime: startDate,
-        endTime: endDate,
-        address: addressObj,
+        membersAmount: 1,
+        budget: 1,
+        startDateTime: startDateTime,
+        endDateTime: endDateTime,
+        address: {},
         creator: ''
     });
 
     function onSubmit(e: any) {
         e.preventDefault();
+        event.address = addressObj;
+        // if (event.startDateTime > event.endDateTime) {
+        //     toast({
+        //         title: `End time must be less then start date`,
+        //         status: 'error',
+        //         isClosable: true,
+        //     })
+        // }
         console.log(event);
+
     }
+
+    const CustomTimeInput: any = ({ date, value, onChange }: { date: any, value: any, onChange: any }) => (
+        <Input
+            value={value}
+            type="time"
+            onChange={(e) => onChange(e.target.value)}
+            style={{ border: "solid 1px pink" }}
+        />
+    );
 
     return (
         <form onSubmit={onSubmit}>
@@ -85,8 +99,10 @@ export default function CreateEvent() {
                             <Box display="flex" gap={5}>
                                 <Box maxW={20}>
                                     <FormControl>
-                                        <NumberInput value={event.membersAmount} onChange={(e: any) => setEvent({ ...event, membersAmount: e.target.value })} defaultValue={2} min={2}>
-                                            <NumberInputField />
+                                        <NumberInput min={1} defaultValue={1}>
+                                            <NumberInputField value={event.membersAmount}
+                                                onChange={(e: any) => setEvent({ ...event, membersAmount: parseInt(e.target.value) })}
+                                            />
                                             <NumberInputStepper>
                                                 <NumberIncrementStepper />
                                                 <NumberDecrementStepper />
@@ -97,8 +113,10 @@ export default function CreateEvent() {
                                 </Box>
                                 <Box maxW={20}>
                                     <FormControl>
-                                        <NumberInput min={0} value={event.budget} onChange={(e: any) => setEvent({ ...event, budget: e.target.value })}>
-                                            <NumberInputField />
+                                        <NumberInput min={0} defaultValue={1}>
+                                            <NumberInputField value={event.budget}
+                                                onChange={(e: any) => setEvent({ ...event, budget: parseInt(e.target.value) })}
+                                            />
                                             <NumberInputStepper>
                                                 <NumberIncrementStepper />
                                                 <NumberDecrementStepper />
@@ -129,17 +147,42 @@ export default function CreateEvent() {
                             </Box>
                         </Flex>
                         <Box display="flex" flexDirection="column">
-                            <FormControl>
+                            {/* <FormControl>
                                 <Checkbox colorScheme='red' isChecked={isEndDate} fontWeight="bold" size="sm" onChange={(e: any) => setIsEndDate(e.target.checked)}>Enter End Date</Checkbox>
-                            </FormControl>
+                            </FormControl> */}
                             <FormControl>
                                 <FormLabel fontWeight="bold" fontSize="xs">Start Time</FormLabel>
-                                <CustomDatePicker date={startDate} setDate={setStartDate} />
+                                <DatePicker
+                                    showIcon
+                                    selected={event.startDateTime}
+                                    onChange={(date: Date) => {
+                                        setStartDateTime(date);
+                                        setEvent({ ...event, startDateTime: date })
+                                    }}
+                                    timeFormat="p"
+                                    dateFormat="dd-MM-yyyy h:mm aa"
+                                    showTimeInput
+                                    timeIntervals={15}
+                                    customTimeInput={<CustomTimeInput />}
+                                />
                             </FormControl>
-                            {isEndDate && <FormControl>
+                            <FormControl>
                                 <FormLabel fontWeight="bold" fontSize="xs">End Time</FormLabel>
-                                <CustomDatePicker date={endDate} setDate={setEndDate} />
-                            </FormControl>}
+                                <DatePicker
+                                    showIcon
+                                    selected={event.endDateTime > event.startDateTime ? event.endDateTime : event.startDateTime}
+                                    onChange={(date: Date) => {
+                                        setEndDateTime(date);
+                                        setEvent({ ...event, endDateTime: date })
+                                    }}
+                                    timeFormat="p"
+                                    dateFormat="dd-MM-yyyy h:mm aa"
+                                    showTimeInput
+                                    minDate={event.startDateTime}
+                                    timeIntervals={15}
+                                    customTimeInput={<CustomTimeInput />}
+                                />
+                            </FormControl>
                             <Button mt="auto" colorScheme='red' alignSelf="end" type='submit'>Create</Button>
                         </Box>
                     </Flex>
