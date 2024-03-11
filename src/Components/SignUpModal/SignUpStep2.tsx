@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Box, Button, Flex, FormControl, FormLabel, Grid, GridItem, Input, ModalFooter } from "@chakra-ui/react";
 import PictureInput from "./DragPhoto";
-import MapComponent from "./MapComponent";
 
 
 interface Step2Props {
     onNextStep: () => void;
     onPrevStep: () => void;
+    onFileChange: (file: File) => void;
 }
 
-const Step2: React.FC<Step2Props> = ({ onNextStep, onPrevStep }) => {
+const Step2: React.FC<Step2Props> = ({ onNextStep, onPrevStep, onFileChange }) => {
     const [location, setLocation] = useState<string>("");
     const [userLocation, setUserLocation] = useState<string | null>(null);
     const [latitude, setLatitude] = useState<number>(0);
@@ -80,6 +80,10 @@ const Step2: React.FC<Step2Props> = ({ onNextStep, onPrevStep }) => {
         onNextStep();
     };
 
+        const handleFileChange = (file: File) => {
+            onFileChange(file); 
+            console.log('Selected file:', file);
+        };
     return (
         <Box pt="1.5rem">
             <Grid templateColumns="repeat(1, 1fr)" gap={4}>
@@ -87,7 +91,7 @@ const Step2: React.FC<Step2Props> = ({ onNextStep, onPrevStep }) => {
                     <FormControl>
                         <FormLabel>Add Profile Picture</FormLabel>
                         <Flex justifyContent="center" alignItems="center">
-                            <PictureInput />
+                            <PictureInput onChange={handleFileChange} />
                         </Flex>
                     </FormControl>
                 </GridItem>
