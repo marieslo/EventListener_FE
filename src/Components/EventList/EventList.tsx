@@ -15,7 +15,7 @@ interface Event {
   place: string;
   category: string[];
   joinedBy: string[];
-  savedBy: string[]; 
+  savedBy: string[];
   membersAmount: number;
   budget: number;
   imageURL: string;

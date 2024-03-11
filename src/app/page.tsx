@@ -54,40 +54,32 @@ const Welcome = () => {
   }, []);
 
   return (
-    <Flex className="home-container">
+    <Flex className="welcome-container" direction="column">
       <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} userId={""} />
       <Flex
-        direction={{ base: 'column', md: 'row' }}
+        direction="column"
         alignItems="flex-start"
-        justifyContent="space-around"
-        minHeight="100vh"
-        width="80%"
-        marginTop="150px"
-        marginLeft="50px"
+        justifyContent="flex-start"
+        width="100%"
+        marginTop="120px" 
+        paddingLeft="20px"
+        paddingRight="20px" 
       >
-        {!isMobile && (
-          <Box p={4} position={{ base: 'relative', md: 'static' }}>
-            <Box p={5} position={{ base: 'relative', md: 'static' }}>
-              <div className="about-platform-text about-platform-text-1">
-                Welcome to our vibrant community.
-              </div>
-              <br/>
-              <div className="about-platform-text about-platform-text-2">
-              Ready to dive in and start exploring? 
-              </div>
-              <br/>
-              <div className="about-platform-text about-platform-text-3">
-                Let's find the perfect event together!
-              </div>
-            </Box>
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          alignItems="flex-start"
+          justifyContent="flex-start"
+          width="100%"
+          marginBottom="20px"     
+          marginLeft="120px" 
+        >
+          <Box width={{ base: "100%", md: "60%" }}>
+            <EventList events={events} />
           </Box>
-        )}
-        <EventList events={events} />
-        {!isMobile && (
-          <Box p={4} width="100%">
+          <Box width={{ base: "100%", md: "40%" }}>
             <DynamicMap events={addresses} />
           </Box>
-        )}
+        </Flex>
       </Flex>
     </Flex>
   );

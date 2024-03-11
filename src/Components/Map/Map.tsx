@@ -57,9 +57,14 @@ const Map: React.FC<MapProps> = ({ events }) => {
     }
   }, [events, mapInitialized]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  };
+
   return (
     <Box>
-      <div style={{ width: '380px', height: '65vh', marginRight: '100px', borderRadius: '5px' }} ref={mapContainerRef}>
+      <div style={{ width: '400px', height: '65vh', marginTop: '50px', marginRight: '50px', borderRadius: '5px' }} ref={mapContainerRef}>
         <MapContainer center={[32.7941, 34.9896]} zoom={12} style={{ width: '100%', height: '100%', border: '1px', borderRadius: '5px' }}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {events.map(event => {
@@ -82,7 +87,7 @@ const Map: React.FC<MapProps> = ({ events }) => {
                   <Popup>
                     <strong>{event.topic}</strong>
                     <br />
-                    {event.date}
+                    {formatDate(event.date)} 
                     <br />
                     {event.city}, {event.street} {event.street_number}
                   </Popup>
