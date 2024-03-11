@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, Link } from '@chakra-ui/react';
 import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import './Calendar.css'
 
 const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -108,7 +107,7 @@ const Calendar = () => {
   };
 
   return (
-    <Box className='calendar-container' border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={1} position="relative" backgroundColor='#fff'>
+    <Box className='calendar-container' border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={1} position="relative" backgroundColor='#fff' marginTop='100px'>
       <Flex direction="column" alignItems="center">
         <Flex alignItems="center" mt={4}>
           <IconButton icon={<ArrowBackIcon />} mb={6} variant='outline' onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
