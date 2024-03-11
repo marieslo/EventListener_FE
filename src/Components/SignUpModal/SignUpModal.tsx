@@ -27,10 +27,63 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
         const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
         currentUser.interests = selectedCategories;
         localStorage.setItem('user', JSON.stringify(currentUser));
+        console.log(currentUser);
     };
-    const handleSignUpButtonClick = () => {
-    // ./auth/signup POST СЮДА jwt  (middleware - data validation)
-        onClose(); // Закрываем модальное окно
+
+    const [file, setFile] = useState<File | null>(null); // Состояние для хранения файла
+
+    const handleFileChange = (file: File) => {
+        console.log('File changed:', file);
+        setFile(file);
+    };
+
+    const handleSignUpButtonClick = async () => {
+        try {
+            // Получение данных пользователя из локального хранилища
+            const userData = localStorage.getItem('user');
+            if (!userData) {
+                console.error('User data is not available');
+                return;
+            }
+
+            // Создание формата
+            const formData = new FormData();
+            const userDataParsed = JSON.parse(userData);
+            formData.append('email', userDataParsed.email);
+            formData.append('password', userDataParsed.password);
+            formData.append('firstName', userDataParsed.firstName);
+            formData.append('lastName', userDataParsed.lastName);
+            formData.append('phone', userDataParsed.phone);
+            formData.append('interests', userDataParsed.interests);
+
+            // Добавление файла в formData, если он был выбран
+            if (file) {
+                formData.append('file', file);
+            }
+
+            // Отправка запроса на сервер
+            const signupResponse = await fetch('http://localhost:3000/auth/signup', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!signupResponse.ok) {
+                console.error('Failed to register user');
+                return;
+            }
+
+            //токен
+            const responseJson = await signupResponse.json();
+            const accessToken = responseJson.access_token;
+            localStorage.setItem('accessToken', accessToken);
+
+            console.log('User registered successfully');
+            onClose();
+        } catch (error) {
+            console.error('Error during user registration:', error);
+        } finally {
+            onClose();
+        }
     };
 
     return (
@@ -87,7 +140,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
 
                     </Stepper>
                     {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
-                    {activeStep === 1 && <Step2 onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
+                    {activeStep === 1 && <Step2 onFileChange={handleFileChange} onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
                     {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
                 </ModalBody>
 
