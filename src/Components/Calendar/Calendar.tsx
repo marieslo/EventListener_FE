@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, Link } from '@chakra-ui/react';
+import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, Link, useBreakpointValue } from '@chakra-ui/react';
 import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 const Calendar = () => {
@@ -7,6 +7,8 @@ const Calendar = () => {
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [events, setEvents] = useState<{ hour: number; title: string }[]>([]);
+
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const handleOpenModal = (day: Date) => {
     setSelectedDay(day);
@@ -106,8 +108,8 @@ const Calendar = () => {
     );
   };
 
-  return (
-    <Box className='calendar-container' border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={1} position="relative" backgroundColor='#fff' marginTop='100px'>
+ return isMobile ? null : (
+    <Box className='calendar-container' width='360px' border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={1} position="sticky" backgroundColor='#fff' marginTop='50px'>
       <Flex direction="column" alignItems="center">
         <Flex alignItems="center" mt={4}>
           <IconButton icon={<ArrowBackIcon />} mb={6} variant='outline' onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
