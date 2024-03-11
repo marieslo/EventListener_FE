@@ -1,10 +1,110 @@
 'use client'
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
-import { AbsoluteCenter, Avatar, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Container, Divider, Flex, Heading, Image, Stack, StackDivider, Tag, TagLabel, Text, useToast } from "@chakra-ui/react";
+import { QuestionOutlineIcon, TimeIcon } from '@chakra-ui/icons';
+import { AbsoluteCenter, Avatar, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, CircularProgressLabel, Container, Divider, Flex, Heading, Image, Stack, StackDivider, Tag, TagLabel, Text, useToast } from "@chakra-ui/react";
+import axios from 'axios';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { SERVER_URL } from '../../../../api';
+import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
+import LikeButton from '@/Components/LikeButton/LikeButton';
+import '../../../Components/LikeButton/LikeButton.css';
 
-export default function PetDetailsPage() {
+export default function EventDetailsPage() {
 
+    const [event, setEvent] = useState<any>({});
+    const { id } = useParams();
+    const toast = useToast();
+    const [isEditable, setIsEditable] = useState();
+
+    const token = localStorage.getItem("accessToken");
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    };
+
+
+    async function fetchEvent() {
+        try {
+            const response = await axios.get(`${SERVER_URL}/events/${id}`);
+            setEvent(response.data);
+            console.log(response.data);
+        } catch (error: any) {
+            toast({
+                title: error.message,
+                status: 'error',
+                isClosable: true,
+            })
+        }
+    }
+
+    async function joinEvent() {
+        try {
+            const response: any = await axios.put(`${SERVER_URL}/events/join/${id}`, {}, config);
+            toast({
+                title: "You joined the event",
+                status: 'success',
+                isClosable: true,
+            })
+        } catch (error: any) {
+            toast({
+                title: error.response.data.message,
+                status: 'error',
+                isClosable: true,
+            })
+        }
+    }
+
+    async function leaveEvent() {
+        try {
+            const response = await axios.delete(`${SERVER_URL}/events/leave/${id}`, config);
+            toast({
+                title: "You left the event",
+                status: 'success',
+                isClosable: true,
+            })
+        } catch (error: any) {
+            toast({
+                title: error.response.data.message,
+                status: 'error',
+                isClosable: true,
+            })
+        }
+    }
+
+
+    function handleJoin(e: any) {
+        joinEvent();
+    }
+
+    function handleLeave(e: any) {
+        leaveEvent();
+    }
+
+    function handleEdit(e: any) {
+
+    }
+
+
+    useEffect(() => {
+        fetchEvent();
+    }, []);
+
+    const categoryKey: string = event.category;
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"];
+    const weekDays = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
     return (
+
         <Flex flexDirection="column">
             <Box position="relative" display="flex" h="512px" justifyContent="center" alignItems="center">
                 {/* <Box maxW='md' h="auto"> */}
@@ -14,7 +114,7 @@ export default function PetDetailsPage() {
                     // maxInlineSize="100%"
                     width="100%"
                     h="100%"
-                    src={`https://res.cloudinary.com/dvora9zgj/image/upload/v1709927250/EventListener/uribu8yo4gv98xnq55ff.jpg`} alt=''
+                    src={CATEGORY_URLS[categoryKey as keyof typeof CATEGORY_URLS]} alt=''
                 />
                 <Heading
                     size="2xl"
@@ -28,134 +128,113 @@ export default function PetDetailsPage() {
                     color="white"
                     py={2}
                 >
-                    Event topic
+                    {event.topic}
                 </Heading>
                 {/* </Box> */}
             </Box>
 
-            <Box display="flex" flexGrow={2} alignSelf="center" p="8">
-                <Card>
+            {event.creator && <Box display="flex" alignSelf="center" p="8">
+                <Card width="2xl">
                     <CardHeader>
-                        <Stack flexDirection="row" alignItems="baseline">
-                            <Flex gap='4' alignItems="center" flexWrap='wrap'>
-                                <Text fontSize="4xl">
-                                    Creator:
-                                </Text>
-                                {/* <Box justifySelf="center"> */}
-                                <Avatar src='https://bit.ly/broken-link' />
-                                {/* </Box> */}
-                                <Box display="flex" flexDirection="column">
-                                    <Heading size='sm'>Loh Yebanii</Heading>
-                                    <Text>+79123454455</Text>
-                                </Box>
-                            </Flex>
-                            {/* {pet.status_name === 'adopted' &&
-                                <Box>
-                                    <Badge mr="2" colorScheme='pink'>{pet.status_name}</Badge>
-                                </Box>}
-                            {pet.status_name === 'fostered' &&
-                                <Box>
-                                    <Badge colorScheme='yellow'>{pet.status_name}</Badge>
-                                </Box>}
-                            {pet.status_name === 'available' &&
-                                <Box>
-                                    <Badge colorScheme='green'>{pet.status_name}</Badge>
-                                </Box>} */}
-
-                        </Stack>
+                        {/* <Stack flexDirection="row" alignItems="baseline"> */}
+                        <Flex gap='4' alignItems="center" flexWrap='wrap'>
+                            <Text fontSize="4xl">
+                                Creator:
+                            </Text>
+                            {/* <Box justifySelf="center"> */}
+                            <Avatar src={event.creator.imageURL} />
+                            {/* </Box> */}
+                            <Box display="flex" flexDirection="column">
+                                <Heading size='sm'>{event.creator.firstName + " " + event.creator.lastName}</Heading>
+                                <Text>{event.creator.email}</Text>
+                                <Text>{event.creator.phone}</Text>
+                            </Box>
+                            <Box ml="auto">
+                                <CircularProgress alignSelf="end" size='75px' value={(event.joinedBy.length / event.membersAmount) * 100} color='red.500'>
+                                    <CircularProgressLabel>{Math.floor((event.joinedBy.length / event.membersAmount) * 100)}%</CircularProgressLabel>
+                                </CircularProgress>
+                            </Box>
+                        </Flex>
                         <Box>
                             <Divider />
                         </Box>
                     </CardHeader>
                     <CardBody>
-                        {/* <Stack direction="row" spacing="2" wrap="wrap">
-                            <Tag size='lg' borderRadius='full'>
-                                <TagLabel>{pet.type_name}</TagLabel>
-                            </Tag>
-                            <Tag size='lg' borderRadius='full'>
-                                <TagLabel>{pet.breed_name}</TagLabel>
-                            </Tag>
-                            {pet.hypoallergenic === 1 && <Tag size='lg' borderRadius='full'>
-                                <TagLabel>{'Hypoallergenic'}</TagLabel>
-                            </Tag>}
-                            <Tag size='lg' borderRadius='full'>
-                                <TagLabel>{pet.color}</TagLabel>
-                            </Tag>
-                            <Tag size='lg' borderRadius='full'>
-                                <LiaRulerVerticalSolid />
-                                <TagLabel>{`${pet.height}cm`}</TagLabel>
-                            </Tag>
-                            <Tag size='lg' borderRadius='full'>
-                                <GiWeight />
-                                <TagLabel>{`${pet.weight}kg`}</TagLabel>
-                            </Tag>
-                        </Stack>
-                        <Box position='relative' padding='10'>
-                            <Divider />
-                            <AbsoluteCenter bg='white' px='4'>
-                                <Text fontSize="3xl">About</Text>
-                            </AbsoluteCenter>
-                        </Box>
-                        {/* <Heading size="md">Bio</Heading> */}
                         <Stack spacing="5">
                             <Stack spacing="5" direction="row" wrap="wrap">
-                                <Tag size='lg' borderRadius='full'>
-                                    <QuestionOutlineIcon />
-                                    <TagLabel ml={2}>100$</TagLabel>
-                                </Tag>
-                                <Tag size='lg' borderRadius='full'>
-                                    <QuestionOutlineIcon />
-                                    <TagLabel ml={2}>5 ppl</TagLabel>
-                                </Tag>
+                                <Flex flexDirection="column">
+                                    <Heading size="md">Vacant: </Heading>
+                                    <Tag mt={2} size='lg' borderRadius='full' bg='red.500'>
+                                        <TagLabel color="white" fontSize="2xl" ml={2}>{event.membersAmount === event.joinedBy.length ? 'There is no places' : event.membersAmount - event.joinedBy.length} / {event.membersAmount}</TagLabel>
+                                    </Tag>
+                                </Flex>
+                                <Flex flexDirection="column">
+                                    <Heading size="md">Fees: </Heading>
+                                    <Tag mt={2} size='lg' borderRadius='full' bg='red.500'>
+                                        <TagLabel color="white" fontSize="2xl" ml={2}>{event.budget}$</TagLabel>
+                                    </Tag>
+                                </Flex>
+                                <Flex flexDirection="column">
+                                    <Tag mt="auto" size='lg' borderRadius='full'>
+                                        <TimeIcon />
+                                        <TagLabel fontSize="2xl" ml={2}>{event.duration} min</TagLabel>
+                                    </Tag>
+                                </Flex>
+                                <Box ml="auto" alignSelf="end">
+                                    <LikeButton />
+                                </Box>
                             </Stack>
                             <Flex gap={5}>
-                                <Image src='gibbresh.png' fallbackSrc='https://via.placeholder.com/300' />
-                                <Card>
-                                    <CardHeader textAlign="center" bg="red.500">
-                                        <Heading color="white" size='md'>SEPTEMBER</Heading>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <Stack divider={<StackDivider />} spacing='4'>
-                                            <Box display="flex" flexDirection="column" alignItems="center">
-                                                <Heading size='xs' textTransform='uppercase'>
-                                                    Wednesday
-                                                </Heading>
-                                                <Text pt='2' fontSize='6xl'>
-                                                    09
-                                                </Text>
-                                                <Heading size='md' textTransform='uppercase'>
-                                                    2001
-                                                </Heading>
-                                            </Box>
-                                        </Stack>
-                                    </CardBody>
-                                </Card>
+                                <Image alignSelf="flex-start" flexGrow={3} src='gibbresh.png' fallbackSrc='https://via.placeholder.com/300' />
+                                <Flex flexDirection="column" flexGrow={2}>
+                                    <Card flex={1}>
+                                        <CardHeader textAlign="center" bg="red.500">
+                                            <Heading color="white" size='md'>{monthNames[new Date(event.date).getMonth()]}</Heading>
+                                        </CardHeader>
+                                        <CardBody>
+                                            <Stack divider={<StackDivider />} spacing='4'>
+                                                <Box display="flex" flexDirection="column" alignItems="center">
+                                                    <Heading size='xs' textTransform='uppercase'>
+                                                        {weekDays[new Date(event.date).getDay()]}
+                                                    </Heading>
+                                                    <Text pt='2' fontSize='6xl'>
+                                                        {new Date(event.date).getDay()}
+                                                    </Text>
+                                                    <Heading size='md' textTransform='uppercase'>
+                                                        {new Date(event.date).getFullYear()}
+                                                    </Heading>
+                                                </Box>
+                                            </Stack>
+                                        </CardBody>
+                                    </Card>
+                                    <Flex flex={1}></Flex>
+                                </Flex>
                             </Flex>
                             <Box>
                                 <Heading size="md">Members:</Heading>
                                 <Stack direction='row' mt={5}>
-                                    <Avatar src='https://bit.ly/broken-link' />
-                                    <Avatar src='https://bit.ly/broken-link' />
-                                    <Avatar src='https://bit.ly/broken-link' />
-                                    <Avatar src='https://bit.ly/broken-link' />
-                                    <Avatar src='https://bit.ly/broken-link' />
-                                    <Avatar src='https://bit.ly/broken-link' />
+                                    {event.joinedBy.map((member: any) => {
+                                        return <Avatar key={member._id} src={member.imageURL} />
+                                    })}
                                 </Stack>
                             </Box>
                         </Stack>
                     </CardBody>
                     <CardFooter justifyContent="end">
                         <Stack direction='row' spacing={4}>
-                            <Button onClick={() => console.log('enter')} colorScheme='red' variant='solid'>
+                            <Button onClick={handleJoin} colorScheme='red' variant='solid'>
                                 Join
                             </Button>
-                            <Button onClick={() => console.log('enter')} colorScheme='gray' variant='solid'>
+                            <Button onClick={handleLeave} colorScheme='gray' variant='solid'>
                                 Leave
+                            </Button>
+                            <Button onClick={handleEdit} colorScheme='red' variant='ghost'>
+                                Edit
                             </Button>
                         </Stack>
                     </CardFooter>
                 </Card>
-            </Box>
+            </Box>}
         </Flex>
     )
 }
