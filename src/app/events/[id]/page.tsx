@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { SERVER_URL } from '../../../../api';
 import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
+import LikeButton from '@/Components/LikeButton/LikeButton';
+import '../../../Components/LikeButton/LikeButton.css';
 
 export default function EventDetailsPage() {
 
@@ -14,7 +16,7 @@ export default function EventDetailsPage() {
     const toast = useToast();
     const [isEditable, setIsEditable] = useState();
 
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF3ZTJAcXFxLnJ1IiwiaWQiOiI2NWVjNzNhYTljMjIyMGYyNTVjNzA3ZjQiLCJpYXQiOjE3MTAxNzc3NDMsImV4cCI6MTcxMDE4MTM0M30.e3Jiv3AiI5v3X0D5FPzFfSG-Y2nUeL0VghXpoetmrA0`
+    const token = localStorage.getItem("accessToken");
 
     const config = {
         headers: {
@@ -178,6 +180,9 @@ export default function EventDetailsPage() {
                                         <TagLabel fontSize="2xl" ml={2}>{event.duration} min</TagLabel>
                                     </Tag>
                                 </Flex>
+                                <Box ml="auto" alignSelf="end">
+                                    <LikeButton />
+                                </Box>
                             </Stack>
                             <Flex gap={5}>
                                 <Image alignSelf="flex-start" flexGrow={3} src='gibbresh.png' fallbackSrc='https://via.placeholder.com/300' />
