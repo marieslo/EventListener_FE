@@ -10,10 +10,15 @@ interface Event {
   _id: string;
   creator: string;
   date: string;
-  address: string;
+  street: string;
+  street_number: string;
+  city: string;
+  country: string;
   topic: string;
+  place: string;
   category: string[];
   joinedBy: string[];
+  savedBy: string[];
   membersAmount: number;
   budget: number;
   imageURL: string;
@@ -26,27 +31,31 @@ interface MapProps {
 const Map: React.FC<MapProps> = ({ events }) => {
   const mapContainerRef = useRef<any>(null);
   const [coordinates, setCoordinates] = useState<{ [key: string]: { lat: string, lon: string } }>({});
+  const [mapInitialized, setMapInitialized] = useState(false);
 
   useEffect(() => {
-    const fetchCoordinates = async () => {
-      const newCoordinates: { [key: string]: { lat: string, lon: string } } = {};
+    if (!mapInitialized) {
+      setMapInitialized(true);
+      const fetchCoordinates = async () => {
+        const newCoordinates: { [key: string]: { lat: string, lon: string } } = {};
 
-      try {
-        for (const event of events) {
-          const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(event.address)}&format=json`);
-          const data = response.data;
-          if (data.length > 0) {
-            newCoordinates[event._id] = { lat: data[0].lat, lon: data[0].lon };
+        try {
+          for (const event of events) {
+            const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(event.street)} ${encodeURIComponent(event.street_number)} ${encodeURIComponent(event.city)} ${encodeURIComponent(event.country)}&format=json`);
+            const data = response.data;
+            if (data.length > 0) {
+              newCoordinates[event._id] = { lat: data[0].lat, lon: data[0].lon };
+            }
           }
+          setCoordinates(newCoordinates);
+        } catch (error) {
+          console.error("Error fetching coordinates:", error);
         }
-        setCoordinates(newCoordinates);
-      } catch (error) {
-        console.error("Error fetching coordinates:", error);
-      }
-    };
+      };
 
-    fetchCoordinates();
-  }, [events]);
+      fetchCoordinates();
+    }
+  }, [events, mapInitialized]);
 
   return (
     <Box>
@@ -73,7 +82,9 @@ const Map: React.FC<MapProps> = ({ events }) => {
                   <Popup>
                     <strong>{event.topic}</strong>
                     <br />
-                    {event.address}
+                    {event.date}
+                    <br />
+                    {event.city}, {event.street} {event.street_number}
                   </Popup>
                 </Marker>
               );
@@ -81,7 +92,7 @@ const Map: React.FC<MapProps> = ({ events }) => {
               console.error(`Invalid latitude or longitude for event '${event.topic}'`);
               return null;
             }
-})}
+          })}
         </MapContainer>
       </div>
     </Box>

@@ -5,7 +5,10 @@ import { FiInfo } from 'react-icons/fi';
 interface Event {
   _id: string;
   date: string;
-  address: string;
+  street: string; 
+  street_number: string;
+  city: string;
+  country: string;
   topic: string;
   place: string;
   imageURL: string;
@@ -26,7 +29,7 @@ const formattedDate = (dateString: string): string => {
 };
 
 const EventButton: React.FC<EventButtonProps> = ({ event }) => {
-  const { _id, date, address, topic, place, imageURL } = event;
+  const { _id, date, country, city, street, street_number, topic, place, imageURL } = event;
 
   const formattedDateString = formattedDate(date);
   
@@ -60,7 +63,9 @@ const EventButton: React.FC<EventButtonProps> = ({ event }) => {
         <Text fontWeight="semibold" fontSize="sm">{formattedDateString}</Text>
         <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated fontSize="lg">{topic}</Text>
         <Text fontSize="xs">{place}</Text>
-        <Text fontSize="xs">{address}</Text>
+        <Text fontSize="xs">{city}</Text>
+        <Text fontSize="xs">{street}</Text>
+        <Text fontSize="xs">{street_number}</Text>
         <Link href={`/events/${_id}`} _hover={{ textDecoration: 'none' }}>
           <Icon 
             as={FiInfo} 
