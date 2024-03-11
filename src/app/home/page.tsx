@@ -9,73 +9,76 @@ import EventList from '@/Components/EventList/EventList';
 import { SERVER_URL } from '../../../api';
 import './Home.css';
 
+interface Event {
+    _id: string;
+    creator: string;
+    date: string;
+    street: string;
+    street_number: string;
+    city: string;
+    country: string;
+    topic: string;
+    place: string;
+    category: string[];
+    joinedBy: string[];
+    savedBy: string[]; 
+    membersAmount: number;
+    budget: number;
+    imageURL: string;
+    lat: string;
+    lon: string;
+}
 
-  const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
-  
-  const Home = () => {
+const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
+
+const Home = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [events, setEvents] = useState([]);
-    const [addresses, setAddresses] = useState([]);
+    const [events, setEvents] = useState<Event[]>([]);
+    const [addresses, setAddresses] = useState<Event[]>([]);
+  
+    const handleSearch = () => {};
     const isMobile = useBreakpointValue({ base: true, md: false });
-
-    const fetchEventData = async () => {
-        try {
-            const response = await axios.get(`${SERVER_URL}/events`);
-            setEvents(response.data);
-        } catch (error) {
-            console.error('Error fetching events:', error);
-        }
-    };
-
-    const fetchAddressData = async () => {
-        try {
-            const response = await axios.get(`${SERVER_URL}/addresses`);
-            setAddresses(response.data);
-        } catch (error) {
-            console.error('Error fetching addresses:', error);
-        }
-    };
-
+  
     useEffect(() => {
-        fetchEventData();
-        fetchAddressData();
+      const fetchData = async () => {
+        try {
+          const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
+          setEvents(eventsResponse.data);
+          setAddresses(eventsResponse.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchData();
     }, []);
 
-    const handleSearch = () => {};
-return (
-        <Flex className="home-container">
-            <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} userId={""} />
-            <Flex
-                direction={{ base: "column", md: "row" }}
-                alignItems="flex-start"
-                justifyContent="space-around"
-                minHeight="100vh"
-                width="80%"
-                marginTop='150px'
-                marginLeft='50px'
-                >
-            {!isMobile && (
-                 <Box p={4} position={{ base: 'relative', md: 'static' }}>
-                        <Calendar/>
-                    </Box>
-                 )}
-          <EventList events={events} />
-          {!isMobile && (
-                      <Flex    
-                          direction={{ base: "row", md: "column" }}
-                          alignItems="flex-start" 
-                          justifyContent="flex-start"
-                          width={{ base: "10%", md: "10%" }}
-                          marginRight='50px'
-                      >
-          <Box p={4} width="100%">
-            <DynamicMap events={events} />
+  return (
+    <Flex className="home-container" direction="column">
+      <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} userId={""} />
+      <Flex
+          direction={{ base: 'column', md: 'row' }}
+          alignItems="flex-start"
+          justifyContent="flex-start"
+          width="100%"
+          marginTop="120px" 
+          paddingLeft="20px"
+          paddingRight="20px" 
+      >
+        {!isMobile && (
+          <Box width={{ base: "100%", md: "20%" }} marginRight={{ base: "0", md: "20px" }}>
+            <Calendar />
           </Box>
-        </Flex>
-         )}
+        )}
+        <Box width="100%" marginRight={{ base: "0", md: "20px" }}>
+          <EventList events={events} />
+        </Box>
+        <Box width="100%">
+          <DynamicMap events={addresses} />
+        </Box>
       </Flex>
-      </Flex>
-    );
-  };
+    </Flex>
+  );
+};
 
 export default Home;

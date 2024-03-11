@@ -7,16 +7,20 @@ interface Event {
   _id: string;
   creator: string;
   date: string;
-  category: string[]; 
+  street: string;
+  street_number: string;
+  city: string;
+  country: string;
+  topic: string;
+  place: string;
+  category: string[];
   joinedBy: string[];
+  savedBy: string[];
   membersAmount: number;
   budget: number;
   imageURL: string;
   lat: string;
   lon: string;
-  place: string;
-  topic: string;
-  address: string;
 }
 
 interface EventListProps {
