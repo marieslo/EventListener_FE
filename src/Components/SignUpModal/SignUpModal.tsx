@@ -4,6 +4,7 @@ import Step1 from './SignUpStep1';
 import Step2 from './SignUpStep2';
 import Step3 from './SignUpStep3';
 import Link from 'next/link';
+import LoginModal from './LoginModal';
 
 interface SignUpModalProps {
     isOpen: boolean;
@@ -13,6 +14,16 @@ interface SignUpModalProps {
 const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     const [activeStep, setActiveStep] = useState<number>(0);
 
+    const [activeModal, setActiveModal] = useState<'SignUp' | 'Login' | null>('SignUp');
+
+    const handleSignUpClick = () => {
+        setActiveModal('SignUp');
+    };
+
+    const handleLoginClick = () => {
+        setActiveModal('Login');
+    };
+    
     const handleNextStep = () => {
         setActiveStep(prevStep => prevStep + 1);
     };
@@ -38,15 +49,14 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     };
 
     const handleSignUpButtonClick = async () => {
+
         try {
-            // Получение данных пользователя из локального хранилища
             const userData = localStorage.getItem('user');
             if (!userData) {
                 console.error('User data is not available');
                 return;
             }
 
-            // Создание формата
             const formData = new FormData();
             const userDataParsed = JSON.parse(userData);
             formData.append('email', userDataParsed.email);
@@ -56,12 +66,9 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             formData.append('phone', userDataParsed.phone);
             formData.append('interests', userDataParsed.interests);
 
-            // Добавление файла в formData, если он был выбран
             if (file) {
                 formData.append('file', file);
             }
-
-            // Отправка запроса на сервер
             const signupResponse = await fetch('http://localhost:3000/auth/signup', {
                 method: 'POST',
                 body: formData,
@@ -91,9 +98,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             <ModalOverlay />
             <ModalContent width='fit-content'>
                 <Box backgroundColor='red.500' borderRadius='2px' mb='1rem'>
-                    <ModalHeader color='white' >Sign Up</ModalHeader>
+                    <ModalHeader color='white' display='flex' flexDirection='row' justifyContent='space-around' >
+                        <Link onClick={handleSignUpClick} href=''>SingUp</Link>
+                        <Link onClick={handleLoginClick} href=''>Login</Link>
+                    </ModalHeader>
                     <ModalCloseButton color='white' /></Box>
-                <ModalBody>
+                    {activeModal === 'SignUp' && <ModalBody>
                     <Stepper size='lg' colorScheme='red' index={activeStep}>
                         <Step>
                             <StepIndicator>
@@ -142,7 +152,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                     {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
                     {activeStep === 1 && <Step2 onFileChange={handleFileChange} onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
                     {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
-                </ModalBody>
+                </ModalBody>}
+                {activeModal === 'Login' && <LoginModal onClose={onClose} />}
 
                 {activeStep === 2 && (
                     <>
