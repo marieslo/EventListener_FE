@@ -10,7 +10,7 @@ interface User {
     firstName: string;
     lastName: string;
     phone: string;
-    picture: string;
+    file: string;
     interests: string[];
 }
 
@@ -26,7 +26,7 @@ const Profile: React.FC = () => {
         firstName: '',
         lastName: '',
         phone: '',
-        picture: '',
+        file: '',
         interests: []
     });
 
@@ -37,7 +37,7 @@ const Profile: React.FC = () => {
         firstName: 'John',
         lastName: 'Doe',
         phone: '123-456-7890',
-        picture: 'example.jpg',
+        file: 'example.jpg',
         interests: ['Sport', 'Travel', 'Food']
     };
 
@@ -104,7 +104,7 @@ const Profile: React.FC = () => {
                     backgroundColor='white' width='fit-content' height='fit-content' p='20px'>
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
                     <Flex flexDirection='column' gap='25px' alignItems="center">
-            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`} src={formData.picture ? formData.picture : previewImage} />
+            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`} src={formData.file ? formData.file : previewImage} />
             {/* Поле для выбора файла */}
             <Input
                         accept="image/*"
