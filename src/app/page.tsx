@@ -32,7 +32,6 @@ interface Event {
 const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
 
 const Welcome = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [addresses, setAddresses] = useState<Event[]>([]);
 
@@ -55,7 +54,7 @@ const Welcome = () => {
 
   return (
     <Flex className="welcome-container" direction="column">
-      <NavBar onSearch={handleSearch} isLoggedIn={isLoggedIn} userId={""} />
+      <NavBar onSearch={handleSearch} />
       <Flex
         direction="column"
         alignItems="flex-start"

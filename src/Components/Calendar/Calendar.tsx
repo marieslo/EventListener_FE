@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, Link, useBreakpointValue } from '@chakra-ui/react';
 import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import './Calendar.css'
 
 const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -73,7 +74,7 @@ const Calendar = () => {
     const hours = [];
     for (let i = 0; i < 24; i++) {
       hours.push(
-        <Flex key={i} justifyContent="space-between" alignItems="center" border="1px solid" borderColor="gray.200" p={2}>
+        <Flex key={i} justifyContent="space-between" alignItems="center" border="1px solid" borderColor="gray.200" p={1}>
           <Box>
             <Text fontSize="sm" color="gray.500">{i}:00</Text>
             {events
@@ -121,7 +122,12 @@ const Calendar = () => {
         {renderDays()}
         <Modal isOpen={modalOpen} onClose={handleCloseModal}>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent
+          style={{
+              fontFamily: 'Calistoga, serif',
+              paddingBottom: '20px'
+          }}
+        >
             <ModalHeader color="red.500">
               {selectedDay?.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
             </ModalHeader>
