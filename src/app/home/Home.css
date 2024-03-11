@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Calistoga&display=swap');
 
 .home-container, .welcome-container {
-    font-family: "Calistoga", serif;
+    /* font-family: "Calistoga", serif; */
     margin-right: 50px;
     margin-top: 50px;
      /* background: linear-gradient(180deg, #f43737, #ffd500); */
 }
 
 .about-platform-text {
-    font-family: "Calistoga", serif;
+    /* font-family: "Calistoga", serif; */
     color: #E53E3E;
     font-size: 20px;
     text-align: center;

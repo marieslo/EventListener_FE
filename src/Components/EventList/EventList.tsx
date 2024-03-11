@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Spinner, Text } from '@chakra-ui/react';
 import EventButton from '@/Components/EventButton/EventButton';
 import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
 
@@ -24,8 +24,11 @@ interface EventListProps {
 }
 
 const EventList: React.FC<EventListProps> = ({ events }) => {
-  if (!events || events.length === 0) {
+  if (!events) {
     return <Spinner color="red.500" size="xl" />;
+  }
+  if (events.length === 0) {
+    return <Text>No events available</Text>;
   }
 
   return (
