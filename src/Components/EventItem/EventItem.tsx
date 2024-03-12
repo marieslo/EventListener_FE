@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Text, Image, Link, Icon } from '@chakra-ui/react';
 import { FaInfoCircle } from 'react-icons/fa';
+import LikeButtonSmall from '../LikeButtonSmall/LikeButtonSmall';
+import useLocalStorage from '@/Hooks/useLocalStorage';
 
 interface Event {
   _id: string;
@@ -42,10 +44,10 @@ const formattedDate = (dateString: string): string => {
 };
 
 const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
-  const { _id, date, country, city, street, street_number, topic, place } = event;
+  const { _id, date, city, street, street_number, topic, place } = event;
 
   const [showDetails, setShowDetails] = useState(false);
-
+  const [token] = useLocalStorage<string>('token', ''); 
   const formattedDateString = formattedDate(date);
 
   return (
@@ -63,6 +65,9 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
       onMouseEnter={() => setShowDetails(true)}
       onMouseLeave={() => setShowDetails(false)}
     >
+      <Box position="absolute" top="-4px" left="-19px" width="100%" height="100%">
+        <LikeButtonSmall eventId={_id} token={token} />
+      </Box>
       <Link href={`/events/${_id}`} _hover={{ textDecoration: 'none' }}>
         <Icon
           as={FaInfoCircle}
