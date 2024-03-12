@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, IconButton, ChakraProvider, Avatar, Link, Button } from '@chakra-ui/react';
-import { AiOutlineUser, AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai'; 
+import { Flex, Box, IconButton, ChakraProvider, Avatar, Link, Button, useToast, Image, Tooltip } from '@chakra-ui/react';
+import { AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai'; 
 import SignUpModal from '@/Components/SignUpModal/SignUpModal';
 import Search from '@/Components/Search/Search';
-import { BiHome } from 'react-icons/bi';
+import useLocalStorage from '@/Hooks/useLocalStorage';
 
 interface User {
   _id: string;
@@ -17,14 +17,15 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useLocalStorage<boolean>('isLoggedIn', false);
+  const toast = useToast();
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
     if (token) {
       setLoggedIn(true);
     }
-  }, []);
+  }, [setLoggedIn]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -39,69 +40,101 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
     setLoggedIn(false);
   };
 
+  const handleAddEventClick = () => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please log in to create an event",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      <Link href={`/events/create_event`} _hover={{ textDecoration: 'none' }}/>
+    }
+  };
+
   return (
     <ChakraProvider>
-      <header className='navbar-containter' style={{ position: 'fixed', top: 0, width: '100%', maxWidth: '100%', zIndex: 1000}}>
-        <Flex as="nav" align="center" justify="space-around" p={4} flexWrap="wrap" pr={150} pl={6}>
-          <Box>
-            <Flex align="center" >
-              <img src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png" alt="EventListener Logo" style={{ height: '50px', marginRight: '20px' }} />
-              <div className="navbar-brand" style={{ color: '#E53E3E', fontSize: '4rem', marginRight: '2rem'}}>EventListener</div>
+      <header className='navbar-container'>
+        <Box position="fixed" width="100%" top="0">
+          <Flex
+            as="nav"
+            align="center"
+            justify="space-around"
+            p={4}
+            flexWrap="wrap"
+            pr={150}
+            pl={6}
+            zIndex={1000}
+          >
+            <Box>
+              <Flex align="center">
+                <img
+                  src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png"
+                  alt="EventListener Logo"
+                  style={{ height: '50px', marginRight: '10px' }}
+                />
+                <div className="navbar-brand" style={{ color: '#E53E3E', fontSize: '4rem', marginRight: '2rem' }}>
+                  EventListener
+                </div>
+              </Flex>
+            </Box>
+            <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
+              <Search onSearchChange={onSearch} searchResults={undefined} />
+            </Box>
+            {isLoggedIn ? (
+            <Flex alignItems="center">
+              <Link href={`/home`} >
+                <Tooltip label="Home" placement="bottom">
+                  <Image src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710258603/icons8-home-67_1_sd77pa.png" alt="Home" boxSize="34px" position='sticky' marginTop='1px' />
+                </Tooltip>
+              </Link>
+                  <Link href={`/users/${user?._id}`}  ml={2}>
+                    <Tooltip label="Profile" placement="bottom">
+                      <Avatar bg='red.500' src={user?.imageURL} size="sm" />
+                    </Tooltip>
+                  </Link>
+                  <Tooltip label="Log Out" placement="bottom">
+                    <Link href="/" onClick={handleLogout}  ml={2}>
+                      <Avatar bg='red.500' icon={<AiOutlineLogout fontSize='1.5rem' />} size="sm" />
+                    </Link>
+                  </Tooltip>
             </Flex>
-          </Box>
-          <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
-            <Search onSearchChange={onSearch} searchResults={undefined} />
-          </Box>
-          <Box>
-            <Link href={`/home`} _hover={{ textDecoration: 'bold', color: '#C53030' }}>
-              <Button
-                as="a"
-                colorScheme="red"
-                leftIcon={<BiHome />}
-                mt='4px'
-                size="lg"
-                fontSize='xl'
-                borderRadius="full"
-                m={1}
-                bg="white"
-                color="red.500"
-              >
-              </Button>
-            </Link>
-            <Link href={`/users/${user?._id}`} _hover={{ textDecoration: 'bold', color: '#C53030' }}>
-              <Avatar bg='white' color='red.500' src={user?.imageURL} icon={<AiOutlineUser fontSize='1.5rem' />} m={1} />
-            </Link>
-            <Link href="#" onClick={handleLogout} _hover={{ textDecoration: 'bold', color: '#C53030' }} ml={2}>
-              <Avatar bg='white' color='red.500' icon={<AiOutlineLogout fontSize='1.5rem' />} m={1} />
-            </Link>
-            {!isLoggedIn && (
-              <IconButton 
-                as="a"
-                colorScheme="red" 
-                icon={<AiOutlineLogin style={{ transform: 'rotate(-90deg)', fontSize: '1.5rem' }} />} 
-                mt='4px' 
-                size="md" 
-                fontSize='md' 
-                borderRadius="full" 
-                m={1}
-                aria-label="Login" 
-                onClick={handleOpenModal}
-                bg="white"
-                color="red.500" 
-              >
-              </IconButton>
-            )}
-          </Box>
-        </Flex>
-        <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
-      </header>
-      <Box pt="70px"> 
-        <Link href={`/events/create_event`} _hover={{ textDecoration: 'bold', color: '#C53030' }}>
-          <Button as="a" size="md" colorScheme="red" leftIcon={<AiOutlinePlus />} width='100vw'>
+              ) : (
+                <Tooltip label="Log In / Sign Up" placement="bottom">
+                  <Link>
+                    <IconButton
+                      as="a"
+                      colorScheme="red"
+                      icon={<AiOutlineLogin style={{ transform: 'rotate(-90deg)', fontSize: '1.5rem' }} />}
+                      size="sm"
+                      fontSize='md'
+                      borderRadius="full"
+                      m={1}
+                      aria-label="Login"
+                      onClick={handleOpenModal}
+                      bg="red.500"
+                    />
+                  </Link>
+                </Tooltip>
+              )}
+          </Flex>
+        </Box>
+        <Box marginTop="70px" display="flex" justifyContent="center" width="100%">
+          <Button
+            as="a"
+            size="md"
+            colorScheme="red"
+            leftIcon={<AiOutlinePlus />}
+            width="100%"
+            onClick={handleAddEventClick}
+            borderRadius='5px'
+          >
             Add Event
           </Button>
-        </Link>
-      </Box>
+        </Box>
+        <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      </header>
     </ChakraProvider>
   );
 };
