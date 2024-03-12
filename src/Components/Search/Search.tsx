@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { FormControl, Input, InputGroup, IconButton, Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, Box, Text } from '@chakra-ui/react';
+import { FormControl, Input, InputGroup, IconButton, Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, Box, Text, Popover, PopoverTrigger, Button, PopoverArrow, PopoverHeader, PopoverBody, PopoverContent, PopoverCloseButton, Flex, Link } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { SERVER_URL } from '../../../api';
 
@@ -31,21 +31,29 @@ interface Event {
 
 const Search: React.FC<SearchProps> = ({ onSearchChange, searchResults }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+  const initialFocusRef = useRef<any>()
+  const [isOpen, setIsOpen] = useState<boolean>()
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
+        setEvents(eventsResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
-      setEvents(eventsResponse.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  useEffect(() => {
+    const filtered = events.filter(event =>
+      event.topic.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredEvents(filtered);
+  }, [searchTerm, events]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
@@ -53,55 +61,50 @@ const Search: React.FC<SearchProps> = ({ onSearchChange, searchResults }) => {
     onSearchChange(query);
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleOpenModal();
-    }
-  };
+  // const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.key === 'Enter') {
+  //   }
+  // };
 
   return (
     <FormControl mr={4} mb={4} mt={4}>
-      <InputGroup minWidth='200px'>
-        <Input
-          type="text"
-          placeholder="Search..."
-          backgroundColor='#fff'
-          value={searchTerm}
-          onChange={handleInputChange}
-          onKeyPress={handleKeyPress}
-        />
-        <IconButton
-          aria-label="Search"
-          colorScheme="red"
-          icon={<SearchIcon />}
-          onClick={handleOpenModal}
-        />
-      </InputGroup>
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody>
-            {searchResults && searchResults.length > 0 ? (
-              searchResults.map((result, index) => (
-                <Box key={index} mt={2}>
-                  <Text>{result}</Text>
-                </Box>
-              ))
-            ) : (
-              <Text>No results found</Text>
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <Popover initialFocusRef={initialFocusRef} isOpen={isOpen} placement='bottom-start'
+      >
+        <PopoverTrigger>
+          <InputGroup minWidth='200px'>
+            <Input
+              type="text"
+              placeholder="Search..."
+              backgroundColor='#fff'
+              value={searchTerm}
+              onChange={handleInputChange}
+              // onKeyPress={handleKeyPress}
+              ref={initialFocusRef}
+              onBlur={() => setIsOpen(false)}
+              onFocus={() => setIsOpen(true)}
+            />
+            {/* <IconButton
+              aria-label="Search"
+              colorScheme="red"
+              icon={<SearchIcon />}
+              onClick={}
+            /> */}
+          </InputGroup>
+        </PopoverTrigger>
+        <PopoverContent w={400}>
+          {filteredEvents.map(event => (
+            <Box key={event._id} m={2} zIndex={'20'}>
+              <Flex justify={'space-between'}>
+                <Link href={`/events/${event._id}`} _hover={{ color: '#E53E3E' }}>
+                  {event.topic}
+                </Link>
+                <Text></Text>
+                <Text color={'grey'}>{event.city}</Text>
+              </Flex>
+            </Box>
+          ))}
+        </PopoverContent>
+      </Popover>
     </FormControl>
   );
 };
