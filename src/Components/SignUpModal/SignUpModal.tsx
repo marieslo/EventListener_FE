@@ -99,8 +99,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             <ModalContent width='fit-content'>
                 <Box backgroundColor='red.500' borderRadius='2px' mb='1rem'>
                     <ModalHeader color='white' display='flex' flexDirection='row' justifyContent='space-around' >
-                        <Link onClick={handleSignUpClick} href=''>SingUp</Link>
-                        <Link onClick={handleLoginClick} href=''>Login</Link>
+                    <Link onClick={handleSignUpClick} href='' style={{ color: activeModal === 'SignUp' ? 'white' : 'lightgrey' }}>SignUp</Link>
+            <Link onClick={handleLoginClick} href='' style={{ color: activeModal === 'Login' ? 'white' : 'lightgrey' }}>Login</Link>
                     </ModalHeader>
                     <ModalCloseButton color='white' /></Box>
                     {activeModal === 'SignUp' && <ModalBody>
@@ -129,7 +129,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                             </StepIndicator>
                             <Box flexShrink='0'>
                                 <StepTitle>Picture</StepTitle>
-                                <StepDescription>and Location</StepDescription>
+                                <StepDescription> & Location</StepDescription>
                             </Box>
                             <StepSeparator />
                         </Step>

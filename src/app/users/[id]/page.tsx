@@ -110,7 +110,6 @@ const Profile: React.FC = () => {
                         accept="image/*"
                         type="file"
                         name="avatar"
-
                         style={{ position: "absolute", width: "20%", height: "20%", opacity: 0, cursor: "pointer" }}
                         onChange={handleFileChange}
                     />
@@ -120,7 +119,6 @@ const Profile: React.FC = () => {
                         accept="image/*"
                         type="file"
                         name="avatar"
-
                         style={{ position: "absolute", width: "100%", height: "100%", opacity: 0, cursor: "pointer" }}
                         onChange={handleFileChange}
                     />
