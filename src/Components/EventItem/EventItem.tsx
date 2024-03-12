@@ -63,16 +63,16 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
       onMouseEnter={() => setShowDetails(true)}
       onMouseLeave={() => setShowDetails(false)}
     >
-       <Link href={`/events/${_id}`} _hover={{ textDecoration: 'none' }}>
-      <Icon
-        as={FaInfoCircle}
-        boxSize={6}
-        color="red.500"
-        position="absolute"
-        top="2"
-        right="2"
-        zIndex="1"
-      />
+      <Link href={`/events/${_id}`} _hover={{ textDecoration: 'none' }}>
+        <Icon
+          as={FaInfoCircle}
+          boxSize={6}
+          color="red.500"
+          position="absolute"
+          top="2"
+          right="2"
+          zIndex="1"
+        />
       </Link>
       <Box
         position="absolute"
