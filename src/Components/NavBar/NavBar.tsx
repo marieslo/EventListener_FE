@@ -1,52 +1,30 @@
-import React, { useState } from 'react';
-import { Flex, Box, Button, extendTheme, ChakraProvider, Avatar, Link } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Flex, Box, IconButton, ChakraProvider, Avatar, Link, Button } from '@chakra-ui/react';
 import { AiOutlineUser, AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai'; 
 import SignUpModal from '@/Components/SignUpModal/SignUpModal';
 import Search from '@/Components/Search/Search';
+import { BiHome } from 'react-icons/bi';
+
+interface User {
+  _id: string;
+  imageURL: string;
+}
 
 interface NavBarProps {
   onSearch: (query: string) => void;
-  isLoggedIn: boolean;
-  userId: string; 
+  user?: User; 
 }
 
-const handleLogout = () => {
-  
-};
-
-const theme = extendTheme({
-  styles: {
-    global: {
-      body: {
-        color: 'red',
-      },
-    },
-  },
-  components: {
-    Heading: {
-      baseStyle: {
-        fontSize: '2xl',
-      },
-    },
-    Button: {
-      baseStyle: {
-        color: 'red',
-        paddingY: '10px',
-      },
-      variants: {
-        solidRound: {
-          border: '1px solid red',
-        },
-        outlineRound: {
-          border: '1px solid red',
-        },
-      },
-    },
-  },
-});
-
-const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn, userId }) => {
+const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      setLoggedIn(true);
+    }
+  }, []);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -56,44 +34,74 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, isLoggedIn, userId }) => {
     setIsModalOpen(false);
   };
 
+  const handleLogout = () => {
+    window.localStorage.removeItem('token');
+    setLoggedIn(false);
+  };
+
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider>
       <header className='navbar-containter' style={{ position: 'fixed', top: 0, width: '100%', maxWidth: '100%', zIndex: 1000}}>
         <Flex as="nav" align="center" justify="space-around" p={4} flexWrap="wrap" pr={150} pl={6}>
           <Box>
-            <Flex align="center">
-              <div className="navbar-brand" style={{ color: 'red', fontSize: '4rem', marginRight: '2rem', marginLeft: '50px' }}>EventListener</div>
+            <Flex align="center" >
+              <img src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png" alt="EventListener Logo" style={{ height: '50px', marginRight: '20px' }} />
+              <div className="navbar-brand" style={{ color: '#E53E3E', fontSize: '4rem', marginRight: '2rem'}}>EventListener</div>
             </Flex>
           </Box>
           <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
             <Search onSearchChange={onSearch} searchResults={undefined} />
           </Box>
           <Box>
-            {isLoggedIn ? (
-              <>
-                <Link href={`/events/create_event`} _hover={{ textDecoration: 'none' }}>
-                  <Button as="a" size="xs" colorScheme="red" variant="outline" leftIcon={<AiOutlinePlus />} ml={2}>
-                    Add Event
-                  </Button>
-                </Link>
-                <Link href={`/users/${userId}`} _hover={{ textDecoration: 'none' }}>
-                  <Avatar bg='red.500' icon={<AiOutlineUser fontSize='1.5rem' />} />
-                </Link>
-                <Link href="#" onClick={handleLogout} _hover={{ textDecoration: 'none' }} ml={2}>
-                <Avatar bg='red.500' icon={<AiOutlineLogout fontSize='1.5rem' />} />
-              </Link>
-              </>
-            ) : (
-              <>
-                <Button variant="outlineRound" backgroundColor='white' marginLeft="10px" colorScheme="red" onClick={handleOpenModal} size="md" fontSize='xs' borderRadius="full" p={2} >
-                  <AiOutlineLogin style={{ transform: 'rotate(-90deg)', fontSize: '1.5rem' }} /> 
-                </Button>
-              </>
+            <Link href={`/home`} _hover={{ textDecoration: 'bold', color: '#C53030' }}>
+              <Button
+                as="a"
+                colorScheme="red"
+                leftIcon={<BiHome />}
+                mt='4px'
+                size="lg"
+                fontSize='xl'
+                borderRadius="full"
+                m={1}
+                bg="white"
+                color="red.500"
+              >
+              </Button>
+            </Link>
+            <Link href={`/users/${user?._id}`} _hover={{ textDecoration: 'bold', color: '#C53030' }}>
+              <Avatar bg='white' color='red.500' src={user?.imageURL} icon={<AiOutlineUser fontSize='1.5rem' />} m={1} />
+            </Link>
+            <Link href="#" onClick={handleLogout} _hover={{ textDecoration: 'bold', color: '#C53030' }} ml={2}>
+              <Avatar bg='white' color='red.500' icon={<AiOutlineLogout fontSize='1.5rem' />} m={1} />
+            </Link>
+            {!isLoggedIn && (
+              <IconButton 
+                as="a"
+                colorScheme="red" 
+                icon={<AiOutlineLogin style={{ transform: 'rotate(-90deg)', fontSize: '1.5rem' }} />} 
+                mt='4px' 
+                size="md" 
+                fontSize='md' 
+                borderRadius="full" 
+                m={1}
+                aria-label="Login" 
+                onClick={handleOpenModal}
+                bg="white"
+                color="red.500" 
+              >
+              </IconButton>
             )}
           </Box>
         </Flex>
         <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </header>
+      <Box pt="70px"> 
+        <Link href={`/events/create_event`} _hover={{ textDecoration: 'bold', color: '#C53030' }}>
+          <Button as="a" size="md" colorScheme="red" leftIcon={<AiOutlinePlus />} width='100vw'>
+            Add Event
+          </Button>
+        </Link>
+      </Box>
     </ChakraProvider>
   );
 };

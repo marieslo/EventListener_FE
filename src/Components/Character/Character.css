@@ -1,0 +1,20 @@
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+  }
+  
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes print {
+    from { width: 0; }
+    to { width: 100%; }
+  }  
+
+  .character-bubble {
+    height: 150px; 
+    width: 110px;
+  }
