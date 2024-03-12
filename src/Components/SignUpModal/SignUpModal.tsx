@@ -23,7 +23,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     const handleLoginClick = () => {
         setActiveModal('Login');
     };
-    
+
     const handleNextStep = () => {
         setActiveStep(prevStep => prevStep + 1);
     };
@@ -99,11 +99,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             <ModalContent width='fit-content'>
                 <Box backgroundColor='red.500' borderRadius='2px' mb='1rem'>
                     <ModalHeader color='white' display='flex' flexDirection='row' justifyContent='space-around' >
-                    <Link onClick={handleSignUpClick} href='' style={{ color: activeModal === 'SignUp' ? 'white' : 'lightgrey' }}>SignUp</Link>
-            <Link onClick={handleLoginClick} href='' style={{ color: activeModal === 'Login' ? 'white' : 'lightgrey' }}>Login</Link>
+                        <Link onClick={handleSignUpClick} href='' style={{ color: activeModal === 'SignUp' ? 'white' : 'lightgrey' }}>SignUp</Link>
+                        <Link onClick={handleLoginClick} href='' style={{ color: activeModal === 'Login' ? 'white' : 'lightgrey' }}>Login</Link>
                     </ModalHeader>
                     <ModalCloseButton color='white' /></Box>
-                    {activeModal === 'SignUp' && <ModalBody>
+                {activeModal === 'SignUp' && <ModalBody>
                     <Stepper size='lg' colorScheme='red' index={activeStep}>
                         <Step>
                             <StepIndicator>
@@ -147,15 +147,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                             </Box>
                             <StepSeparator />
                         </Step>
-
                     </Stepper>
-                    {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
-                    {activeStep === 1 && <Step2 onFileChange={handleFileChange} onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
-                    {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
-                </ModalBody>}
-                {activeModal === 'Login' && <LoginModal onClose={onClose} />}
-
-                {activeStep === 2 && (
+                    {activeStep === 2 && (
                     <>
                         <ModalFooter>
                             <Button onClick={handlePrevStep} mr={3}>
@@ -167,6 +160,13 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                         </ModalFooter>
                     </>
                 )}
+                    {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
+                    {activeStep === 1 && <Step2 onFileChange={handleFileChange} onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
+                    {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
+                </ModalBody>}
+                {activeModal === 'Login' && <LoginModal onClose={onClose} />}
+
+                
 
             </ModalContent>
         </Modal>
