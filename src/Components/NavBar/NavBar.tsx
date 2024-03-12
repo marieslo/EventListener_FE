@@ -21,7 +21,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   const toast = useToast();
 
   useEffect(() => {
-    const token = window.localStorage.getItem('token');
+    const token = window.localStorage.getItem('accessToken');
     if (token) {
       setLoggedIn(true);
     }
@@ -37,6 +37,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('token');
+    localStorage.clear();
     setLoggedIn(false);
   };
 
