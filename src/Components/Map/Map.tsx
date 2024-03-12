@@ -64,7 +64,7 @@ const Map: React.FC<MapProps> = ({ events }) => {
 
   return (
     <Box>
-      <div style={{ width: '400px', height: '65vh', marginTop: '50px', marginRight: '50px', borderRadius: '5px' }} ref={mapContainerRef}>
+      <div style={{ width: '400px', height: '65vh', marginTop: '50px', borderRadius: '5px' }} ref={mapContainerRef}>
         <MapContainer center={[32.7941, 34.9896]} zoom={12} style={{ width: '100%', height: '100%', border: '1px', borderRadius: '5px' }}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {events.map(event => {
@@ -77,7 +77,7 @@ const Map: React.FC<MapProps> = ({ events }) => {
                   position={[latitude, longitude]}
                   icon={
                     new L.Icon({
-                      iconUrl: 'https://res.cloudinary.com/diunuo4xf/image/upload/v1710009519/pet-adoption/letter-e2_gyn0sw.png',
+                      iconUrl: 'https://res.cloudinary.com/diunuo4xf/image/upload/v1710009519/EventListener/letter-e2_gyn0sw.png',
                       iconSize: [30, 30],
                       iconAnchor: [10, 10],
                     })

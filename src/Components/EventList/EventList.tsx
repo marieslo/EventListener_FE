@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Spinner } from '@chakra-ui/react';
-import EventButton from '@/Components/EventButton/EventButton';
+import EventItem from '@/Components/EventItem/EventItem';
 import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
 
 interface Event {
@@ -35,7 +35,7 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
   return (
     <Box p={4} flex="1" overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" marginLeft='100px' flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
       {events.map(event => (
-        <EventButton
+        <EventItem
           key={event._id}
           event={event}
           imageUrl={event.category ? (CATEGORY_URLS as Record<string, string>)[event.category[0]] : ''}

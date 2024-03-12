@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Calistoga&display=swap');
 
-.home-container, .welcome-container {
+.calendar-container,
+.calendar-container * 
+.modal-content,
+.modal-content * {
     font-family: "Calistoga", serif;
-    margin-right: 50px;
-    margin-top: 50px;
 }
