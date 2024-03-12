@@ -33,7 +33,6 @@ interface Event {
 const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
 
 const Home = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [addresses, setAddresses] = useState<Event[]>([]);
 
@@ -84,6 +83,7 @@ const Home = () => {
         <Box
           width={{ base: "100%", md: "18%" }}
           marginLeft={{ base: "0", md: "20px" }}
+          marginRight={'30px'}
         >
           <Calendar />
         </Box>
