@@ -24,43 +24,104 @@ import {
     Spacer,
     Center,
     useToast,
+    InputGroup,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
+import axios from 'axios';
+import { SERVER_URL } from '../../../../api';
 
 export default function CreateEvent() {
     // const [startDate, setStartDate] = useState(new Date());
     // const [isEndDate, setIsEndDate] = useState(false);
-    const [startDateTime, setStartDateTime] = useState(new Date());
-    const [endDateTime, setEndDateTime] = useState(new Date());
+    const [date, setDate] = useState(new Date());
     const toast = useToast();
+    const [isLoading, setIsLoading] = useState(false);
 
     const [addressObj, setAddressObj] = useState({
         city: '', street: '', place: ''
     });
+    //const [geoJSON, setGeoJSON] = useState({});
     const [event, setEvent] = useState({
         topic: '',
         category: '',
-        membersAmount: 1,
-        budget: 1,
-        startDateTime: startDateTime,
-        endDateTime: endDateTime,
+        membersAmount: 2,
+        budget: 0,
+        date: date,
+        duration: 60,
         address: {},
         creator: ''
     });
+    const [focused, setFocused] = React.useState(false)
+    const onFocus = () => setFocused(true)
+    const onBlur = () => setFocused(false)
+    const [token, setToken] = useState<any>('');
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    };
 
-    function onSubmit(e: any) {
+    useEffect(() => {
+        setToken(localStorage.getItem("accessToken"));
+    }, []);
+
+    useEffect(() => {
+        if (addressObj.city && addressObj.street && addressObj.place && !focused) {
+            const addressStr = `${addressObj.city}+${addressObj.place}+${addressObj.street}`
+            getCoordinates(addressStr);
+        }
+    }, [addressObj, focused])
+
+    async function onSubmit(e: any) {
         e.preventDefault();
-        event.address = addressObj;
-        // if (event.startDateTime > event.endDateTime) {
-        //     toast({
-        //         title: `End time must be less then start date`,
-        //         status: 'error',
-        //         isClosable: true,
-        //     })
-        // }
         console.log(event);
+        await createEvent(event);
+    }
 
+    async function getCoordinates(addressString: string) {
+        try {
+            setIsLoading(true);
+            const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${addressString}&format=geojson`);
+            if (response.data.features.length === 0) {
+                toast({
+                    title: "Address doesn't exist",
+                    status: 'error',
+                    isClosable: true,
+                })
+            } else {
+                setEvent({ ...event, address: response.data.features[0].geometry })
+            }
+        } catch (err: any) {
+            toast({
+                title: err.message,
+                status: 'error',
+                isClosable: true,
+            })
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    async function createEvent(event: any) {
+        try {
+            setIsLoading(true);
+            const response: any = await axios.post(`${SERVER_URL}/events`, JSON.stringify(event), config);
+            toast({
+                title: "Event created",
+                status: 'success',
+                isClosable: true,
+            })
+        } catch (error: any) {
+            toast({
+                title: error.response.data.message,
+                status: 'error',
+                isClosable: true,
+            })
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const CustomTimeInput: any = ({ date, value, onChange }: { date: any, value: any, onChange: any }) => (
@@ -87,42 +148,50 @@ export default function CreateEvent() {
                             </FormControl>
                             <FormControl>
                                 <Select required value={event.category} onChange={(e: any) => setEvent({ ...event, category: e.target.value })} variant='filled' placeholder='Select Category'>
-                                    <option value='1'>Category 1</option>
-                                    <option value='2'>Category 2</option>
-                                    <option value='3'>Category 3</option>
-                                    <option value='4'>Category 4</option>
-                                    <option value='5'>Category 5</option>
-                                    <option value='6'>Category 6</option>
+                                    <option value='Sport'>Sport</option>
+                                    <option value='Travel'>Travel</option>
+                                    <option value='Party'>Party</option>
+                                    <option value='Food'>Food</option>
+                                    <option value='Culture'>Culture</option>
+                                    <option value='Community'>Community</option>
                                 </Select>
                                 <FormHelperText>Event Category</FormHelperText>
                             </FormControl>
                             <Box display="flex" gap={5}>
                                 <Box maxW={20}>
                                     <FormControl>
-                                        <NumberInput min={1} defaultValue={1}>
-                                            <NumberInputField value={event.membersAmount}
-                                                onChange={(e: any) => setEvent({ ...event, membersAmount: parseInt(e.target.value) })}
-                                            />
-                                            <NumberInputStepper>
-                                                <NumberIncrementStepper />
-                                                <NumberDecrementStepper />
-                                            </NumberInputStepper>
-                                        </NumberInput>
-                                        <FormHelperText>Members</FormHelperText>
+                                        <InputGroup>
+                                            <NumberInput
+                                                min={2}
+                                                defaultValue={2}
+                                                onChange={(strValue: any) => setEvent({ ...event, membersAmount: parseInt(strValue) })}
+                                                value={event.membersAmount}
+                                            >
+                                                <NumberInputField />
+                                                <NumberInputStepper>
+                                                    <NumberIncrementStepper />
+                                                    <NumberDecrementStepper />
+                                                </NumberInputStepper>
+                                            </NumberInput>
+                                        </InputGroup>
+                                        <FormHelperText>Max Members</FormHelperText>
                                     </FormControl>
                                 </Box>
                                 <Box maxW={20}>
                                     <FormControl>
-                                        <NumberInput min={0} defaultValue={1}>
-                                            <NumberInputField value={event.budget}
-                                                onChange={(e: any) => setEvent({ ...event, budget: parseInt(e.target.value) })}
-                                            />
+                                        <NumberInput
+                                            min={0}
+                                            defaultValue={0}
+                                            value={event.budget}
+                                            onChange={(strValue: any) => setEvent({ ...event, budget: parseInt(strValue) })}
+                                        >
+                                            <NumberInputField />
                                             <NumberInputStepper>
                                                 <NumberIncrementStepper />
                                                 <NumberDecrementStepper />
                                             </NumberInputStepper>
                                         </NumberInput>
-                                        <FormHelperText>Budget</FormHelperText>
+                                        <FormHelperText>Fees</FormHelperText>
                                     </FormControl>
                                 </Box>
                             </Box>
@@ -133,31 +202,28 @@ export default function CreateEvent() {
                                 <VStack>
                                     <FormControl>
                                         <FormLabel fontWeight="bold" fontSize="xs">City</FormLabel>
-                                        <Input value={addressObj.city} onChange={(e: any) => setAddressObj({ ...addressObj, city: e.target.value })} type='text' />
+                                        <Input required onFocus={onFocus} onBlur={onBlur} value={addressObj.city} onChange={(e: any) => setAddressObj({ ...addressObj, city: e.target.value })} type='text' />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel fontWeight="bold" fontSize="xs">Street</FormLabel>
-                                        <Input value={addressObj.street} onChange={(e: any) => setAddressObj({ ...addressObj, street: e.target.value })} type='text' />
+                                        <Input required onFocus={onFocus} onBlur={onBlur} value={addressObj.street} onChange={(e: any) => setAddressObj({ ...addressObj, street: e.target.value })} type='text' />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel fontWeight="bold" fontSize="xs">Building or place</FormLabel>
-                                        <Input value={addressObj.place} onChange={(e: any) => setAddressObj({ ...addressObj, place: e.target.value })} type='text' />
+                                        <Input required onFocus={onFocus} onBlur={onBlur} value={addressObj.place} onChange={(e: any) => setAddressObj({ ...addressObj, place: e.target.value })} type='text' />
                                     </FormControl>
                                 </VStack>
                             </Box>
                         </Flex>
                         <Box display="flex" flexDirection="column">
-                            {/* <FormControl>
-                                <Checkbox colorScheme='red' isChecked={isEndDate} fontWeight="bold" size="sm" onChange={(e: any) => setIsEndDate(e.target.checked)}>Enter End Date</Checkbox>
-                            </FormControl> */}
                             <FormControl>
-                                <FormLabel fontWeight="bold" fontSize="xs">Start Time</FormLabel>
+                                <FormLabel fontWeight="bold" fontSize="xs">Date</FormLabel>
                                 <DatePicker
                                     showIcon
-                                    selected={event.startDateTime}
+                                    selected={event.date}
                                     onChange={(date: Date) => {
-                                        setStartDateTime(date);
-                                        setEvent({ ...event, startDateTime: date })
+                                        setDate(date);
+                                        setEvent({ ...event, date: date })
                                     }}
                                     timeFormat="p"
                                     dateFormat="dd-MM-yyyy h:mm aa"
@@ -166,24 +232,24 @@ export default function CreateEvent() {
                                     customTimeInput={<CustomTimeInput />}
                                 />
                             </FormControl>
-                            <FormControl>
-                                <FormLabel fontWeight="bold" fontSize="xs">End Time</FormLabel>
-                                <DatePicker
-                                    showIcon
-                                    selected={event.endDateTime > event.startDateTime ? event.endDateTime : event.startDateTime}
-                                    onChange={(date: Date) => {
-                                        setEndDateTime(date);
-                                        setEvent({ ...event, endDateTime: date })
-                                    }}
-                                    timeFormat="p"
-                                    dateFormat="dd-MM-yyyy h:mm aa"
-                                    showTimeInput
-                                    minDate={event.startDateTime}
-                                    timeIntervals={15}
-                                    customTimeInput={<CustomTimeInput />}
-                                />
-                            </FormControl>
-                            <Button mt="auto" colorScheme='red' alignSelf="end" type='submit'>Create</Button>
+                            <Box maxW={20} mt={4}>
+                                <FormControl>
+                                    <NumberInput
+                                        min={1}
+                                        defaultValue={60}
+                                        value={event.duration}
+                                        onChange={(strValue: any) => setEvent({ ...event, duration: parseInt(strValue) })}
+                                    >
+                                        <NumberInputField />
+                                        <NumberInputStepper>
+                                            <NumberIncrementStepper />
+                                            <NumberDecrementStepper />
+                                        </NumberInputStepper>
+                                    </NumberInput>
+                                    <FormHelperText>Duration</FormHelperText>
+                                </FormControl>
+                            </Box>
+                            <Button isLoading={isLoading} mt="auto" colorScheme='red' alignSelf="end" type='submit'>Create</Button>
                         </Box>
                     </Flex>
                 </Flex>
