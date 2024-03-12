@@ -44,8 +44,9 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
       <header className='navbar-containter' style={{ position: 'fixed', top: 0, width: '100%', maxWidth: '100%', zIndex: 1000}}>
         <Flex as="nav" align="center" justify="space-around" p={4} flexWrap="wrap" pr={150} pl={6}>
           <Box>
-            <Flex align="center">
-              <div className="navbar-brand" style={{ color: 'red', fontSize: '4rem', marginRight: '2rem', marginLeft: '50px' }}>EventListener</div>
+            <Flex align="center" >
+              <img src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png" alt="EventListener Logo" style={{ height: '50px', marginRight: '20px' }} />
+              <div className="navbar-brand" style={{ color: '#E53E3E', fontSize: '4rem', marginRight: '2rem'}}>EventListener</div>
             </Flex>
           </Box>
           <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
@@ -94,7 +95,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
         </Flex>
         <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </header>
-      <Box pt="50px"> 
+      <Box pt="70px"> 
         <Link href={`/events/create_event`} _hover={{ textDecoration: 'bold', color: '#C53030' }}>
           <Button as="a" size="md" colorScheme="red" leftIcon={<AiOutlinePlus />} width='100vw'>
             Add Event

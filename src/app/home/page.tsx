@@ -8,6 +8,7 @@ import axios from 'axios';
 import EventList from '@/Components/EventList/EventList';
 import { SERVER_URL } from '../../../api';
 import './Home.css';
+import Character from '@/Components/Character/Character';
 
 interface Event {
   _id: string;
@@ -32,6 +33,7 @@ interface Event {
 const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
 
 const Home = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [addresses, setAddresses] = useState<Event[]>([]);
 
@@ -56,30 +58,45 @@ const Home = () => {
     <Flex className="home-container" direction="column">
       <NavBar onSearch={handleSearch} />
       <Flex
-        direction="row"
+        direction={{ base: 'column', md: 'row' }}
         alignItems="flex-start"
         justifyContent="flex-start"
         width="100%"
-        marginTop="50px" 
-        paddingLeft="100px"
-        paddingRight="20px" 
+        marginTop="20px"
+        marginBottom="20px"
+        paddingLeft="40px"
+        paddingRight="40px"
       >
-        <Calendar/>
-        <Flex
-          direction={{ base: 'column', md: 'row' }}
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          width="100%"
-          marginBottom="20px"     
-          marginLeft="0">
-          <Box width={{ base: "100%", md: "100%" }}>
+        {isMobile ? (
+          <Box width="100%">
             <EventList events={events} />
           </Box>
-          <Box width={{ base: "100%", md: "60%" }}>
-            <DynamicMap events={addresses} />
-          </Box>
-        </Flex>
+        ) : (
+          <>
+            <Box width="20%">
+              <DynamicMap events={addresses} />
+            </Box>
+            <Box width="80%">
+              <EventList events={events} />
+            </Box>
+          </>
+        )}
+        <Box
+          width={{ base: "100%", md: "18%" }}
+          marginLeft={{ base: "0", md: "20px" }}
+        >
+          <Calendar />
+        </Box>
       </Flex>
+      <Box
+        position="fixed"
+        bottom="20px"
+        right="20px"
+        zIndex="999"
+        fontSize="10px"
+      >
+        <Character text="Hello, [username]" />
+      </Box>
     </Flex>
   );
 };

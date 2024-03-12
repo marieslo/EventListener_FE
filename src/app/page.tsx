@@ -8,6 +8,7 @@ import EventList from '@/Components/EventList/EventList';
 import axios from 'axios';
 import { SERVER_URL } from "../../api";
 import '../app/home/Home.css';
+import Character from "@/Components/Character/Character";
 
 interface Event {
     _id: string;
@@ -56,29 +57,38 @@ const Welcome = () => {
     <Flex className="welcome-container" direction="column">
       <NavBar onSearch={handleSearch} />
       <Flex
-        direction="column"
+        direction={{ base: 'column', md: 'row' }}
         alignItems="flex-start"
         justifyContent="flex-start"
         width="100%"
-        marginTop="120px" 
-        paddingLeft="20px"
-        paddingRight="20px" 
+        marginTop="20px" 
+        marginBottom="20px" 
+        paddingLeft="50px"
+        paddingRight="50px" 
       >
-        <Flex
-          direction={{ base: 'column', md: 'row' }}
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          width="100%"
-          marginBottom="20px"     
-          marginLeft="120px" 
-        >
-          <Box width={{ base: "100%", md: "60%" }}>
+        {isMobile ? (
+          <Box width="100%">
             <EventList events={events} />
           </Box>
-          <Box width={{ base: "100%", md: "40%" }}>
-            <DynamicMap events={addresses} />
-          </Box>
-        </Flex>
+        ) : (
+          <>
+            <Box width="20%">
+              <DynamicMap events={addresses} />
+            </Box>
+            <Box width="100%" marginRight={{ base: "200px", md: "20px" }}>
+              <EventList events={events} />
+            </Box>
+            <Box
+              position="fixed"
+              bottom="20px"
+              right="20px"
+              zIndex="999"
+              fontSize="10px"
+            >
+              <Character text="Discover, create, and join events with us" />
+            </Box>
+          </>
+        )}
       </Flex>
     </Flex>
   );
