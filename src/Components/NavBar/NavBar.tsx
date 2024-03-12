@@ -57,25 +57,26 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   return (
     <ChakraProvider>
       <header className='navbar-container'>
-        <Box position="fixed" width="100%" top="0" zIndex={10}>
+        <Box backgroundColor='white' position="fixed" width="100%" top="0">
           <Flex
             as="nav"
+            flexDirection='row'
             align="center"
-            justify="space-around"
-            p={4}
-            flexWrap="wrap"
-            pr={150}
+            justify="space-between"
+            // p={4}
+            // flexWrap="wrap"
+            pr={6}
             pl={6}
             zIndex={1000}
           >
             <Box>
-              <Flex align="center">
+              <Flex align="center" flexDirection='row'>
                 <img
                   src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png"
                   alt="EventListener Logo"
                   style={{ height: '50px', marginRight: '10px' }}
                 />
-                <div className="navbar-brand" style={{ color: '#E53E3E', fontSize: '4rem', marginRight: '2rem' }}>
+                <div className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '2rem' }}>
                   EventListener
                 </div>
               </Flex>
@@ -102,7 +103,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
                 </Tooltip>
               </Flex>
             ) : (
-              <Tooltip label="Log In / Sign Up" placement="bottom">
+              <Tooltip label="Log In / Sign Up" placement="bottom" >
                 <Link>
                   <IconButton
                     as="a"
@@ -121,10 +122,10 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
             )}
           </Flex>
         </Box>
-        <Box marginTop="70px" display="flex" justifyContent="center" width="100%">
+        <Box mt='25px' display="flex" justifyContent="center" width="100%">
           <Button
             as="a"
-            size="md"
+            size="sm"
             colorScheme="red"
             leftIcon={<AiOutlinePlus />}
             width="100%"
