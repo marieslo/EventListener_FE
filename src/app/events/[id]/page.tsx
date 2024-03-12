@@ -8,15 +8,17 @@ import { SERVER_URL } from '../../../../api';
 import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
 import LikeButton from '@/Components/LikeButton/LikeButton';
 import '../../../Components/LikeButton/LikeButton.css';
+import dynamic from 'next/dynamic';
 
 export default function EventDetailsPage() {
+
+    const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
 
     const [event, setEvent] = useState<any>({});
     const { id } = useParams();
     const toast = useToast();
     const [isEditable, setIsEditable] = useState();
-
-    const token = localStorage.getItem("accessToken");
+    const [token, setToken] = useState<any>('');
 
     const config = {
         headers: {
@@ -33,7 +35,7 @@ export default function EventDetailsPage() {
             console.log(response.data);
         } catch (error: any) {
             toast({
-                title: error.message,
+                title: error.response.data.message,
                 status: 'error',
                 isClosable: true,
             })
@@ -76,6 +78,7 @@ export default function EventDetailsPage() {
 
 
     function handleJoin(e: any) {
+        console.log(token);
         joinEvent();
     }
 
@@ -89,6 +92,7 @@ export default function EventDetailsPage() {
 
 
     useEffect(() => {
+        setToken(localStorage.getItem("accessToken"));
         fetchEvent();
     }, []);
 
@@ -151,7 +155,7 @@ export default function EventDetailsPage() {
                             </Box>
                             <Box ml="auto">
                                 <CircularProgress alignSelf="end" size='75px' value={(event.joinedBy.length / event.membersAmount) * 100} color='red.500'>
-                                    <CircularProgressLabel>{Math.floor((event.joinedBy.length / event.membersAmount) * 100)}%</CircularProgressLabel>
+                                    <CircularProgressLabel>{event.joinedBy.length}</CircularProgressLabel>
                                 </CircularProgress>
                             </Box>
                         </Flex>
@@ -176,16 +180,21 @@ export default function EventDetailsPage() {
                                 </Flex>
                                 <Flex flexDirection="column">
                                     <Tag mt="auto" size='lg' borderRadius='full'>
-                                        <TimeIcon />
-                                        <TagLabel fontSize="2xl" ml={2}>{event.duration} min</TagLabel>
+                                        <TagLabel fontSize="2xl" ml={2}>{event.category}</TagLabel>
                                     </Tag>
                                 </Flex>
+                                <Tag mt="auto" size='lg' borderRadius='full'>
+                                    <TimeIcon />
+                                    <TagLabel fontSize="2xl" ml={2}>{event.duration} min</TagLabel>
+                                </Tag>
                                 <Box ml="auto" alignSelf="end">
                                     <LikeButton />
                                 </Box>
                             </Stack>
                             <Flex gap={5}>
-                                <Image alignSelf="flex-start" flexGrow={3} src='gibbresh.png' fallbackSrc='https://via.placeholder.com/300' />
+                                <Box>
+                                    <DynamicMap events={[event]} />
+                                </Box>
                                 <Flex flexDirection="column" flexGrow={2}>
                                     <Card flex={1}>
                                         <CardHeader textAlign="center" bg="red.500">
