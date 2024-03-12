@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Box, Button, Flex, FormControl, FormLabel, Grid, GridItem, Input, ModalFooter } from "@chakra-ui/react";
+import { Link, Box, Button, Flex, FormControl, FormLabel, Grid, GridItem, Input, ModalFooter } from "@chakra-ui/react";
 import PictureInput from "./DragPhoto";
 
 
@@ -109,13 +109,16 @@ const Step2: React.FC<Step2Props> = ({ onNextStep, onPrevStep, onFileChange }) =
                         <div>
                 {/* Проверяем, есть ли координаты */}
                 {latitude !== null && longitude !== null && (
-                    <a
+                    <Box mt='1rem'>
+                    <Link
                         href={`https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`}
                         target="_blank"
                         rel="noopener noreferrer"
+                        fontWeight='500'
                     >
                         Open Map
-                    </a>
+                    </Link>
+                    </Box>
                 )}
             </div>
                     </FormControl>
