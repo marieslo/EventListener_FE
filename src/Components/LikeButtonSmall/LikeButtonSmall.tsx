@@ -3,9 +3,9 @@ import { Flex } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { SERVER_URL } from "../../../api";
-import './LikeButton.css';
+import './LikeButtonSmall.css';
 
-export default function LikeButton({ }) {
+export default function LikeButtonSmall({ }) {
 
   //SAVED И ID ДЛЯ ПРИМЕРА, КНОПКА В КАРТОЧКЕ ДОЛЖНА ПОЛУЧАТЬ ПРОПС SAVED(TRUE/FALSE), ID(EVENT_ID)
   const [saved, setSaved] = useState(false);
@@ -54,11 +54,8 @@ export default function LikeButton({ }) {
 
   return (
     <>
-      <Button onClick={handleClick} colorScheme='gray' variant='solid'>
-        <Flex align={'center'} justify={'center'}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="svgStyle" fill={saved ? "#E53E3E" : 'none'} viewBox="0 0 24 24" stroke="#E53E3E"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-          Like
-        </Flex>
+      <Button onClick={handleClick} variant=''>
+        <svg xmlns="http://www.w3.org/2000/svg" className="svgStyle" fill={saved ? "#E53E3E" : 'none'} viewBox="0 0 24 24" stroke="#E53E3E"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
       </Button>
     </>
   )

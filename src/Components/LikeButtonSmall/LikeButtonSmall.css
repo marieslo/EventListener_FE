@@ -1,0 +1,9 @@
+.svgStyle {
+  height: 25px;
+  width: 25px;
+  position: absolute;
+  z-index: 1;
+  top: 2;
+  right: 2;
+  transition: all;
+}
