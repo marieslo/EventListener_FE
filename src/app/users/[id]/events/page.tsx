@@ -10,10 +10,17 @@ export default function MyEvents() {
 
     const [events, setEvents] = useState([]);
     const [activeTab, setActiveTab] = useState('joined');
+    const [token, setToken] = useState('')
 
-    //ЗАМЕНИТЬ НА ТОКЕН ПОСЛЕ АУТЕНТИФИКАЦИИ
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImR3ZWluZXJ0QGdtYWlsLmNvbSIsImlkIjoiNjVlZjE3NmZhNTdmMGFmODM5MGY2NzUxIiwiaWF0IjoxNzEwMzI2NTc3LCJleHAiOjE3MTAzMzAxNzd9.ykhu-a_I-sag03SfDKJ82kUA0w2Vi2FfRe1bEO2ghGw'
-
+    //ЗАМЕНИТЬ НА ТОКЕН ПОСЛЕ АУТЕНТИФИКАЦИИ  - V
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+          setToken(token);
+          console.log(token)
+        }
+      }, []);
+     
     useEffect(() => {
         fetchMyEvents();
     }, [activeTab]);
