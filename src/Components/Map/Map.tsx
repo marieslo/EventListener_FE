@@ -28,9 +28,10 @@ interface Event {
 
 interface MapProps {
     events: Event[];
+    height: string
 }
 
-const Map: React.FC<MapProps> = ({ events }) => {
+const Map: React.FC<MapProps> = ({ events, height }) => {
     const mapContainerRef = useRef<any>(null);
     const [coordinates, setCoordinates] = useState<{ [key: string]: { lat: string, lon: string } }>({});
     const [mapInitialized, setMapInitialized] = useState(false);
@@ -43,9 +44,9 @@ const Map: React.FC<MapProps> = ({ events }) => {
     return (
         <Box>
             {/* <div style={{ width: '400px', height: '65vh', marginTop: '50px', borderRadius: '5px' }} ref={mapContainerRef}> */}
-            <Flex width= '100%' height= '65vh' mt='2rem' borderRadius='5px' ref={mapContainerRef}>
-                <MapContainer center={[32.7941, 34.9896]} zoom={12} style={{ width: '100%', height: '100%', border: '1px', borderRadius: '5px' }}>
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {/* <Flex width='100%' height={height} borderRadius='5px' ref={mapContainerRef}> */}
+                <MapContainer center={[32.7941, 34.9896]} zoom={12} style={{ width: '100%', height: height, border: '1px', borderRadius: '5px' }}>
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />  
                     {events.map(event => {
                         const lon = event.address.coordinates[0];
                         const lat = event.address.coordinates[1]; 
@@ -79,7 +80,7 @@ const Map: React.FC<MapProps> = ({ events }) => {
                         }
                     })}
                 </MapContainer>
-                </Flex>
+                {/* </Flex> */}
         </Box>
     );
 };

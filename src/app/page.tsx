@@ -56,8 +56,8 @@ const Welcome = () => {
         flexDirection='row'
         alignItems="center"
         justifyContent="space-between"
-        width="fit-content"
-        marginTop="4rem" 
+        // width="fit-content"
+        // marginTop="4rem" 
         paddingLeft="50px"
         paddingRight="50px" 
       >
@@ -67,8 +67,8 @@ const Welcome = () => {
           </Box>
         ) : (
           <>
-            <Box width="40%">
-              <DynamicMap events={addresses} />
+            <Box flexGrow={2}>
+              <DynamicMap height='400px' events={addresses} />
             </Box>
             <Box justifyContent='space-around' alignItems='center' width="60%">
               <EventList events={events} />

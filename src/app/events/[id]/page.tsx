@@ -34,7 +34,7 @@ export default function EventDetailsPage() {
         try {
             const response = await axios.get(`${SERVER_URL}/events/${id}`);
             setEvent(response.data);
-            setIsLiked(getLikeStatus(response.data, "65ec73aa9c2220f255c707f4"));
+            setIsLiked(getLikeStatus(response.data, userID));
         } catch (error: any) {
             console.log(error);
             toast({
@@ -96,7 +96,7 @@ export default function EventDetailsPage() {
 
     useEffect(() => {
         setToken(localStorage.getItem("accessToken"));
-        setUserID(localStorage.getItem(""));
+        setUserID(localStorage.getItem("userId"));
         fetchEvent();
     }, []);
 
@@ -207,10 +207,10 @@ export default function EventDetailsPage() {
                                 </Box>
                             </Stack>
                             <Flex gap={5}>
-                                <Box>
-                                    <DynamicMap events={[event]} />
+                                <Box flexGrow={5}>
+                                    <DynamicMap height="300px" events={[event]} />
                                 </Box>
-                                <Flex flexDirection="column" flexGrow={2}>
+                                <Flex flexDirection="column" flexGrow={1}>
                                     <Card flex={1}>
                                         <CardHeader textAlign="center" bg="red.500">
                                             <Heading color="white" size='md'>{monthNames[new Date(event.date).getMonth()]}</Heading>
