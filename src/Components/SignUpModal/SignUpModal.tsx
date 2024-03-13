@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box } from "@chakra-ui/react";
+import { Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, useAccordionItemState } from "@chakra-ui/react";
 import Step1 from './SignUpStep1';
 import Step2 from './SignUpStep2';
 import Step3 from './SignUpStep3';
@@ -83,6 +83,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             const responseJson = await signupResponse.json();
             const accessToken = responseJson.access_token;
             localStorage.setItem('accessToken', accessToken);
+            const userName = responseJson.firstName;
+            localStorage.setItem('userName', userName);
+            const userId = responseJson.user_id;
+            localStorage.setItem('userId', userId);
+            console.log ('name', userName)
+            console.log ('userId', userId)
 
             console.log('User registered successfully');
             onClose();
