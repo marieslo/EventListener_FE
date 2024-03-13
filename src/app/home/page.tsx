@@ -75,16 +75,17 @@ const Home = () => {
                     </Box>
                 ) : (
                     <>
-                        <Box flexGrow={2}>
-                            <DynamicMap height='400px' events={addresses} />
+                        <Box flexGrow={2} marginTop='110px' marginRight='20px'>
+                            <DynamicMap height='65vh' events={addresses} />
                         </Box>
-                        <Box flexGrow={1} width="30%">
+                        <Box flexGrow={1} width="40%" marginTop='120px'>
                             <EventList events={events} />
                         </Box>
                     </>
                 )}
                 <Box
                     flexGrow={0}
+                    marginTop='-80px'
                     //width={{ base: "100%", md: "18%" }}
                     // marginLeft={{ base: "0", md: "20px" }}
                     // marginRight={'30px'}
