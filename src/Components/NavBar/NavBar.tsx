@@ -21,6 +21,7 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setLoggedIn] = useLocalStorage<boolean>('isLoggedIn', false);
+  const [user_id, setUser_id]=useState('')
   const toast = useToast();
 
   useEffect(() => {
@@ -29,6 +30,13 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
       setLoggedIn(true);
     }
   }, [setLoggedIn]);
+
+  useEffect(() => {
+    const user_id = localStorage.getItem('userId');
+    if (user_id) {
+      setUser_id(user_id);
+    }
+  }, []);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -95,7 +103,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
                   <Image src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710258603/icons8-home-67_1_sd77pa.png" alt="Home" boxSize="34px" position='sticky' marginTop='1px' />
                 </Tooltip>
               </Link>
-              <Link href={`/users/${user?._id}`} ml={2}>
+              <Link href={`/users/${user_id}`} ml={2}>
                 <Tooltip label="Profile" placement="bottom">
                   <Avatar bg='red.500' src={user?.imageURL} size="sm" />
                 </Tooltip>
