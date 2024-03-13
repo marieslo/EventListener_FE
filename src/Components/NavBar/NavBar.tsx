@@ -122,8 +122,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
               </Tooltip>
             )}
           </Flex>
-        </Box>
-        <Box mt='25px' display="flex" justifyContent="center" width="100%">
+          <Box mt='10px' mb='15px' display="flex" justifyContent="center" width="100%">
           <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
           <Button
             as="a"
@@ -136,6 +135,8 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           >
             Add Event
           </Button></Link>
+        </Box>
+        
         </Box>
         <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </header>

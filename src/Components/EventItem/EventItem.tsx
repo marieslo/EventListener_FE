@@ -47,10 +47,10 @@ const formattedDate = (dateString: string): string => {
 };
 
 const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
-  const { _id, date, city, street, street_number, topic, place } = event;
+  const { _id, date, topic } = event;
 
   const [showDetails, setShowDetails] = useState(false);
-  const [token] = useLocalStorage<string>('token', ''); 
+  const [token] = useLocalStorage<string>('token', '');
   const formattedDateString = formattedDate(date);
 
   return (
@@ -125,10 +125,6 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
         <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated fontSize="lg">
           {topic}
         </Text>
-        <Text fontSize="xs">{place}</Text>
-        <Text fontSize="xs">{city}</Text>
-        <Text fontSize="xs">{street}</Text>
-        <Text fontSize="xs">{street_number}</Text>
       </Box>
       <Image src={imageUrl} alt={topic} width="100%" height="100%" objectFit="cover" />
     </Box>
