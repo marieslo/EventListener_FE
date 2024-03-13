@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, useAccordionItemState } from "@chakra-ui/react";
+import { Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, Flex, Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
 import Step1 from './SignUpStep1';
 import Step2 from './SignUpStep2';
 import Step3 from './SignUpStep3';
@@ -13,6 +13,7 @@ interface SignUpModalProps {
 
 const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     const [activeStep, setActiveStep] = useState<number>(0);
+    const [error, setError] = useState<string>("");
 
     const [activeModal, setActiveModal] = useState<'SignUp' | 'Login' | null>('SignUp');
 
@@ -75,27 +76,28 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             });
 
             if (!signupResponse.ok) {
-                console.error('Failed to register user');
+                const errorData = await signupResponse.json(); // Попытаемся прочитать данные об ошибке
+                console.error('Failed to register user:', errorData.message); // Выводим сообщение об ошибке
+                setError(`${errorData.message}`);
                 return;
             }
 
             //токен
             const responseJson = await signupResponse.json();
             const accessToken = responseJson.access_token;
-            localStorage.setItem('accessToken', accessToken);
             const userName = responseJson.firstName;
-            localStorage.setItem('userName', userName);
             const userId = responseJson.user_id;
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('userName', userName);
             localStorage.setItem('userId', userId);
-            console.log ('name', userName)
-            console.log ('userId', userId)
 
             console.log('User registered successfully');
             onClose();
         } catch (error) {
-            console.error('Error during user registration:', error);
+            console.error('Error during registration:', error);
+            
         } finally {
-            onClose();
+            
         }
     };
 
@@ -154,25 +156,31 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                             <StepSeparator />
                         </Step>
                     </Stepper>
+                    
+                    {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
+                    {activeStep === 1 && <Step2 onFileChange={handleFileChange} onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
+                    {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
+
                     {activeStep === 2 && (
-                    <>
+                <>
                         <ModalFooter>
                             <Button onClick={handlePrevStep} mr={3}>
                                 Previous
                             </Button>
                             <Link href="/home" passHref>
-                                <Button onClick={handleSignUpButtonClick} colorScheme="red" as="a">SignUp</Button>
+                                <Button mr='-1.5rem' onClick={handleSignUpButtonClick} colorScheme="red">SignUp</Button>
                             </Link>
                         </ModalFooter>
-                    </>
+                        {error && (
+                <Alert mb='1rem' status="error" borderRadius='5px'>
+                    <AlertIcon />
+                    <AlertTitle>{error}</AlertTitle>
+                </Alert>
+            )}
+                        </>
                 )}
-                    {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
-                    {activeStep === 1 && <Step2 onFileChange={handleFileChange} onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
-                    {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
                 </ModalBody>}
                 {activeModal === 'Login' && <LoginModal onClose={onClose} />}
-
-                
 
             </ModalContent>
         </Modal>
