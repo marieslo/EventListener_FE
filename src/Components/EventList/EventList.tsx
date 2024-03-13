@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Flex, Spinner } from '@chakra-ui/react';
 import EventItem from '@/Components/EventItem/EventItem';
 import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
 import { Address } from '../Map/Map';
@@ -28,7 +28,13 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
   }
 
   return (
-    <Box p={4} flex="1" overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
+
+    // <Box border='solid blue 5px'overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
+
+    // </Box>
+
+    <Flex width='100%' ml='5rem' alignSelf='center'> 
+    <Box overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
       {events.map(event => (
         <EventItem
           key={event._id}
@@ -37,6 +43,7 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
         />
       ))}
     </Box>
+    </Flex>
   );
 };
 
