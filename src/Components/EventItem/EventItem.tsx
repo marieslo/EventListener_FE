@@ -3,16 +3,19 @@ import { Box, Text, Image, Link, Icon } from '@chakra-ui/react';
 import { FaInfoCircle } from 'react-icons/fa';
 import LikeButtonSmall from '../LikeButtonSmall/LikeButtonSmall';
 import useLocalStorage from '@/Hooks/useLocalStorage';
+import { Address } from '../Map/Map';
 
 interface Event {
   _id: string;
+  creator: string;
   date: string;
-  street: string;
-  street_number: string;
-  city: string;
-  country: string;
+  address: Address;
   topic: string;
-  place: string;
+  category: string[];
+  joinedBy: string[];
+  savedBy: string[];
+  membersAmount: number;
+  budget: number;
   imageURL: string;
 }
 
