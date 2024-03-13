@@ -2,25 +2,20 @@ import React from 'react';
 import { Box, Spinner } from '@chakra-ui/react';
 import EventItem from '@/Components/EventItem/EventItem';
 import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_url';
+import { Address } from '../Map/Map';
 
 interface Event {
   _id: string;
   creator: string;
   date: string;
-  street: string;
-  street_number: string;
-  city: string;
-  country: string;
+  address: Address;
   topic: string;
-  place: string;
   category: string[];
   joinedBy: string[];
   savedBy: string[];
   membersAmount: number;
   budget: number;
   imageURL: string;
-  lat: string;
-  lon: string;
 }
 
 interface EventListProps {

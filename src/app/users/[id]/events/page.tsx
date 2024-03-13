@@ -12,7 +12,7 @@ export default function MyEvents() {
     const [activeTab, setActiveTab] = useState('joined');
 
     //ЗАМЕНИТЬ НА ТОКЕН ПОСЛЕ АУТЕНТИФИКАЦИИ
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0YXMxMkBnbWFpbC5jb20iLCJpZCI6IjY1ZWRiZTNlYzcyMzU3YWVkMjgxOGFjZSIsImlhdCI6MTcxMDE2NjMyNSwiZXhwIjoxNzEwMTY5OTI1fQ.Brj5UVH5XmFntp6ecLE07v06C9U-TaGAdEZcLxRIl6s'
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImR3ZWluZXJ0QGdtYWlsLmNvbSIsImlkIjoiNjVlZjE3NmZhNTdmMGFmODM5MGY2NzUxIiwiaWF0IjoxNzEwMzI2NTc3LCJleHAiOjE3MTAzMzAxNzd9.ykhu-a_I-sag03SfDKJ82kUA0w2Vi2FfRe1bEO2ghGw'
 
     useEffect(() => {
         fetchMyEvents();
