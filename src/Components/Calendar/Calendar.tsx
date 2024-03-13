@@ -85,11 +85,6 @@ const Calendar = ({ width }: { width: string }) => {
                                 </Text>
                             ))}
                     </Box>
-                    <Link href={`/events/create_event`} _hover={{ textDecoration: 'none' }}>
-                        <Button as="a" size="xs" colorScheme="red" variant="outline" leftIcon={<AddIcon />} ml={2}>
-                            Add Event
-                        </Button>
-                    </Link>
                 </Flex>
             );
         }
@@ -123,9 +118,11 @@ const Calendar = ({ width }: { width: string }) => {
                 <Modal isOpen={modalOpen} onClose={handleCloseModal}>
                     <ModalOverlay />
                     <ModalContent
-                        style={{
+                         style={{
                             fontFamily: 'Calistoga, serif',
-                            paddingBottom: '20px'
+                            paddingBottom: '20px',
+                            marginTop: '200px',
+                            width: '350px'
                         }}
                     >
                         <ModalHeader color="red.500">
