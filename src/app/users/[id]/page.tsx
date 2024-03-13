@@ -59,6 +59,7 @@ const Profile: React.FC = () => {
                         'Authorization': `Bearer ${token}`
                     }
                 }
+                //fetch USERA тут!!!
             );
         } catch (error) {
             console.error('Error fetching events:', error);
