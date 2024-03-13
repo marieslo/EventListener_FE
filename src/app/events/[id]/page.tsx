@@ -20,6 +20,7 @@ export default function EventDetailsPage() {
     const [isEditable, setIsEditable] = useState();
     const [token, setToken] = useState<any>('');
     const [isLiked, setIsLiked] = useState<any>(false);
+    const [userID, setUserID] = useState<any>('');
 
     const config = {
         headers: {
@@ -95,6 +96,7 @@ export default function EventDetailsPage() {
 
     useEffect(() => {
         setToken(localStorage.getItem("accessToken"));
+        setUserID(localStorage.getItem(""));
         fetchEvent();
     }, []);
 
