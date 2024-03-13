@@ -27,13 +27,18 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
 
     const handleLogin = async () => {
         try {
-            const response: AxiosResponse<{ access_token: string }> = await axios.post('http://localhost:3000/auth/login', {
+            const response: AxiosResponse<{ access_token: string, firstName: any, user_id: any }> = await axios.post('http://localhost:3000/auth/login', {
                 email: email,
                 password: password
             });
             const accessToken = response.data.access_token;
-
             localStorage.setItem('accessToken', accessToken);
+            const userName = response.data.firstName;
+            localStorage.setItem('userName', userName);
+            const userId = response.data.user_id;
+            localStorage.setItem('userId', userId);
+            console.log ('name', userName)
+            console.log ('userId', userId)
 
             console.log('Login successful'); 
             onClose();

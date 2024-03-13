@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -42,7 +42,8 @@ const Map: React.FC<MapProps> = ({ events }) => {
 
     return (
         <Box>
-            <div style={{ width: '400px', height: '65vh', marginTop: '50px', borderRadius: '5px' }} ref={mapContainerRef}>
+            {/* <div style={{ width: '400px', height: '65vh', marginTop: '50px', borderRadius: '5px' }} ref={mapContainerRef}> */}
+            <Flex width= '100%' height= '65vh' mt='2rem' borderRadius='5px' ref={mapContainerRef}>
                 <MapContainer center={[32.7941, 34.9896]} zoom={12} style={{ width: '100%', height: '100%', border: '1px', borderRadius: '5px' }}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     {events.map(event => {
@@ -78,7 +79,7 @@ const Map: React.FC<MapProps> = ({ events }) => {
                         }
                     })}
                 </MapContainer>
-            </div>
+                </Flex>
         </Box>
     );
 };

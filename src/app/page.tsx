@@ -52,12 +52,12 @@ const Welcome = () => {
     <Flex className="welcome-container" direction="column">
       <NavBar onSearch={handleSearch} />
       <Flex
-        direction={{ base: 'column', md: 'row' }}
-        alignItems="flex-start"
-        justifyContent="flex-start"
-        width="100%"
-        marginTop="20px" 
-        marginBottom="20px" 
+        // direction={{ base: 'column', md: 'row' }}
+        flexDirection='row'
+        alignItems="center"
+        justifyContent="space-between"
+        width="fit-content"
+        marginTop="4rem" 
         paddingLeft="50px"
         paddingRight="50px" 
       >
@@ -67,13 +67,17 @@ const Welcome = () => {
           </Box>
         ) : (
           <>
-            <Box width="20%">
+            <Box width="40%">
               <DynamicMap events={addresses} />
             </Box>
-            <Box width="100%" marginRight={{ base: "200px", md: "20px" }}>
+            <Box justifyContent='space-around' alignItems='center' width="60%">
               <EventList events={events} />
             </Box>
-            <Box
+            
+          </>
+        )}
+      </Flex>
+      <Box
               position="fixed"
               bottom="20px"
               right="20px"
@@ -82,9 +86,6 @@ const Welcome = () => {
             >
               <Character text="Discover, create, and join events with us" />
             </Box>
-          </>
-        )}
-      </Flex>
     </Flex>
   );
 };
