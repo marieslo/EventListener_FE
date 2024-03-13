@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Text, Image, Link } from '@chakra-ui/react';
 import LikeButtonSmall from '../LikeButtonSmall/LikeButtonSmall';
-import useLocalStorage from '@/Hooks/useLocalStorage';
 import { Address } from '../Map/Map';
 
 interface Event {
@@ -46,10 +45,9 @@ const formattedDate = (dateString: string): string => {
 };
 
 const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
-  const { _id, date, topic } = event;
-
+  const { _id, date, topic, savedBy } = event;
   const [showDetails, setShowDetails] = useState(false);
-  const [token] = useLocalStorage<string>('token', '');
+  const [isLiked, setIsLiked] = useState<boolean>(savedBy.includes(localStorage.getItem("userId") || '')); 
   const formattedDateString = formattedDate(date);
 
   return (
@@ -67,12 +65,11 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
       onMouseEnter={() => setShowDetails(true)}
       onMouseLeave={() => setShowDetails(false)}
     >
-      <Box position="absolute" top="5px" left="180px" width="100%" height="100%">
-      <LikeButtonSmall eventId={_id} token={token} />
+      <Box position="absolute" top="9px" left="1px" width="100%" height="100%">
+        <LikeButtonSmall setIsLiked={setIsLiked} isLiked={isLiked} eventId={_id} />
       </Box>
       <Link
         href={`/events/${_id}`}
-        _hover={{ textDecoration: 'underline', color: 'red.700', fontSize: 'lg' }} 
       >
         <Box
           position="absolute"

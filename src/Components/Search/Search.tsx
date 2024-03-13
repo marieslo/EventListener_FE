@@ -73,6 +73,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange, searchResults }) => {
         <PopoverTrigger>
           <InputGroup minWidth='200px'>
             <Input
+              height='34px'
               type="text"
               placeholder="Search..."
               backgroundColor='#fff'

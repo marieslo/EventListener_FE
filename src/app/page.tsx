@@ -67,10 +67,10 @@ const Welcome = () => {
           </Box>
         ) : (
           <>
-            <Box flexGrow={2}>
-              <DynamicMap height='400px' events={addresses} />
+            <Box flexGrow={2} marginTop='120px'>
+              <DynamicMap height='64vh' events={addresses} />
             </Box>
-            <Box justifyContent='space-around' alignItems='center' width="60%">
+            <Box justifyContent='space-around' alignItems='center' width="75%" marginTop='120px'>
               <EventList events={events} />
             </Box>
             

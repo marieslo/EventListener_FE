@@ -1,62 +1,69 @@
-import { Button } from "@chakra-ui/button";
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { useState} from "react"; 
+import { Button } from "@chakra-ui/button";
+import { FaHeart } from "react-icons/fa";
 import { SERVER_URL } from "../../../api";
 import './LikeButtonSmall.css';
-import { FaHeart } from "react-icons/fa";
-import useLocalStorage from '../../Hooks/useLocalStorage';
 
-interface LikeButtonSmallProps {
-  eventId: string;
-  token: string; 
-}
+export default function LikeButtonSmall({ eventId, isLiked, setIsLiked }: { eventId: string, isLiked: boolean, setIsLiked: any }) {
+  const [token, setToken] = useState<string | null>(null);
 
-const LikeButtonSmall: React.FC<LikeButtonSmallProps> = ({ eventId }) => {
-  const [saved, setSaved] = useState(false);
-  const [token] = useLocalStorage<string>('token', ''); 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("accessToken");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
-  async function saveEvent() {
+  async function handleSaveEvent() {
     try {
-      await axios.put(`${SERVER_URL}/save/${eventId}`, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+      await axios.put(
+        `${SERVER_URL}/events/save/${eventId}`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         }
-      });
-      setSaved(true);
+      );
+      setIsLiked(true);
     } catch (error) {
       console.error('Error saving event:', error);
     }
   }
 
-  async function unsaveEvent() {
+  async function handleUnsaveEvent() {
     try {
-      await axios.put(`${SERVER_URL}/unsave/${eventId}`, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+      await axios.put(
+        `${SERVER_URL}/events/unsave/${eventId}`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         }
-      });
-      setSaved(false);
+      );
+      setIsLiked(false);
     } catch (error) {
-      console.error('Error saving event:', error);
+      console.error('Error unsaving event:', error);
     }
   }
 
   const handleClick = () => {
-    saved ? unsaveEvent() : saveEvent();
-    setSaved(prev => !prev);
+    isLiked ? handleUnsaveEvent() : handleSaveEvent();
   };
 
   return (
     <Button onClick={handleClick} variant='' size="lg">
       <FaHeart 
-        color={saved ? "#E53E3E" : '#718096'} 
+        color={isLiked ? "#E53E3E" : '#718096'} 
         style={{ 
-          fontSize: '34px',
-          padding: '5px'
+          fontSize: '30px',
+          padding: '5px', 
         }} 
       />
     </Button>
   );
 }
-
-export default LikeButtonSmall;

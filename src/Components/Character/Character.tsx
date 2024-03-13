@@ -12,7 +12,7 @@ const Character: React.FC<CharacterProps> = ({ text }) => {
     <Flex align="center"> 
       <Text
         position="absolute"
-        marginTop="-70px"
+        marginTop="-60px"
         top="40%"
         left="50%"
         transform="translate(-50%, -50%)"
