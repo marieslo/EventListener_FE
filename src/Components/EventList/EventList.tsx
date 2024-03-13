@@ -33,7 +33,7 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
 
     // </Box>
 
-    <Flex width='100%' ml='5rem' alignSelf='center'> 
+    <Flex alignSelf='center'> 
     <Box overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
       {events.map(event => (
         <EventItem

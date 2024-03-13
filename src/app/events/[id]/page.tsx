@@ -15,10 +15,12 @@ export default function EventDetailsPage() {
     const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
 
     const [event, setEvent] = useState<any>({});
-    const { id } = useParams();
+    const { id } = useParams<any>();
     const toast = useToast();
     const [isEditable, setIsEditable] = useState();
     const [token, setToken] = useState<any>('');
+    const [isLiked, setIsLiked] = useState<any>(false);
+    const [userID, setUserID] = useState<any>('');
 
     const config = {
         headers: {
@@ -32,8 +34,9 @@ export default function EventDetailsPage() {
         try {
             const response = await axios.get(`${SERVER_URL}/events/${id}`);
             setEvent(response.data);
-            console.log(response.data);
+            setIsLiked(getLikeStatus(response.data, userID));
         } catch (error: any) {
+            console.log(error);
             toast({
                 title: error.response.data.message,
                 status: 'error',
@@ -93,8 +96,20 @@ export default function EventDetailsPage() {
 
     useEffect(() => {
         setToken(localStorage.getItem("accessToken"));
+        setUserID(localStorage.getItem("userId"));
         fetchEvent();
     }, []);
+
+    // useEffect(() => {
+    //     if (event) {
+    //         setIsLiked(getLikeStatus("65ec73aa9c2220f255c707f4"));
+    //     }
+    // }, [event]);
+
+    function getLikeStatus(event: any, id: any) {
+        console.log(event.savedBy.indexOf(id) === -1 ? false : true);
+        return event.savedBy.indexOf(id) === -1 ? false : true;
+    }
 
     const categoryKey: string = event.category;
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"];
@@ -188,14 +203,14 @@ export default function EventDetailsPage() {
                                     <TagLabel fontSize="2xl" ml={2}>{event.duration} min</TagLabel>
                                 </Tag>
                                 <Box ml="auto" alignSelf="end">
-                                    <LikeButton />
+                                    <LikeButton setIsLiked={setIsLiked} isLiked={isLiked} id={id} />
                                 </Box>
                             </Stack>
                             <Flex gap={5}>
-                                <Box>
-                                    <DynamicMap events={[event]} />
+                                <Box flexGrow={5}>
+                                    <DynamicMap height="300px" events={[event]} />
                                 </Box>
-                                <Flex flexDirection="column" flexGrow={2}>
+                                <Flex flexDirection="column" flexGrow={1}>
                                     <Card flex={1}>
                                         <CardHeader textAlign="center" bg="red.500">
                                             <Heading color="white" size='md'>{monthNames[new Date(event.date).getMonth()]}</Heading>
