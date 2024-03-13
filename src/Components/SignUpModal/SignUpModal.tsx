@@ -6,6 +6,7 @@ import Step3 from './SignUpStep3';
 // import Link from 'next/link';
 import LoginModal from './LoginModal';
 
+
 interface SignUpModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -14,7 +15,6 @@ interface SignUpModalProps {
 const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [error, setError] = useState<string>("");
-
     const [activeModal, setActiveModal] = useState<'SignUp' | 'Login' | null>('SignUp');
 
     const handleSignUpClick = () => {
@@ -48,7 +48,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
         console.log('File changed:', file);
         setFile(file);
     };
-
+    
     const handleSignUpButtonClick = async () => {
 
 
@@ -94,12 +94,13 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
 
             console.log('User registered successfully');
             onClose();
+            setError('');
 
         } catch (error) {
             console.error('Error during registration:', error);
 
         } finally {
-            setError('');
+            
         }
     };
 

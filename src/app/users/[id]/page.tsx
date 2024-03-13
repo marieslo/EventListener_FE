@@ -3,6 +3,7 @@
 import { CATEGORY_URLS } from "@/Components/SignUpModal/categories/categories_url";
 import { Avatar, Box, Flex, FormControl, FormLabel, Grid, Input, Circle, Image, WrapItem, Button, GridItem, Text, Switch, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface User {
     email: string;
@@ -10,7 +11,7 @@ interface User {
     firstName: string;
     lastName: string;
     phone: string;
-    file: string;
+    imageURL: string;
     interests: string[];
 }
 
@@ -18,6 +19,8 @@ const Profile: React.FC = () => {
     const [previewImage, setPreviewImage] = useState<string>('');
     const [picture, setPicture] = useState<any>({ avatar: null });
     const [showInterests, setShowInterests] = useState(false);
+    const [token, setToken] = useState('')
+    const [user_id, setUser_id] = useState('')
 
     // formdata
     const [formData, setFormData] = useState<User>({
@@ -26,7 +29,7 @@ const Profile: React.FC = () => {
         firstName: '',
         lastName: '',
         phone: '',
-        file: '',
+        imageURL: '',
         interests: []
     });
 
@@ -37,7 +40,7 @@ const Profile: React.FC = () => {
         firstName: 'John',
         lastName: 'Doe',
         phone: '123-456-7890',
-        file: 'example.jpg',
+        imageURL: 'example.jpg',
         interests: ['Sport', 'Travel', 'Food']
     };
 
@@ -47,6 +50,22 @@ const Profile: React.FC = () => {
         console.log('Interests from localStorage:', user.interests);
         setFormData(user);
     }, []);
+
+    async function fetchUser() {
+        try {
+            const response = await axios.get(`/users/${user_id}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+                //fetch USERA тут!!!
+            );
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    }
+
 
     const handleSaveChanges = () => {
         localStorage.setItem('user', JSON.stringify(formData));
@@ -104,7 +123,7 @@ const Profile: React.FC = () => {
                     backgroundColor='white' width='fit-content' height='fit-content' p='20px'>
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
                     <Flex flexDirection='column' gap='25px' alignItems="center">
-            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`} src={formData.file ? formData.file : previewImage} />
+            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`} src={formData.imageURL ? formData.imageURL : previewImage} />
             {/* Поле для выбора файла */}
             <Input
                         accept="image/*"
