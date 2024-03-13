@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import { Flex, Box, IconButton, ChakraProvider, Avatar, Button, useToast, Image, Link, Tooltip } from '@chakra-ui/react';
 import { AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai';
@@ -56,11 +58,12 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   };
 
   return (
-    <ChakraProvider>
-      <header className='navbar-container'>
+    <>
+    {/* // <ChakraProvider> */}
+      {/* <header className='navbar-container'> */}
         <Box backgroundColor='white' position="fixed" width="100%" top="0">
           <Flex
-            as="nav"
+            // as="nav"
             flexDirection='row'
             align="center"
             justify="space-between"
@@ -72,14 +75,14 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           >
             <Box>
               <Flex align="center" flexDirection='row'>
-                <img
+                <Image
                   src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png"
                   alt="EventListener Logo"
                   style={{ height: '50px', marginRight: '10px' }}
                 />
-                <div className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '2rem' }}>
+                <Box className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '2rem' }}>
                   EventListener
-                </div>
+                </Box>
               </Flex>
             </Box>
             <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
@@ -139,8 +142,9 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
 
         </Box>
         <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
-      </header>
-    </ChakraProvider>
+      {/* </header> */}
+    {/* </ChakraProvider> */}
+    </>
   );
 };
 
