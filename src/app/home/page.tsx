@@ -30,10 +30,17 @@ const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false })
 const Home = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [addresses, setAddresses] = useState<Event[]>([]);
-
+    const [username, setUsername]=useState('')
     const handleSearch = () => { };
     const isMobile = useBreakpointValue({ base: true, md: false });
 
+    useEffect(() => {
+      const username = localStorage.getItem('userName');
+      if (username) {
+        setUsername(username);
+      }
+    }, []);
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -92,7 +99,7 @@ const Home = () => {
                 zIndex="999"
                 fontSize="10px"
             >
-                <Character text="Hello, [username]" />
+                <Character text={`Hello, ${username}`} />
             </Box>
         </Flex>
     );
