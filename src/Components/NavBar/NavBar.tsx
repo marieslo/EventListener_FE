@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, IconButton, ChakraProvider, Avatar, Link, Button, useToast, Image, Tooltip } from '@chakra-ui/react';
+import { Flex, Box, IconButton, ChakraProvider, Avatar, Button, useToast, Image, Link, Tooltip } from '@chakra-ui/react';
 import { AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai';
 import SignUpModal from '@/Components/SignUpModal/SignUpModal';
 import Search from '@/Components/Search/Search';
 import useLocalStorage from '@/Hooks/useLocalStorage';
+
 
 interface User {
   _id: string;
@@ -123,17 +124,18 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           </Flex>
         </Box>
         <Box mt='25px' display="flex" justifyContent="center" width="100%">
+          <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
           <Button
             as="a"
             size="sm"
             colorScheme="red"
             leftIcon={<AiOutlinePlus />}
-            width="100%"
+            width='100vw'
             onClick={handleAddEventClick}
             borderRadius='5px'
           >
             Add Event
-          </Button>
+          </Button></Link>
         </Box>
         <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </header>

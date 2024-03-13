@@ -33,7 +33,7 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
   }
 
   return (
-    <Box p={4} flex="1" overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" marginLeft='100px' flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
+    <Box p={4} flex="1" overflowY="auto" maxHeight="calc(85vh - 100px)" display="flex" flexWrap="wrap" justifyContent={{ base: "center", md: "flex-start" }}>
       {events.map(event => (
         <EventItem
           key={event._id}

@@ -9,25 +9,20 @@ import axios from 'axios';
 import { SERVER_URL } from "../../api";
 import '../app/home/Home.css';
 import Character from "@/Components/Character/Character";
+import { Address } from "@/Components/Map/Map";
 
 interface Event {
-    _id: string;
-    creator: string;
-    date: string;
-    street: string;
-    street_number: string;
-    city: string;
-    country: string;
-    topic: string;
-    place: string;
-    category: string[];
-    joinedBy: string[];
-    savedBy: string[]; 
-    membersAmount: number;
-    budget: number;
-    imageURL: string;
-    lat: string;
-    lon: string;
+  _id: string;
+  creator: string;
+  date: string;
+  address: Address;
+  topic: string;
+  category: string[];
+  joinedBy: string[];
+  savedBy: string[];
+  membersAmount: number;
+  budget: number;
+  imageURL: string;
 }
 
 const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
