@@ -81,7 +81,6 @@ export default function EventDetailsPage() {
 
 
     function handleJoin(e: any) {
-        console.log(token);
         joinEvent();
     }
 
