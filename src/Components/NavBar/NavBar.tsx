@@ -123,20 +123,20 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
             )}
           </Flex>
           <Box mt='10px' mb='15px' display="flex" justifyContent="center" width="100%">
-          <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
-          <Button
-            as="a"
-            size="sm"
-            colorScheme="red"
-            leftIcon={<AiOutlinePlus />}
-            width='100vw'
-            onClick={handleAddEventClick}
-            borderRadius='5px'
-          >
-            Add Event
-          </Button></Link>
-        </Box>
-        
+            <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
+              <Button
+                as="a"
+                size="sm"
+                colorScheme="red"
+                leftIcon={<AiOutlinePlus />}
+                width='100vw'
+                onClick={handleAddEventClick}
+                borderRadius='5px'
+              >
+                Add Event
+              </Button></Link>
+          </Box>
+
         </Box>
         <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </header>
