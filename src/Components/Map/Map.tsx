@@ -97,11 +97,11 @@ const Map: React.FC<MapProps> = ({ events, height, isEventDetails }) => {
                                     <Stat>
                                         <StatLabel fontWeight="bold" fontSize="md">{event.topic}</StatLabel>
                                         <Divider mb={2} />
-                                        <StatNumber fontSize="xs">{humanAddress}</StatNumber>
-                                        <StatHelpText>{formatDate(event.date)}</StatHelpText>
+                                        <StatNumber fontSize="xs" mb={2}>{humanAddress}</StatNumber>
+                                        <StatHelpText fontWeight="bold" fontSize="xs" mb={2}>{formatDate(event.date)}</StatHelpText>
 
                                         {!isEventDetails && <Link href={`events/${event._id}`}>
-                                            <Button colorScheme='red' size="sm">View more</Button>
+                                            <Button colorScheme='gray' size="sm" fontSize="xs">Details</Button>
                                         </Link>}
                                     </Stat>
                                     {/* {event.city}, {event.street} {event.street_number} */}

@@ -96,7 +96,7 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
             <Link
                 href={`/events/${_id}`}
             >
-                <Box
+                {/* <Box
                     position="absolute"
                     bottom="0"
                     left="0"
@@ -132,7 +132,7 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
                     >
                         {topic}
                     </Text>
-                </Box>
+                </Box> */}
                 <Box
                     position="absolute"
                     bottom="0"
@@ -144,7 +144,7 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
                     display="flex"
                     flexDirection="column"
                     bg="rgba(255, 255, 255, 0.9)"
-                    transition="opacity 0.3s ease"
+                    // transition="opacity 0.3s ease"
                     color='red.500'
                 >
                     <Text fontWeight="semibold" fontSize="sm">
@@ -153,7 +153,7 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
                     <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated fontSize="lg">
                         {topic}
                     </Text>
-                    <Text fontWeight="semibold" as="h4" lineHeight="tight" fontSize="lg">
+                    <Text fontWeight="semibold" as="h4" lineHeight="tight" fontSize="sm">
                         {humanAddress}
                     </Text>
                 </Box>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useBreakpointValue, Link } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import './Calendar.css';
 import axios from 'axios';
 import { SERVER_URL } from '../../../api';
 
 interface JoinedEvent {
+    _id: string;
     date: Date;
     topic: string;
     duration: number;
@@ -32,6 +33,7 @@ const Calendar: React.FC<{ width: string }> = ({ width }) => {
                     });
                     console.log('Response:', response.data.joinedEvents);
                     setJoinedEvents(response.data.joinedEvents.map(event => ({
+                        _id: event._id,
                         date: new Date(event.date),
                         topic: event.topic,
                         duration: event.duration,
@@ -106,17 +108,25 @@ const Calendar: React.FC<{ width: string }> = ({ width }) => {
     };
 
     const renderHours = () => {
+        const eventsForSelectedDay = joinedEvents.filter(event => selectedDay && isSameDay(new Date(event.date), selectedDay));
         const hours = [];
         for (let i = 0; i < 24; i++) {
-            const eventsInHour = joinedEvents.filter(event => event.date.getHours() === i);
+            const eventsInHour = eventsForSelectedDay.filter(event => {
+                const eventDate = new Date(event.date);
+                const eventHour = eventDate.getHours();
+                return eventHour <= i && eventHour + Math.ceil(event.duration / 60) > i;
+            });
+    
             hours.push(
                 <Flex key={i} justifyContent="space-between" alignItems="center" border="1px solid" borderColor="gray.200" p={1}>
                     <Box>
                         <Text fontSize="sm" color="gray.500">{i}:00</Text>
                         {eventsInHour.map((event, index) => (
                             <Box key={index} mt={1}>
-                                <Text>{event.topic}</Text>
-                                <Text fontSize="xs" color="gray.500">Duration: {event.duration} minutes</Text>
+                                <Link href={`/events/${event._id}`}>
+                                    <Text>{event.topic}</Text>
+                                </Link>
+                                {/* <Text fontSize="xs" color="gray.500">Duration: {event.duration} minutes</Text> */}
                             </Box>
                         ))}
                     </Box>
@@ -128,7 +138,8 @@ const Calendar: React.FC<{ width: string }> = ({ width }) => {
                 {hours}
             </Box>
         );
-    };
+    };    
+
     
     const isSameDay = (date1: Date, date2: Date) => {
         return (
