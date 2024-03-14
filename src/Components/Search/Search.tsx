@@ -92,7 +92,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange, searchResults }) => {
             /> */}
           </InputGroup>
         </PopoverTrigger>
-        <PopoverContent w={400}>
+        <PopoverContent w={400} overflowX={'hidden'} overflowY={'scroll'} h={400}>
           {filteredEvents.map(event => (
             <Box key={event._id} m={2} zIndex={'20'}>
               <Flex justify={'space-between'}>
