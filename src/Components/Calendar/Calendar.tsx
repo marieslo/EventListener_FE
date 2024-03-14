@@ -1,14 +1,39 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Flex, Box, Text, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, Link, useBreakpointValue } from '@chakra-ui/react';
-import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import './Calendar.css'
+import axios from 'axios';
+import { SERVER_URL } from '../../../api';
+
+interface User {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    imageURL: string;
+    interests: string[];
+    city: string;
+    joinedEvents: { hour: number; title: string }[]; 
+}
 
 const Calendar = ({ width }: { width: string }) => {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState<Date | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [events, setEvents] = useState<{ hour: number; title: string }[]>([]);
-
+    const [formData, setFormData] = useState<User>({
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        phone: '',
+        imageURL: '',
+        interests: [],
+        city: '',
+        joinedEvents: []
+    }); 
+    
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     const handleOpenModal = (day: Date) => {
@@ -20,6 +45,24 @@ const Calendar = ({ width }: { width: string }) => {
         setModalOpen(false);
         setSelectedDay(null);
     };
+    async function fetchUser(token: string) {
+        try {
+            const response = await axios.get(`${SERVER_URL}/users/profile`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const userData: User = response.data;
+    
+            userData.interests = userData.interests[0].split(',');
+    
+            setFormData(userData);
+            setEvents(userData.joinedEvents); 
+            console.log(userData);
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    }
 
     const renderDays = () => {
         const days = [];
