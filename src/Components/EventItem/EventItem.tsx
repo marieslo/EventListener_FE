@@ -64,6 +64,8 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
       textAlign="start"
       onMouseEnter={() => setShowDetails(true)}
       onMouseLeave={() => setShowDetails(false)}
+      transition="width 0.1s, height 01s" 
+      _hover={{ width: "270px", height: "270px" }}
     >
       <Box position="absolute" top="9px" left="1px" width="100%" height="100%">
         <LikeButtonSmall setIsLiked={setIsLiked} isLiked={isLiked} eventId={_id} />
