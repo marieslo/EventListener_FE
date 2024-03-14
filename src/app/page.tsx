@@ -1,14 +1,12 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import { Flex, Box } from "@chakra-ui/react";
-import NavBar from "@/Components/NavBar/NavBar";
 import { useBreakpointValue } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import EventList from '@/Components/EventList/EventList';
 import axios from 'axios';
 import { SERVER_URL } from "../../api";
 import '../app/home/Home.css';
-import Character from "@/Components/Character/Character";
 import { Address } from "@/Components/Map/Map";
 
 interface Event {
@@ -26,6 +24,7 @@ interface Event {
 }
 
 const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
+const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
 
 const Welcome = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -61,16 +60,19 @@ const Welcome = () => {
         paddingLeft="50px"
         paddingRight="50px" 
       >
+       <Box className="welcome-text">
+       Discover, create, and join events with us
+       </Box> 
         {isMobile ? (
           <Box width="100%">
             <EventList events={events} />
           </Box>
         ) : (
           <>
-            <Box flexGrow={2}>
-              <DynamicMap height='400px' events={addresses} />
+            <Box flexGrow={2} marginTop='105px' marginRight='90px' zIndex={0}>
+              <DynamicMap height='64vh' events={addresses} />
             </Box>
-            <Box justifyContent='space-around' alignItems='center' width="60%">
+            <Box justifyContent='space-around' alignItems='center' width="75%" marginTop='120px'>
               <EventList events={events} />
             </Box>
             
@@ -84,7 +86,6 @@ const Welcome = () => {
               zIndex="999"
               fontSize="10px"
             >
-              <Character text="Discover, create, and join events with us" />
             </Box>
     </Flex>
   );

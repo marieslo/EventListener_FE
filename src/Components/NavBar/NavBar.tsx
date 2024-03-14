@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useState, useEffect } from 'react';
 import { Flex, Box, IconButton, ChakraProvider, Avatar, Button, useToast, Image, Link, Tooltip } from '@chakra-ui/react';
 import { AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai';
@@ -21,7 +20,9 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setLoggedIn] = useLocalStorage<boolean>('isLoggedIn', false);
+  const [user_id, setUser_id]=useState('')
   const toast = useToast();
+
 
   useEffect(() => {
     const token = window.localStorage.getItem('accessToken');
@@ -29,6 +30,13 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
       setLoggedIn(true);
     }
   }, [setLoggedIn]);
+
+  useEffect(() => {
+    const user_id = localStorage.getItem('userId');
+    if (user_id) {
+      setUser_id(user_id);
+    }
+  }, []);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -39,7 +47,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   };
 
   const handleLogout = () => {
-    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('accessToken');
     localStorage.clear();
     setLoggedIn(false);
   };
@@ -52,8 +60,6 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
         duration: 3000,
         isClosable: true,
       });
-    } else {
-      <Link href={`/events/create_event`} _hover={{ textDecoration: 'none' }} />
     }
   };
 
@@ -71,7 +77,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           // flexWrap="wrap"
           pr={6}
           pl={6}
-          zIndex={1000}
+          zIndex={10}
         >
           <Box>
             <Flex align="center" flexDirection='row'>
@@ -95,7 +101,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
                   <Image src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710258603/icons8-home-67_1_sd77pa.png" alt="Home" boxSize="34px" position='sticky' marginTop='1px' />
                 </Tooltip>
               </Link>
-              <Link href={`/users/${user?._id}`} ml={2}>
+              <Link href={`/users/${user_id}`} ml={2}>
                 <Tooltip label="Profile" placement="bottom">
                   <Avatar bg='red.500' src={user?.imageURL} size="sm" />
                 </Tooltip>
@@ -126,20 +132,32 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           )}
         </Flex>
         <Box mt='10px' mb='15px' display="flex" justifyContent="center" width="100%">
-          <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
+          {isLoggedIn ? (
+            <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
+              <Button
+                size="sm"
+                colorScheme="red"
+                leftIcon={<AiOutlinePlus />}
+                width='100vw'
+                borderRadius='5px'
+              >
+                Add Event
+              </Button>
+            </Link>
+          ) : (
             <Button
-              as="a"
               size="sm"
               colorScheme="red"
               leftIcon={<AiOutlinePlus />}
               width='100vw'
               onClick={handleAddEventClick}
               borderRadius='5px'
+              disabled={!isLoggedIn}
             >
               Add Event
-            </Button></Link>
+            </Button>
+          )}
         </Box>
-
       </Box>
       <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       {/* </header> */}

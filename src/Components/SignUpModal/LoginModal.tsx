@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Input, Button, ModalBody, FormLabel, Flex } from '@chakra-ui/react';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import Link from 'next/link';
+import { SERVER_URL } from '../../../api';
 
 interface AuthResponse {
     success: boolean;
@@ -27,7 +28,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
 
     const handleLogin = async () => {
         try {
-            const response: AxiosResponse<{ access_token: string, firstName: any, user_id: any }> = await axios.post('http://localhost:3000/auth/login', {
+            const response: AxiosResponse<{ access_token: string, firstName: any, user_id: any }> = await axios.post(`${SERVER_URL}/auth/login`, {
                 email: email,
                 password: password
             });

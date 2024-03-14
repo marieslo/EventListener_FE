@@ -1,14 +1,12 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Flex, Box, useBreakpointValue } from '@chakra-ui/react';
-import NavBar from '@/Components/NavBar/NavBar';
 import Calendar from '@/Components/Calendar/Calendar';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import EventList from '@/Components/EventList/EventList';
 import { SERVER_URL } from '../../../api';
 import './Home.css';
-import Character from '@/Components/Character/Character';
 import { Address } from '@/Components/Map/Map';
 
 interface Event {
@@ -26,14 +24,22 @@ interface Event {
 }
 
 const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
+const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
 
 const Home = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [addresses, setAddresses] = useState<Event[]>([]);
-
+    const [username, setUsername]=useState('')
     const handleSearch = () => { };
     const isMobile = useBreakpointValue({ base: true, md: false });
 
+    useEffect(() => {
+      const username = localStorage.getItem('userName');
+      if (username) {
+        setUsername(username);
+      }
+    }, []);
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -62,22 +68,26 @@ const Home = () => {
                 paddingLeft="40px"
                 paddingRight="40px"
             >
+                 <Box className="welcome-text">
+                 Hello, {username}
+                </Box> 
                 {isMobile ? (
                     <Box width="100%">
                         <EventList events={events} />
                     </Box>
                 ) : (
                     <>
-                        <Box flexGrow={2}>
-                            <DynamicMap height='400px' events={addresses} />
+                        <Box flexGrow={2} marginTop='110px' marginRight='50px' zIndex={0}>
+                            <DynamicMap height='65vh' events={addresses} />
                         </Box>
-                        <Box flexGrow={1} width="30%">
+                        <Box flexGrow={1} width="40%" marginTop='120px'>
                             <EventList events={events} />
                         </Box>
                     </>
                 )}
                 <Box
                     flexGrow={0}
+                    marginTop='-80px'
                     //width={{ base: "100%", md: "18%" }}
                     // marginLeft={{ base: "0", md: "20px" }}
                     // marginRight={'30px'}
@@ -92,7 +102,6 @@ const Home = () => {
                 zIndex="999"
                 fontSize="10px"
             >
-                <Character text="Hello, [username]" />
             </Box>
         </Flex>
     );

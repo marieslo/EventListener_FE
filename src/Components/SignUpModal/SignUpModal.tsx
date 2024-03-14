@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, Flex, Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
+import { Step, StepDescription, Link, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, Flex, Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
 import Step1 from './SignUpStep1';
 import Step2 from './SignUpStep2';
 import Step3 from './SignUpStep3';
-import Link from 'next/link';
+// import Link from 'next/link';
 import LoginModal from './LoginModal';
+import { SERVER_URL } from '../../../api';
+
 
 interface SignUpModalProps {
     isOpen: boolean;
@@ -14,7 +16,6 @@ interface SignUpModalProps {
 const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [error, setError] = useState<string>("");
-
     const [activeModal, setActiveModal] = useState<'SignUp' | 'Login' | null>('SignUp');
 
     const handleSignUpClick = () => {
@@ -48,8 +49,9 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
         console.log('File changed:', file);
         setFile(file);
     };
-
+    
     const handleSignUpButtonClick = async () => {
+
 
         try {
             const userData = localStorage.getItem('user');
@@ -70,7 +72,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             if (file) {
                 formData.append('file', file);
             }
-            const signupResponse = await fetch('http://localhost:3000/auth/signup', {
+            const signupResponse = await fetch(`${SERVER_URL}/auth/signup`, {
                 method: 'POST',
                 body: formData,
             });
@@ -93,9 +95,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
 
             console.log('User registered successfully');
             onClose();
+            setError('');
+
         } catch (error) {
             console.error('Error during registration:', error);
-            
+
         } finally {
             
         }
@@ -107,8 +111,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             <ModalContent width='fit-content'>
                 <Box backgroundColor='red.500' borderRadius='2px' mb='1rem'>
                     <ModalHeader color='white' display='flex' flexDirection='row' justifyContent='space-around' >
-                        <Link onClick={handleSignUpClick} href='' style={{ color: activeModal === 'SignUp' ? 'white' : 'lightgrey' }}>SignUp</Link>
-                        <Link onClick={handleLoginClick} href='' style={{ color: activeModal === 'Login' ? 'white' : 'lightgrey' }}>Login</Link>
+                        <Link _hover={{ textDecoration: 'none' }} onClick={handleSignUpClick} color={activeModal === 'SignUp' ? 'white' : 'lightgrey'}>SignUp</Link>
+                        <Link _hover={{ textDecoration: 'none' }} onClick={handleLoginClick} color={activeModal === 'Login' ? 'white' : 'lightgrey'}>Login</Link>
                     </ModalHeader>
                     <ModalCloseButton color='white' /></Box>
                 {activeModal === 'SignUp' && <ModalBody>
@@ -156,29 +160,36 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
                             <StepSeparator />
                         </Step>
                     </Stepper>
-                    
+
                     {activeStep === 0 && <Step1 onNextStep={handleNextStep} />}
                     {activeStep === 1 && <Step2 onFileChange={handleFileChange} onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
                     {activeStep === 2 && <Step3 onCategorySelection={handleCategorySelection} />}
 
                     {activeStep === 2 && (
-                <>
-                        <ModalFooter>
-                            <Button onClick={handlePrevStep} mr={3}>
-                                Previous
-                            </Button>
-                            <Link href="/home" passHref>
-                                <Button mr='-1.5rem' onClick={handleSignUpButtonClick} colorScheme="red">SignUp</Button>
-                            </Link>
-                        </ModalFooter>
-                        {error && (
-                <Alert mb='1rem' status="error" borderRadius='5px'>
-                    <AlertIcon />
-                    <AlertTitle>{error}</AlertTitle>
-                </Alert>
-            )}
+                        <>
+
+                            <ModalFooter>
+                                <Button onClick={handlePrevStep} mr={3}>
+                                    Previous
+                                </Button>
+
+                                {/* <Link href="/home"> */}
+                                <Link>
+                                    <Button mr='-1.5rem' onClick={handleSignUpButtonClick} colorScheme="red">SignUp</Button>
+                                </Link>
+                            </ModalFooter>
+                            
+                            {error && (
+                                <>
+                                <Alert mb='1rem' status="error" borderRadius='5px'>
+                                    <AlertIcon />
+                                    <AlertTitle>{error}</AlertTitle>
+                                </Alert>
+                                </>
+                            )}
+            
                         </>
-                )}
+                    )}
                 </ModalBody>}
                 {activeModal === 'Login' && <LoginModal onClose={onClose} />}
 
