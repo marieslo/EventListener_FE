@@ -1,7 +1,7 @@
 'use client'
 
 import { CATEGORY_URLS } from "@/Components/SignUpModal/categories/categories_url";
-import { Avatar, Box, Flex, FormControl, FormLabel, Grid, Input, Circle, Image, WrapItem, Button, GridItem, Text, Switch, Heading } from "@chakra-ui/react";
+import { Avatar, Box, Flex, FormControl, FormLabel, Grid, Input, Circle, Image, WrapItem, Button, GridItem, Text, Switch, Heading, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../../../../api";
@@ -15,6 +15,7 @@ interface User {
     imageURL: string;
     interests: string[];
     city: string;
+    file: '';
 }
 
 const Profile: React.FC = () => {
@@ -35,7 +36,8 @@ const Profile: React.FC = () => {
         phone: '',
         imageURL: '',
         interests: [],
-        city: ''
+        city: '',
+        file: '',
     });
 
     useEffect(() => {
@@ -64,8 +66,29 @@ const Profile: React.FC = () => {
         }
     }
 
-    const handleSaveChanges = () => {
-        console.log('saving changes');
+    async function handleSaveChanges(token: string) {
+        try {
+            const formDataToSend = new FormData();
+            formDataToSend.append('file', file);
+            formDataToSend.append('email', formData.email);
+            formDataToSend.append('password', formData.password);
+            formDataToSend.append('firstName', formData.firstName);
+            formDataToSend.append('lastName', formData.lastName);
+            formDataToSend.append('phone', formData.phone);
+            formDataToSend.append('city', formData.city);
+            formDataToSend.append('interests', formData.interests.join(','));
+
+            const response = await axios.put(`${SERVER_URL}/users/profile`, formDataToSend, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            console.log(formData);
+
+        } catch (error) {
+            console.error('Error saving changes', error)
+        }
+
     };
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -82,13 +105,20 @@ const Profile: React.FC = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-    
-             const pictureUrl = URL.createObjectURL(file);
-             setPreviewImage(pictureUrl);
+
+            const pictureUrl = URL.createObjectURL(file);
+            setPreviewImage(pictureUrl);
             setFile(file);
+            console.log('new avater', file)
         }
     };
 
+    const [show, setShow] = useState(false)
+    const handleClick = () => {
+        setShow(!show)
+    }
+
+    const [password, setPassword] = useState('');
     return (
         <>
             <Box display='flex' width='100wv' minHeight='100vh' pt='5%' pb='5%' backgroundColor='#fbffec' justifyContent='center'>
@@ -97,11 +127,11 @@ const Profile: React.FC = () => {
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
                         <Flex flexDirection='column' gap='25px' alignItems="center">
                             <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`}
-                            src={previewImage || formData.imageURL ||  undefined}
+                                src={previewImage || formData.imageURL || undefined}
                             />
                             {/* Поле для выбора файла */}
                             <Input
-                            ref={inputRef}
+                                ref={inputRef}
                                 accept="image/*"
                                 type="file"
                                 name="avatar"
@@ -111,7 +141,7 @@ const Profile: React.FC = () => {
                             {/* Кнопка "Update" с обработчиком клика */}
                             <Button size='sm' width='fit-content' colorScheme="red">
                                 Update <Input
-                                ref={inputRef}
+                                    ref={inputRef}
                                     accept="image/*"
                                     type="file"
                                     name="avatar"
@@ -127,8 +157,23 @@ const Profile: React.FC = () => {
                                 <Input type="email" value={formData.email ?? ''} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                             </FormControl>
                             <FormControl mt={2}>
-                                <FormLabel>Password</FormLabel>
-                                <Input type="password" value={formData.password ?? ''} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+
+                                <FormLabel>New Password</FormLabel>
+                                <InputGroup size='md'>
+                                    <Input
+                                        type={show ? 'text' : 'password'}
+                                        value={password}
+                                        onChange={(e) => {
+                                            setPassword(e.target.value);
+                                            setFormData({ ...formData, password: e.target.value });
+                                        }}
+                                    />
+                                    <InputRightElement width='4.5rem'>
+                                        <Button h='1.75rem' size='sm' onClick={handleClick}>
+                                            {show ? 'Hide' : 'Show'}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
                             </FormControl>
                             <FormControl mt={2}>
                                 <FormLabel>First Name</FormLabel>
@@ -226,7 +271,7 @@ const Profile: React.FC = () => {
                         </Grid>
                     )}
                     <Flex flexDirection='row' justifyContent='flex-end'>
-                        <Button mt='1rem' colorScheme="red" size='md' width='fit-content' onClick={handleSaveChanges}>Save Changes</Button>
+                        <Button mt='1rem' colorScheme="red" size='md' width='fit-content' onClick={() => handleSaveChanges(token)}>Save Changes</Button>
                     </Flex>
                 </Flex>
             </Box>
