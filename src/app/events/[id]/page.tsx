@@ -253,7 +253,7 @@ export default function EventDetailsPage() {
                                 </Stack>
                                 <Flex gap={5}>
                                     <Box flexGrow={5}>
-                                        <DynamicMap height="400px" events={[event]} />
+                                        <DynamicMap height="400px" events={[event]} isEventDetails={true}/>
                                     </Box>
                                     <Flex flexDirection="column" flexGrow={1}>
                                         <Card flex={1}>

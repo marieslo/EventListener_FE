@@ -78,7 +78,7 @@ const Home = () => {
                 ) : (
                     <>
                         <Box flexGrow={2} marginTop='110px' marginRight='50px' zIndex={0}>
-                            <DynamicMap height='65vh' events={addresses} />
+                            <DynamicMap height='65vh' events={addresses} isEventDetails={null} />
                         </Box>
                         <Box flexGrow={1} width="40%" marginTop='120px'>
                             <EventList events={events} />
