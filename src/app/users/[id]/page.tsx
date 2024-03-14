@@ -2,7 +2,7 @@
 
 import { CATEGORY_URLS } from "@/Components/SignUpModal/categories/categories_url";
 import { Avatar, Box, Flex, FormControl, FormLabel, Grid, Input, Circle, Image, WrapItem, Button, GridItem, Text, Switch, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../../../../api";
 
@@ -18,11 +18,13 @@ interface User {
 }
 
 const Profile: React.FC = () => {
-    const [previewImage, setPreviewImage] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [picture, setPicture] = useState<any>({ avatar: null });
     const [showInterests, setShowInterests] = useState(false);
     const [token, setToken] = useState('')
     const [user_id, setUser_id] = useState('')
+    const [file, setFile] = useState<any>({ avatar: null });
 
     // formdata
     const [formData, setFormData] = useState<User>({
@@ -80,27 +82,10 @@ const Profile: React.FC = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const imageDataUrl = reader.result as string;
-                setPreviewImage(imageDataUrl); // Установка предварительного изображения
-                setPicture(imageDataUrl); // Сохранение изображения в formData
-                setFormData(prevState => ({
-                    ...prevState, // сохраняем все предыдущие значения состояния
-                    picture: imageDataUrl // обновляем только свойство picture
-                }));
-                const userString = localStorage.getItem('user');
-                let user = userString ? JSON.parse(userString) : {};
-
-                // Добавляем новую запись picture
-                user.picture = imageDataUrl;
-
-                // Сохраняем обновленный объект в localStorage
-                localStorage.setItem('user', JSON.stringify(user));
-
-                console.log('picture', JSON.stringify({ avatar: imageDataUrl }))
-            };
-            reader.readAsDataURL(file);
+    
+             const pictureUrl = URL.createObjectURL(file);
+             setPreviewImage(pictureUrl);
+            setFile(file);
         }
     };
 
@@ -111,9 +96,12 @@ const Profile: React.FC = () => {
                     backgroundColor='white' width='fit-content' height='fit-content' p='20px'>
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
                         <Flex flexDirection='column' gap='25px' alignItems="center">
-                            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`} src={formData.imageURL ? formData.imageURL : previewImage} />
+                            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`}
+                            src={previewImage || formData.imageURL ||  undefined}
+                            />
                             {/* Поле для выбора файла */}
                             <Input
+                            ref={inputRef}
                                 accept="image/*"
                                 type="file"
                                 name="avatar"
@@ -123,6 +111,7 @@ const Profile: React.FC = () => {
                             {/* Кнопка "Update" с обработчиком клика */}
                             <Button size='sm' width='fit-content' colorScheme="red">
                                 Update <Input
+                                ref={inputRef}
                                     accept="image/*"
                                     type="file"
                                     name="avatar"
