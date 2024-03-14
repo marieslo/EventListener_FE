@@ -19,11 +19,14 @@ export default function MyEvents() {
           setToken(token);
           console.log(token)
         }
-      }, []);
-     
-    useEffect(() => {
+        if (token) {
         fetchMyEvents();
-    }, [activeTab]);
+    }
+      }, [token, activeTab]);
+     
+    // useEffect(() => {
+        
+    // }, [activeTab]);
 
 
     async function fetchMyEvents() {
