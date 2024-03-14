@@ -7,7 +7,6 @@ import EventList from '@/Components/EventList/EventList';
 import axios from 'axios';
 import { SERVER_URL } from "../../api";
 import '../app/home/Home.css';
-import Character from "@/Components/Character/Character";
 import { Address } from "@/Components/Map/Map";
 
 interface Event {
@@ -61,13 +60,16 @@ const Welcome = () => {
         paddingLeft="50px"
         paddingRight="50px" 
       >
+       <Box className="welcome-text">
+       Discover, create, and join events with us
+       </Box> 
         {isMobile ? (
           <Box width="100%">
             <EventList events={events} />
           </Box>
         ) : (
           <>
-            <Box flexGrow={2} marginTop='120px' zIndex={0}>
+            <Box flexGrow={2} marginTop='105px' marginRight='90px' zIndex={0}>
               <DynamicMap height='64vh' events={addresses} />
             </Box>
             <Box justifyContent='space-around' alignItems='center' width="75%" marginTop='120px'>
@@ -84,7 +86,6 @@ const Welcome = () => {
               zIndex="999"
               fontSize="10px"
             >
-              <Character text="Discover, create, and join events with us" />
             </Box>
     </Flex>
   );

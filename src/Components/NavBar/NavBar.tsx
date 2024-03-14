@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useState, useEffect } from 'react';
 import { Flex, Box, IconButton, ChakraProvider, Avatar, Button, useToast, Image, Link, Tooltip } from '@chakra-ui/react';
 import { AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai';
@@ -136,7 +135,6 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           {isLoggedIn ? (
             <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
               <Button
-                as="a"
                 size="sm"
                 colorScheme="red"
                 leftIcon={<AiOutlinePlus />}
@@ -148,7 +146,6 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
             </Link>
           ) : (
             <Button
-              as="a"
               size="sm"
               colorScheme="red"
               leftIcon={<AiOutlinePlus />}
