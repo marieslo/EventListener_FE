@@ -4,6 +4,7 @@ import { CATEGORY_URLS } from "@/Components/SignUpModal/categories/categories_ur
 import { Avatar, Box, Flex, FormControl, FormLabel, Grid, Input, Circle, Image, WrapItem, Button, GridItem, Text, Switch, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { SERVER_URL } from "../../../../api";
 
 interface User {
     email: string;
@@ -13,6 +14,7 @@ interface User {
     phone: string;
     imageURL: string;
     interests: string[];
+    city: string;
 }
 
 const Profile: React.FC = () => {
@@ -30,64 +32,50 @@ const Profile: React.FC = () => {
         lastName: '',
         phone: '',
         imageURL: '',
-        interests: []
+        interests: [],
+        city: ''
     });
 
-    // если нет данных в локальном хранилище
-    const mockUser: User = {
-        email: 'example@example.com',
-        password: 'password',
-        firstName: 'John',
-        lastName: 'Doe',
-        phone: '123-456-7890',
-        imageURL: 'example.jpg',
-        interests: ['Sport', 'Travel', 'Food']
-    };
-
     useEffect(() => {
-        const userFromStorage = localStorage.getItem('user');
-        const user: User = userFromStorage ? JSON.parse(userFromStorage) : mockUser;
-        console.log('Interests from localStorage:', user.interests);
-        setFormData(user);
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setToken(token);
+            fetchUser(token); // Передаем токен в функцию fetchUser
+        }
     }, []);
 
-    async function fetchUser() {
+    async function fetchUser(token: string) {
         try {
-            const response = await axios.get(`/users/${user_id}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+            const response = await axios.get(`${SERVER_URL}/users/profile`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
-                //fetch USERA тут!!!
-            );
+            });
+            const userData: User = response.data;
+
+            userData.interests = userData.interests[0].split(',');
+
+            setFormData(userData);
+            console.log(userData);
         } catch (error) {
-            console.error('Error fetching events:', error);
+            console.error('Error fetching user:', error);
         }
     }
 
-
     const handleSaveChanges = () => {
-        localStorage.setItem('user', JSON.stringify(formData));
+        console.log('saving changes');
     };
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     const handleCategoryClick = (category: string) => {
-    // Проверяем, есть ли категория в текущем списке интересов пользователя
-    const index = formData.interests.indexOf(category);
-
-    if (index !== -1) {
-        // Если категория уже выбрана, удаляем её из массива
-        const updatedInterests = [...formData.interests];
-        updatedInterests.splice(index, 1);
+        const updatedInterests = formData.interests.includes(category)
+            ? formData.interests.filter((interest) => interest !== category)
+            : [...formData.interests, category];
         setFormData({ ...formData, interests: updatedInterests });
-    } else {
-        // Если категория еще не выбрана, добавляем её в массив
-        setFormData({ ...formData, interests: [...formData.interests, category] });
-    }
     };
-    
+
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -118,58 +106,62 @@ const Profile: React.FC = () => {
 
     return (
         <>
-            <Box display='flex' width='100wv'  minHeight='100vh' pt='5%' pb='5%' backgroundColor='#fbffec' justifyContent='center'>
+            <Box display='flex' width='100wv' minHeight='100vh' pt='5%' pb='5%' backgroundColor='#fbffec' justifyContent='center'>
                 <Flex flexDirection="column" borderRadius='10px'
                     backgroundColor='white' width='fit-content' height='fit-content' p='20px'>
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
-                    <Flex flexDirection='column' gap='25px' alignItems="center">
-            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`} src={formData.imageURL ? formData.imageURL : previewImage} />
-            {/* Поле для выбора файла */}
-            <Input
-                        accept="image/*"
-                        type="file"
-                        name="avatar"
-                        style={{ position: "absolute", width: "20%", height: "20%", opacity: 0, cursor: "pointer" }}
-                        onChange={handleFileChange}
-                    />
-            {/* Кнопка "Update" с обработчиком клика */}
-            <Button size='sm' width='fit-content' colorScheme="red">
-                Update <Input
-                        accept="image/*"
-                        type="file"
-                        name="avatar"
-                        style={{ position: "absolute", width: "100%", height: "100%", opacity: 0, cursor: "pointer" }}
-                        onChange={handleFileChange}
-                    />
-            </Button>
-        </Flex>
+                        <Flex flexDirection='column' gap='25px' alignItems="center">
+                            <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`} src={formData.imageURL ? formData.imageURL : previewImage} />
+                            {/* Поле для выбора файла */}
+                            <Input
+                                accept="image/*"
+                                type="file"
+                                name="avatar"
+                                style={{ position: "absolute", width: "20%", height: "20%", opacity: 0, cursor: "pointer" }}
+                                onChange={handleFileChange}
+                            />
+                            {/* Кнопка "Update" с обработчиком клика */}
+                            <Button size='sm' width='fit-content' colorScheme="red">
+                                Update <Input
+                                    accept="image/*"
+                                    type="file"
+                                    name="avatar"
+                                    style={{ position: "absolute", width: "100%", height: "100%", opacity: 0, cursor: "pointer" }}
+                                    onChange={handleFileChange}
+                                />
+                            </Button>
+                        </Flex>
                         {/* Поля с данными пользователя */}
                         <Box mt={4}>
                             <FormControl>
                                 <FormLabel>Email</FormLabel>
-                                <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                                <Input type="email" value={formData.email ?? ''} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                             </FormControl>
                             <FormControl mt={2}>
                                 <FormLabel>Password</FormLabel>
-                                <Input type="password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+                                <Input type="password" value={formData.password ?? ''} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
                             </FormControl>
                             <FormControl mt={2}>
                                 <FormLabel>First Name</FormLabel>
-                                <Input type="text" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
+                                <Input type="text" value={formData.firstName ?? ''} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
                             </FormControl>
                             <FormControl mt={2}>
                                 <FormLabel>Last Name</FormLabel>
-                                <Input type="text" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
+                                <Input type="text" value={formData.lastName ?? ''} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
                             </FormControl>
                             <FormControl mt={2}>
                                 <FormLabel>Phone</FormLabel>
-                                <Input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+                                <Input type="tel" value={formData.phone ?? ''} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+                            </FormControl>
+                            <FormControl mt={2}>
+                                <FormLabel>City</FormLabel>
+                                <Input type="text" value={formData.city ?? ''} onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
                             </FormControl>
                         </Box>
                     </Flex>
                     <Flex pt='1rem' alignItems='center' mb={4}>
                         <Switch
-                        pl='1rem'
+                            pl='1rem'
                             colorScheme="red"
                             size="lg"
                             isChecked={showInterests}
@@ -179,10 +171,10 @@ const Profile: React.FC = () => {
                     </Flex>
                     {/* Грид контейнер с интересами пользователя */}
                     {showInterests && (
-                    <Grid templateColumns="repeat(3, 1fr)" gap={4} mt={4}>
-                        
-                            {/* Отображаем интересы пользователя */ }
-                        {Object.entries(CATEGORY_URLS).map(([category, url]) => (
+                        <Grid templateColumns="repeat(3, 1fr)" gap={4} mt={4}>
+
+                            {/* Отображаем интересы пользователя */}
+                            {Object.entries(CATEGORY_URLS).map(([category, url]) => (
                                 <GridItem key={category}>
                                     <Box position="relative" overflow="hidden" borderRadius="md">
                                         {formData.interests.includes(category) ? (
@@ -241,11 +233,11 @@ const Profile: React.FC = () => {
                                     </Box>
                                 </GridItem>
                             ))}
-                        
-                    </Grid>
+
+                        </Grid>
                     )}
                     <Flex flexDirection='row' justifyContent='flex-end'>
-                        <Button mt='1rem' colorScheme="red" size='md' width='fit-content'onClick={handleSaveChanges}>Save Changes</Button>
+                        <Button mt='1rem' colorScheme="red" size='md' width='fit-content' onClick={handleSaveChanges}>Save Changes</Button>
                     </Flex>
                 </Flex>
             </Box>
