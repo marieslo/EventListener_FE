@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import { Flex, Box } from "@chakra-ui/react";
-import NavBar from "@/Components/NavBar/NavBar";
 import { useBreakpointValue } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import EventList from '@/Components/EventList/EventList';
@@ -26,6 +25,7 @@ interface Event {
 }
 
 const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
+const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
 
 const Welcome = () => {
   const [events, setEvents] = useState<Event[]>([]);

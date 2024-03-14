@@ -24,6 +24,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   const [user_id, setUser_id]=useState('')
   const toast = useToast();
 
+
   useEffect(() => {
     const token = window.localStorage.getItem('accessToken');
     if (token) {
@@ -47,7 +48,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
   };
 
   const handleLogout = () => {
-    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('accessToken');
     localStorage.clear();
     setLoggedIn(false);
   };
@@ -60,8 +61,6 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
         duration: 3000,
         isClosable: true,
       });
-    } else {
-      <Link href={`/events/create_event`} _hover={{ textDecoration: 'none' }} />
     }
   };
 
@@ -69,7 +68,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
     <>
       {/* // <ChakraProvider> */}
       {/* <header className='navbar-container'> */}
-      <Box backgroundColor='white' position="fixed" width="100%" top="0" zIndex={9}>
+      <Box backgroundColor='white' position="fixed" width="100%" top="0" zIndex={10}>
         <Flex
           // as="nav"
           flexDirection='row'
@@ -79,7 +78,7 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           // flexWrap="wrap"
           pr={6}
           pl={6}
-          zIndex={1000}
+          zIndex={10}
         >
           <Box>
             <Flex align="center" flexDirection='row'>
@@ -134,7 +133,20 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           )}
         </Flex>
         <Box mt='10px' mb='15px' display="flex" justifyContent="center" width="100%">
-          <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
+          {isLoggedIn ? (
+            <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
+              <Button
+                as="a"
+                size="sm"
+                colorScheme="red"
+                leftIcon={<AiOutlinePlus />}
+                width='100vw'
+                borderRadius='5px'
+              >
+                Add Event
+              </Button>
+            </Link>
+          ) : (
             <Button
               as="a"
               size="sm"
@@ -143,11 +155,12 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
               width='100vw'
               onClick={handleAddEventClick}
               borderRadius='5px'
+              disabled={!isLoggedIn}
             >
               Add Event
-            </Button></Link>
+            </Button>
+          )}
         </Box>
-
       </Box>
       <SignUpModal isOpen={isModalOpen} onClose={handleCloseModal} />
       {/* </header> */}
