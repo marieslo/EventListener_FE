@@ -5,6 +5,7 @@ import Step2 from './SignUpStep2';
 import Step3 from './SignUpStep3';
 // import Link from 'next/link';
 import LoginModal from './LoginModal';
+import { SERVER_URL } from '../../../api';
 
 
 interface SignUpModalProps {
@@ -71,7 +72,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             if (file) {
                 formData.append('file', file);
             }
-            const signupResponse = await fetch('http://localhost:3000/auth/signup', {
+            const signupResponse = await fetch(`${SERVER_URL}/auth/signup`, {
                 method: 'POST',
                 body: formData,
             });
