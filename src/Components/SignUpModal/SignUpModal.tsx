@@ -55,6 +55,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
 
         try {
             const userData = localStorage.getItem('user');
+            const cityData = localStorage.getItem('city');
             if (!userData) {
                 console.error('User data is not available');
                 return;
@@ -68,6 +69,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             formData.append('lastName', userDataParsed.lastName);
             formData.append('phone', userDataParsed.phone);
             formData.append('interests', userDataParsed.interests);
+            const cityValue = cityData || '';
+            formData.append('city', cityValue);
 
             if (file) {
                 formData.append('file', file);
@@ -92,7 +95,6 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('userName', userName);
             localStorage.setItem('userId', userId);
-
             console.log('User registered successfully');
             onClose();
             setError('');
@@ -101,7 +103,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             console.error('Error during registration:', error);
 
         } finally {
-            
+            localStorage.removeItem('user');
         }
     };
 
