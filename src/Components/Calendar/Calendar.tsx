@@ -45,6 +45,7 @@ const Calendar = ({ width }: { width: string }) => {
         setModalOpen(false);
         setSelectedDay(null);
     };
+
     async function fetchUser(token: string) {
         try {
             const response = await axios.get(`${SERVER_URL}/users/profile`, {
@@ -57,7 +58,7 @@ const Calendar = ({ width }: { width: string }) => {
             userData.interests = userData.interests[0].split(',');
     
             setFormData(userData);
-            setEvents(userData.joinedEvents); 
+            setEvents(userData.joinedEvents);
             console.log(userData);
         } catch (error) {
             console.error('Error fetching user:', error);

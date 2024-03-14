@@ -38,7 +38,10 @@ const Map: React.FC<MapProps> = ({ events, height }) => {
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
-        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
     };
 
     return (
