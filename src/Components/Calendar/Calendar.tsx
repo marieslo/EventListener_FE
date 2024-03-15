@@ -230,7 +230,7 @@ const Calendar: React.FC<{ width: string }> = ({ width }) => {
     return isMobile ? null : (
         <Box ml={4} className='calendar-container' width={width} border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={1} position="sticky" backgroundColor='#fff'>
             <Flex direction="column" alignItems="center">
-            <Box fontSize="xl" mx={4} color="red.500"mt={6} mb={6}>Events you have joined:</Box>
+            <Box fontSize="xl" mx={4} color="red.500"mt={6} mb={6}>Events you have joined</Box>
                 <Flex alignItems="center">
                     <IconButton icon={<ArrowBackIcon />} mb={6} variant='outline' onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
                     <Text fontSize="xl" mx={4} color="red.500" mb={6}>
