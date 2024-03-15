@@ -108,9 +108,9 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal z-index='99999999999' isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent width='fit-content'>
+            <ModalContent z-index='99999999999' width='fit-content'>
                 <Box backgroundColor='red.500' borderRadius='2px' mb='1rem'>
                     <ModalHeader color='white' display='flex' flexDirection='row' justifyContent='space-around' >
                         <Link _hover={{ textDecoration: 'none' }} onClick={handleSignUpClick} color={activeModal === 'SignUp' ? 'white' : 'lightgrey'}>SignUp</Link>
