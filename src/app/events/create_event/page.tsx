@@ -32,6 +32,9 @@ import axios from 'axios';
 import { SERVER_URL } from '../../../../api';
 import EventForm from "../../../Components/EventForm/EventForm"
 import EditEventModal from '@/Components/EditEventModal/EditEventModal';
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
 
 export default function CreateEvent() {
     // const [startDate, setStartDate] = useState(new Date());
@@ -54,7 +57,7 @@ export default function CreateEvent() {
         address: {},
         creator: ''
     });
-   
+
     const [token, setToken] = useState<any>('');
     const config = {
         headers: {
@@ -88,6 +91,9 @@ export default function CreateEvent() {
     }
 
     return (
-        <EventForm isLoading={isLoading} isOpen={null} onClose={null} setIsLoading={setIsLoading} createEvent={createEvent} updateEvent={null} isEditable={false} existedEvent={event} setEvent={setEvent} />        // <form onSubmit={onSubmit}>
+        <>
+            <NavBar />
+            <EventForm isLoading={isLoading} isOpen={null} onClose={null} setIsLoading={setIsLoading} createEvent={createEvent} updateEvent={null} isEditable={false} existedEvent={event} setEvent={setEvent} />
+        </>
     )
 }

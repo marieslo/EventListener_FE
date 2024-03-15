@@ -30,17 +30,16 @@ const Home = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [addresses, setAddresses] = useState<Event[]>([]);
-    const [username, setUsername]=useState('')
-    const handleSearch = () => { };
+    const [username, setUsername] = useState('')
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
-      const username = localStorage.getItem('userName');
-      if (username) {
-        setUsername(username);
-      }
+        const username = localStorage.getItem('userName');
+        if (username) {
+            setUsername(username);
+        }
     }, []);
-    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -61,7 +60,7 @@ const Home = () => {
 
     return (
         <Flex className="home-container" direction="column">
-            <NavBar onSearch={handleSearch} />
+            <NavBar />
             <Flex
                 flexDirection='row'
                 alignItems="center"
@@ -69,17 +68,17 @@ const Home = () => {
                 paddingLeft="40px"
                 paddingRight="40px"
             >
-                 <Box className="welcome-text-homepage">
-                 Hello, {username}
-                </Box> 
+                <Box className="welcome-text-homepage">
+                    Hello, {username}
+                </Box>
                 {isMobile ? (
                     <Box width="100%">
                         <EventList events={events} loading={loading} />
                     </Box>
                 ) : (
                     <>
-                        <Box flexGrow={2} width="30%"  marginTop='125px' marginRight='20px' zIndex={0}>
-                            <DynamicMap lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499}  height='72vh' events={addresses} isEventDetails={null} />
+                        <Box flexGrow={2} width="30%" marginTop='125px' marginRight='20px' zIndex={0}>
+                            <DynamicMap lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} height='72vh' events={addresses} isEventDetails={null} />
                         </Box>
                         <Box flexGrow={1} width="40%" marginTop='120px'>
                             <EventList events={events} loading={loading} />

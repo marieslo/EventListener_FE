@@ -12,14 +12,14 @@ interface User {
 }
 
 interface NavBarProps {
-  onSearch: (query: string) => void;
+  onSearch?: (query: string) => void;
   user?: User;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
+const NavBar: React.FC<NavBarProps> = ({ user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setLoggedIn] = useLocalStorage<boolean>('isLoggedIn', false);
-  const [user_id, setUser_id]=useState('')
+  const [user_id, setUser_id] = useState('')
   const toast = useToast();
 
 
@@ -89,11 +89,11 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
             </Flex>
           </Box>
           <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
-            <Search onSearchChange={onSearch} searchResults={undefined} />
+            <Search />
           </Box>
           {isLoggedIn ? (
             <Flex alignItems="center">
-             <Link href={`/home`} >
+              <Link href={`/home`} >
                 <Tooltip label="Home" placement="bottom">
                   <Box
                     position='static'
@@ -103,14 +103,14 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
                     <Image
                       src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710258603/icons8-home-67_1_sd77pa.png"
                       alt="Home"
-                      boxSize="34px" 
+                      boxSize="34px"
                     />
                   </Box>
                 </Tooltip>
               </Link>
               <Link href={`/users/${user_id}`} ml={2}>
                 <Tooltip label="Profile" placement="bottom">
-                <Avatar bg='red.500' src={user?.imageURL} size="sm" />
+                  <Avatar bg='red.500' src={user?.imageURL} size="sm" />
                 </Tooltip>
               </Link>
               <Tooltip label="Log Out" placement="bottom">

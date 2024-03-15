@@ -124,7 +124,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
 
     return (
         <form onSubmit={onSubmit}>
-            <Container maxW='4xl'>
+            <Container maxW='4xl' mt={130}>
                 <Flex direction="column">
                     {!isEditable && <Flex bg="red.500" justifyContent="center">
                         <Heading color="white" lineHeight="9rem">Create New Event</Heading>

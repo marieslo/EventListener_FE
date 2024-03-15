@@ -12,6 +12,8 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import EditEventModal from '../../../Components/EditEventModal/EditEventModal'
 
+const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
+
 export default function EventDetailsPage() {
 
     const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
@@ -171,6 +173,7 @@ export default function EventDetailsPage() {
         <>
             <EditEventModal isLoading={isLoading} isOpen={isOpen} onClose={onClose} setIsLoading={setIsLoading} createEvent={null} updateEvent={updateEvent} isEditable={isEditable} existedEvent={event} setEvent={setEvent} />
             <Flex flexDirection="column">
+                <NavBar />
                 <Box position="relative" display="flex" h="512px" justifyContent="center" alignItems="center">
                     {/* <Box maxW='md' h="auto"> */}
                     <Image
