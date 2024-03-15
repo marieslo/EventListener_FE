@@ -1,4 +1,3 @@
-'use client'
 import React, { useState, useEffect } from 'react';
 import { Flex, Box, IconButton, ChakraProvider, Avatar, Button, useToast, Image, Link, Tooltip } from '@chakra-ui/react';
 import { AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai';
@@ -94,14 +93,24 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
           </Box>
           {isLoggedIn ? (
             <Flex alignItems="center">
-              <Link href={`/home`} >
+             <Link href={`/home`} >
                 <Tooltip label="Home" placement="bottom">
-                  <Image src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710258603/icons8-home-67_1_sd77pa.png" alt="Home" boxSize="34px" position='sticky' marginTop='1px' />
+                  <Box
+                    position='static'
+                    marginTop='1px'
+                    cursor="pointer"
+                  >
+                    <Image
+                      src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710258603/icons8-home-67_1_sd77pa.png"
+                      alt="Home"
+                      boxSize="34px" 
+                    />
+                  </Box>
                 </Tooltip>
               </Link>
               <Link href={`/users/${user_id}`} ml={2}>
                 <Tooltip label="Profile" placement="bottom">
-                  <Avatar bg='red.500' src={user?.imageURL} size="sm" />
+                <Avatar bg='red.500' src={user?.imageURL} size="sm" />
                 </Tooltip>
               </Link>
               <Tooltip label="Log Out" placement="bottom">
@@ -114,7 +123,6 @@ const NavBar: React.FC<NavBarProps> = ({ onSearch, user }) => {
             <Tooltip label="Log In / Sign Up" placement="bottom" >
               <Link>
                 <IconButton
-                  as="a"
                   colorScheme="red"
                   icon={<AiOutlineLogin style={{ transform: 'rotate(-90deg)', fontSize: '1.5rem' }} />}
                   size="sm"

@@ -108,30 +108,109 @@ const Calendar: React.FC<{ width: string }> = ({ width }) => {
     };
 
     const renderHours = () => {
-        const eventsForSelectedDay = joinedEvents.filter(event => selectedDay && isSameDay(new Date(event.date), selectedDay));
+        const eventsForSelectedDay = joinedEvents.filter(
+            (event) =>
+                selectedDay &&
+                isSameDay(new Date(event.date), selectedDay)
+        );
+    
+        if (eventsForSelectedDay.length === 0) {
+            return (
+                <Box textAlign="center" p={4}>
+                    <Text>No events for this day</Text>
+                </Box>
+            );
+        }
+    
         const hours = [];
+        let mergedCells = [];
         for (let i = 0; i < 24; i++) {
-            const eventsInHour = eventsForSelectedDay.filter(event => {
+            const eventsInHour = eventsForSelectedDay.filter((event) => {
                 const eventDate = new Date(event.date);
                 const eventHour = eventDate.getHours();
-                return eventHour <= i && eventHour + Math.ceil(event.duration / 60) > i;
+                return (
+                    eventHour <= i &&
+                    eventHour + Math.ceil(event.duration / 60) > i
+                );
             });
     
-            hours.push(
-                <Flex key={i} justifyContent="space-between" alignItems="center" border="1px solid" borderColor="gray.200" p={1}>
-                    <Box>
-                        <Text fontSize="sm" color="gray.500">{i}:00</Text>
-                        {eventsInHour.map((event, index) => (
-                            <Box key={index} mt={1}>
-                                <Link href={`/events/${event._id}`}>
-                                    <Text>{event.topic}</Text>
-                                </Link>
-                                {/* <Text fontSize="xs" color="gray.500">Duration: {event.duration} minutes</Text> */}
+            if (eventsInHour.length > 0) {
+                mergedCells.push(i);
+            } else {
+                if (mergedCells.length > 0) {
+                    const startHour = mergedCells[0];
+                    const endHour = mergedCells[mergedCells.length - 1] + 1;
+                    hours.push(
+                        <Flex
+                            key={`${startHour}-${endHour}`}
+                            justifyContent="space-between"
+                            alignItems="center"
+                            border="1px solid"
+                            borderColor="gray.200"
+                            p={1}
+                        >
+                            <Box>
+                                <Text fontSize="sm" color="gray.500">
+                                    {startHour}:00 - {endHour}:00
+                                </Text>
+                                {eventsForSelectedDay
+                                    .filter(
+                                        (event) =>
+                                            new Date(event.date).getHours() >=
+                                                startHour &&
+                                            new Date(event.date).getHours() <
+                                                endHour
+                                    )
+                                    .map((event, index) => (
+                                        <Box key={index} mt={1}>
+                                            <Link
+                                                href={`/events/${event._id}`}
+                                            >
+                                                <Text>{event.topic}</Text>
+                                            </Link>
+                                        </Box>
+                                    ))}
                             </Box>
-                        ))}
+                        </Flex>
+                    );
+                    mergedCells = [];
+                }
+            }
+        }
+        if (mergedCells.length > 0) {
+            const startHour = mergedCells[0];
+            const endHour = mergedCells[mergedCells.length - 1] + 1;
+            hours.push(
+                <Flex
+                    key={`${startHour}-${endHour}`}
+                    justifyContent="space-between"
+                    alignItems="center"
+                    border="1px solid"
+                    borderColor="gray.200"
+                    p={1}
+                >
+                    <Box>
+                        <Text fontSize="sm" color="gray.500">
+                            {startHour}:00 - {endHour}:00
+                        </Text>
+                        {eventsForSelectedDay
+                            .filter(
+                                (event) =>
+                                    new Date(event.date).getHours() >=
+                                        startHour &&
+                                    new Date(event.date).getHours() < endHour
+                            )
+                            .map((event, index) => (
+                                <Box key={index} mt={1}>
+                                    <Link href={`/events/${event._id}`}>
+                                        <Text>{event.topic}</Text>
+                                    </Link>
+                                </Box>
+                            ))}
                     </Box>
                 </Flex>
             );
+            mergedCells = [];
         }
         return (
             <Box maxHeight="250px" overflowY="auto">
@@ -139,7 +218,6 @@ const Calendar: React.FC<{ width: string }> = ({ width }) => {
             </Box>
         );
     };    
-
     
     const isSameDay = (date1: Date, date2: Date) => {
         return (
@@ -152,6 +230,7 @@ const Calendar: React.FC<{ width: string }> = ({ width }) => {
     return isMobile ? null : (
         <Box ml={4} className='calendar-container' width={width} border="1px solid" borderColor="gray.200" borderRadius="md" boxShadow="md" p={1} position="sticky" backgroundColor='#fff'>
             <Flex direction="column" alignItems="center">
+            <Box fontSize="xl" mx={4} color="red.500"mt={6} mb={6}>Events you have joined:</Box>
                 <Flex alignItems="center">
                     <IconButton icon={<ArrowBackIcon />} mb={6} variant='outline' onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} aria-label="Previous month" />
                     <Text fontSize="xl" mx={4} color="red.500" mb={6}>
