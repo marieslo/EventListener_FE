@@ -5,8 +5,8 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { SERVER_URL } from '../../../api';
 
 interface SearchProps {
-  onSearchChange: (query: string) => void;
-  searchResults: string[] | undefined;
+  onSearchChange?: (query: string) => void;
+  searchResults?: string[] | undefined;
 }
 
 interface Event {
@@ -29,7 +29,7 @@ interface Event {
   lon: string;
 }
 
-const Search: React.FC<SearchProps> = ({ onSearchChange, searchResults }) => {
+const Search: React.FC<SearchProps> = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [events, setEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
@@ -58,7 +58,6 @@ const Search: React.FC<SearchProps> = ({ onSearchChange, searchResults }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchTerm(query);
-    onSearchChange(query);
   };
 
   // const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

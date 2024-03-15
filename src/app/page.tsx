@@ -31,7 +31,6 @@ const Welcome = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [addresses, setAddresses] = useState<Event[]>([]);
 
-    const handleSearch = () => { };
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
@@ -54,7 +53,7 @@ const Welcome = () => {
 
     return (
         <Flex className="welcome-container" direction="column">
-            <NavBar onSearch={handleSearch} />
+            <NavBar />
             <Flex
                 flexDirection='row'
                 alignItems="center"
@@ -67,7 +66,7 @@ const Welcome = () => {
                 </Box>
                 {isMobile ? (
                     <Box width="100%">
-                        <EventList events={events} loading={loading}  />
+                        <EventList events={events} loading={loading} />
                     </Box>
                 ) : (
                     <>
@@ -75,7 +74,7 @@ const Welcome = () => {
                             <DynamicMap height='72vh' events={addresses} isEventDetails={null} lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} />
                         </Box>
                         <Box justifyContent='space-around' alignItems='center' width="60%" marginTop='120px'>
-                            <EventList events={events} loading={loading}  />
+                            <EventList events={events} loading={loading} />
                         </Box>
 
                     </>

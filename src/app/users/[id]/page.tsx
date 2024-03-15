@@ -7,6 +7,9 @@ import axios from "axios";
 import { SERVER_URL } from "../../../../api";
 import { AnyCnameRecord } from "dns";
 import MyEvents from "./events/page";
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
 
 interface User {
     email: string;
@@ -78,7 +81,7 @@ const Profile: React.FC = () => {
     }
 
     async function handleSaveChanges(token: string) {
-        
+
         try {
             setSuccess(false);
             const formDataToSend = new FormData();
@@ -174,7 +177,8 @@ const Profile: React.FC = () => {
     const [password, setPassword] = useState('');
     return (
         <>
-            <Box display='flex' width='100wv' backgroundColor='white'  minHeight='100vh' pt='5%' pb='5%' justifyContent='center'>
+            <NavBar />
+            <Box display='flex' width='100wv' backgroundColor='white' minHeight='100vh' pt={120} pb='5%' justifyContent='center'>
                 <Flex flexDirection="column" borderRadius='10px'
                     backgroundColor='white' width='fit-content' height='fit-content' p='20px' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" mr='2rem'>
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
@@ -350,14 +354,14 @@ const Profile: React.FC = () => {
                     </Flex>
                 </Flex>
                 <Flex width='30%' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" borderRadius='10px' p='20px'><MyEvents /></Flex>
-   
+
             </Box>
             {success && (
-                <Alert status="success" borderRadius='5px'mb='1rem'>
-  <AlertIcon />
-  Profile updated
-</Alert>
-                )}
+                <Alert status="success" borderRadius='5px' mb='1rem'>
+                    <AlertIcon />
+                    Profile updated
+                </Alert>
+            )}
         </>
     );
 
