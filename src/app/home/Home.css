@@ -11,7 +11,7 @@
     margin-top: 50px;
 }
 
-.welcome-text {
+/* .welcome-text {
     text-align: start;
     font-family: Calistoga, serif;
     color: #E53E3E;
@@ -25,7 +25,7 @@
     white-space: nowrap;
     overflow: hidden;
     -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-}
+} */
 
 .welcome-text-homepage{
     text-align: start;

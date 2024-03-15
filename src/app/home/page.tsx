@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, Box, useBreakpointValue, Text } from '@chakra-ui/react';
 import Calendar from '@/Components/Calendar/Calendar';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
@@ -61,6 +61,11 @@ const Home = () => {
     return (
         <Flex className="home-container" direction="column">
             <NavBar />
+            {/* <Flex flexDirection='row' justifyContent='center'>
+              <Text mb='0' mt='6rem' color='red.500'className="">
+                    Hello, {username}
+                </Text></Flex> */}
+            
             <Flex
                 flexDirection='row'
                 alignItems="center"
@@ -68,9 +73,7 @@ const Home = () => {
                 paddingLeft="40px"
                 paddingRight="40px"
             >
-                <Box className="welcome-text-homepage">
-                    Hello, {username}
-                </Box>
+                
                 {isMobile ? (
                     <Box width="100%">
                         <EventList events={events} loading={loading} />

@@ -11,6 +11,7 @@ export default function MyEvents() {
     const [events, setEvents] = useState([]);
     const [activeTab, setActiveTab] = useState('joined');
     const [token, setToken] = useState('')
+    const [loading, setLoading] = useState<boolean>(false);
 
     //ЗАМЕНИТЬ НА ТОКЕН ПОСЛЕ АУТЕНТИФИКАЦИИ  - V
     useEffect(() => {
@@ -64,7 +65,7 @@ export default function MyEvents() {
                         <option value='saved'>Saved events</option>
                     </Select>
                 </Box>
-                <EventList events={events} />
+                <EventList loading={loading} events={events} />
             </Flex >
         </>
     )

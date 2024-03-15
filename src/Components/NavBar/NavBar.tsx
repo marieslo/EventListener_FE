@@ -66,7 +66,7 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
     <>
       {/* // <ChakraProvider> */}
       {/* <header className='navbar-container'> */}
-      <Box backgroundColor='white' position="fixed" width="100%" top="0" zIndex={10}>
+      <Box backgroundColor='white' position="fixed" width="100%" top="0" zIndex={99999}>
         <Flex
           // as="nav"
           flexDirection='row'
