@@ -61,9 +61,9 @@ const Welcome = () => {
                 paddingLeft="50px"
                 paddingRight="50px"
             >
-                <Box className="welcome-text">
+                {/* <Box className="welcome-text">
                     Discover, create, and join events with us
-                </Box>
+                </Box> */}
                 {isMobile ? (
                     <Box width="100%">
                         <EventList events={events} loading={loading} />
