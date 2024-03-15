@@ -104,6 +104,7 @@ export default function EventDetailsPage() {
     }
 
 
+
     function handleJoin(e: any) {
         joinEvent();
     }
@@ -126,7 +127,8 @@ export default function EventDetailsPage() {
     }, [])
 
     useEffect(() => {
-        setToken(localStorage.getItem("accessToken"));
+        setUserID(localStorage.getItem("userId") ? localStorage.getItem("userId") : "");
+        setToken(localStorage.getItem("accessToken") ? localStorage.getItem("accessToken") : "");
     }, [event]);
 
     function getLikeStatus(event: any, id: any) {
@@ -163,9 +165,8 @@ export default function EventDetailsPage() {
         } finally {
             setIsLoading(false);
         }
-        console.log(event);
     }
-    //setIsLoading, createEvent, updateEvent, isEditable, existedEvent, setEvent, isLoading
+    //setIsLoading, createEvent, updateEvent, isEditable, existedEvent, setEvent, isLoading    
     return (
         <>
             <EditEventModal isLoading={isLoading} isOpen={isOpen} onClose={onClose} setIsLoading={setIsLoading} createEvent={null} updateEvent={updateEvent} isEditable={isEditable} existedEvent={event} setEvent={setEvent} />
@@ -253,7 +254,7 @@ export default function EventDetailsPage() {
                                 </Stack>
                                 <Flex gap={5}>
                                     <Box flexGrow={5}>
-                                        <DynamicMap height="400px" events={[event]} isEventDetails={true} latCenter={event.address.coordinates[0]} lonCenter={event.address.coordinates[1]}/>
+                                        <DynamicMap height="400px" events={[event]} isEventDetails={true} latCenter={event.address.coordinates[0]} lonCenter={event.address.coordinates[1]} />
                                     </Box>
                                     <Flex flexDirection="column" flexGrow={1}>
                                         <Card flex={1}>
@@ -286,8 +287,8 @@ export default function EventDetailsPage() {
                                     <Heading size="md">Members:</Heading>
                                     <Stack direction='row' mt={5}>
                                         {event.joinedBy.map((member: any) => {
-                                            return <Box display="flex" flexDirection="column" alignItems="center">
-                                                <Link key={member._id} href={`/users/${member._id}`}>
+                                            return <Box key={member._id} display="flex" flexDirection="column" alignItems="center">
+                                                <Link href={`/users/profile/${member._id}`}>
                                                     <Avatar src={member.imageURL} />
                                                 </Link>
                                                 <Heading size="sm">
@@ -301,21 +302,20 @@ export default function EventDetailsPage() {
                         </CardBody>
                         <CardFooter>
                             <Flex gap={4} w="100%">
-                                {/* <Box> */}
                                 <Button isLoading={isLoading} onClick={handleJoin} colorScheme='red' variant='solid'>
                                     Join
                                 </Button>
                                 <Button onClick={handleLeave} colorScheme='gray' variant='solid'>
                                     Leave
                                 </Button>
-                                <Button leftIcon={<EditIcon />} onClick={handleEdit} colorScheme='red' variant='ghost'>
+                                {userID === event.creator._id && <Button leftIcon={<EditIcon />} onClick={handleEdit} colorScheme='red' variant='ghost'>
                                     Edit
-                                </Button>
+                                </Button>}
                                 {/* </Box> */}
                                 <Box ml="auto">
-                                    <Button leftIcon={<DeleteIcon />} onClick={handleDelete} colorScheme='red' variant='outline'>
+                                    {userID === event.creator._id && <Button leftIcon={<DeleteIcon />} onClick={handleDelete} colorScheme='red' variant='outline'>
                                         Delete
-                                    </Button>
+                                    </Button>}
                                 </Box>
                             </Flex>
                         </CardFooter>
