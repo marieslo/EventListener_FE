@@ -54,6 +54,9 @@ const Home = () => {
         fetchData();
     }, []);
 
+    const userCoordinates: any = localStorage.getItem("cityCoords");
+    const userCoordObj = JSON.parse(userCoordinates);
+
     return (
         <Flex className="home-container" direction="column">
             <NavBar onSearch={handleSearch} />
@@ -78,7 +81,7 @@ const Home = () => {
                 ) : (
                     <>
                         <Box flexGrow={2} marginTop='110px' marginRight='50px' zIndex={0}>
-                            <DynamicMap height='65vh' events={addresses} isEventDetails={null} />
+                            <DynamicMap lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} height='65vh' events={addresses} isEventDetails={null} />
                         </Box>
                         <Box flexGrow={1} width="40%" marginTop='120px'>
                             <EventList events={events} />
