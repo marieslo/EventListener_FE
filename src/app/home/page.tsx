@@ -67,7 +67,7 @@ const Home = () => {
                 paddingLeft="40px"
                 paddingRight="40px"
             >
-                 <Box className="welcome-text">
+                 <Box className="welcome-text-homepage">
                  Hello, {username}
                 </Box> 
                 {isMobile ? (
