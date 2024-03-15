@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../../../../api";
 import { AnyCnameRecord } from "dns";
+import MyEvents from "./events/page";
 
 interface User {
     email: string;
@@ -344,6 +345,7 @@ const Profile: React.FC = () => {
                         <Button mt='1rem' colorScheme="red" size='md' width='fit-content' onClick={() => handleSaveChanges(token)}>Save Changes</Button>
                     </Flex>
                 </Flex>
+                <Flex width='50%'><MyEvents/></Flex>
             </Box>
         </>
     );
