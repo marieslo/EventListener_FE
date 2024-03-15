@@ -1,10 +1,11 @@
 'use client'
 
 import { CATEGORY_URLS } from "@/Components/SignUpModal/categories/categories_url";
-import { Avatar, Box, Flex, FormControl, FormLabel, Grid, Input, Circle, Image, WrapItem, Button, GridItem, Text, Switch, Heading, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Avatar, Box, Flex, FormControl, FormLabel, Grid, Input, Circle, Image, WrapItem, Button, GridItem, Text, Switch, Heading, InputGroup, InputRightElement, Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../../../../api";
+import { AnyCnameRecord } from "dns";
 
 interface User {
     email: string;
@@ -17,6 +18,11 @@ interface User {
     city: string;
     file: '';
 }
+interface CityCoordinates {
+    city: string;
+    latitude: number;
+    longitude: number;
+}
 
 const Profile: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -26,6 +32,9 @@ const Profile: React.FC = () => {
     const [token, setToken] = useState('')
     const [user_id, setUser_id] = useState('')
     const [file, setFile] = useState<any>({ avatar: null });
+    const [city, setCity] = useState<string>("")
+    const [cityCoords, setCityCoords] = useState<CityCoordinates | null>(null);
+    const [error, setError] = useState<string>('');
 
     // formdata
     const [formData, setFormData] = useState<User>({
@@ -75,7 +84,8 @@ const Profile: React.FC = () => {
             formDataToSend.append('firstName', formData.firstName);
             formDataToSend.append('lastName', formData.lastName);
             formDataToSend.append('phone', formData.phone);
-            formDataToSend.append('city', formData.city);
+            formDataToSend.append('city', city);
+            console.log(city)
             formDataToSend.append('interests', formData.interests.join(','));
 
             const response = await axios.put(`${SERVER_URL}/users/profile`, formDataToSend, {
@@ -85,7 +95,7 @@ const Profile: React.FC = () => {
             });
             console.log(formData);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error saving changes', error)
         }
 
@@ -117,6 +127,44 @@ const Profile: React.FC = () => {
     const handleClick = () => {
         setShow(!show)
     }
+
+    const handleFocus = () => {
+        if (city) {
+            console.log('onfocus');
+        }
+    };
+
+    const handleBlur = () => {
+        if (city) {
+            fetchCityCoordinates(city);
+        }
+    };
+
+    const fetchCityCoordinates = async (cityName: string) => {
+        try {
+            setError('');
+            const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${cityName}&format=geojson&accept-language=en`);
+            const data = response.data;
+            if (data.features.length > 0) {
+                const coordinates = data.features[0].geometry.coordinates;
+                const coords: CityCoordinates = {
+                    city: cityName,
+                    latitude: coordinates[1],
+                    longitude: coordinates[0]
+                };
+                setCityCoords(coords);
+                // Сохранение координат города в локальное хранилище
+                localStorage.setItem('cityCoords', JSON.stringify(coords));
+                localStorage.setItem('city', city)
+                console.log(city, coords)
+            } else {
+                setError('City not found');
+            }
+        } catch (error) {
+            console.error('Error fetching city coordinates:', error);
+            setError('Error fetching city coordinates');
+        }
+    };
 
     const [password, setPassword] = useState('');
     return (
@@ -189,8 +237,30 @@ const Profile: React.FC = () => {
                             </FormControl>
                             <FormControl mt={2}>
                                 <FormLabel>City</FormLabel>
-                                <Input type="text" value={formData.city ?? ''} onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
+                                {/* <Input type="text" value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} /> */}
+                                <Input
+    type="text"
+    color='#4a5568'
+    placeholder="Enter city name"
+    value={formData.city || city}
+    onChange={(e) => {
+        const newValue = e.target.value;
+        setFormData({ ...formData, city: newValue });
+        setCity(newValue);
+    }}
+    onFocus={handleFocus}
+    onBlur={handleBlur}
+/>
+
                             </FormControl>
+                            {error && (
+                                <>
+                                <Alert mt='1rem' status="error" borderRadius='5px'>
+                                    <AlertIcon />
+                                    <AlertTitle>{error}</AlertTitle>
+                                </Alert>
+                                </>
+                            )}
                         </Box>
                     </Flex>
                     <Flex pt='1rem' alignItems='center' mb={4}>
