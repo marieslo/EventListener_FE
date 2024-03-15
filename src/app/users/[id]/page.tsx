@@ -178,7 +178,7 @@ const Profile: React.FC = () => {
     return (
         <>
             <NavBar />
-            <Box display='flex' width='100wv' backgroundColor='white' minHeight='100vh' pt='8%' pb='5%' justifyContent='center'>
+            <Box display='flex' width='100wv' backgroundColor='white' minHeight='100vh' pt={120} pb='5%' justifyContent='center'>
                 <Flex flexDirection="column" borderRadius='10px'
                     backgroundColor='white' width='fit-content' height='fit-content' p='20px' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" mr='2rem'>
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
