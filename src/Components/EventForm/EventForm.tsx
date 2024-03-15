@@ -43,14 +43,13 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
 
     const event: any = { ...existedEvent };
 
-    const [focused, setFocused] = React.useState(false)
+    const [focused, setFocused] = useState(false)
     const onFocus = () => setFocused(true)
     const onBlur = () => setFocused(false)
 
     async function getCoordinates(addressString: string) {
         try {
             setIsLoading(true);
-            console.log(addressString);
             const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${addressString}&format=geojson&accept-language=en`);
             if (response.data.features.length === 0) {
                 setIsAddressIncorrect(true);
@@ -80,7 +79,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
             const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${coordinates[1]}&lon=${coordinates[0]}&format=geojson&accept-language=en`);
             addressObj.place = response.data.features[0].properties.address.house_number;
             addressObj.city = response.data.features[0].properties.address.city;
-            addressObj.street = response.data.features[0].properties.address.road;    
+            addressObj.street = response.data.features[0].properties.address.road;
         } catch (err: any) {
             toast({
                 title: err.message,
@@ -107,9 +106,13 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
 
     async function onSubmit(e: any) {
         e.preventDefault();
-        console.log(event);
         if (!isAddressIncorrect) {
-            isEditable ? await updateEvent(event) : await createEvent(event);
+            if (isEditable) {
+                await updateEvent(event);
+                onClose();
+            } else {
+                await createEvent(event);
+            }
         } else {
             toast({
                 title: "Please check address",
@@ -187,15 +190,15 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                 <VStack>
                                     <FormControl>
                                         <FormLabel fontWeight="bold" fontSize="xs">City</FormLabel>
-                                        <Input required onFocus={onFocus} onBlur={onBlur} value={addressObj.city} onChange={(e: any) => setAddressObj({ ...addressObj, city: e.target.value })} type='text' />
+                                        <Input required onMouseLeave={(e) => e.currentTarget.blur()} onFocus={onFocus} onBlur={onBlur} value={addressObj.city} onChange={(e: any) => setAddressObj({ ...addressObj, city: e.target.value })} type='text' />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel fontWeight="bold" fontSize="xs">Street</FormLabel>
-                                        <Input required onFocus={onFocus} onBlur={onBlur} value={addressObj.street} onChange={(e: any) => setAddressObj({ ...addressObj, street: e.target.value })} type='text' />
+                                        <Input required onMouseLeave={(e) => e.currentTarget.blur()} onFocus={onFocus} onBlur={onBlur} value={addressObj.street} onChange={(e: any) => setAddressObj({ ...addressObj, street: e.target.value })} type='text' />
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel fontWeight="bold" fontSize="xs">Building or place</FormLabel>
-                                        <Input required onFocus={onFocus} onBlur={onBlur} value={addressObj.place} onChange={(e: any) => setAddressObj({ ...addressObj, place: e.target.value })} type='text' />
+                                        <Input required onMouseLeave={(e) => e.currentTarget.blur()} onFocus={onFocus} onBlur={onBlur} value={addressObj.place} onChange={(e: any) => setAddressObj({ ...addressObj, place: e.target.value })} type='text' />
                                     </FormControl>
                                 </VStack>
                             </Box>
@@ -235,7 +238,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                     <FormHelperText>Duration, min</FormHelperText>
                                 </FormControl>
                             </Box>
-                            <Button isLoading={isLoading} mt="auto" colorScheme='red' alignSelf="end" type='submit'>{isEditable ? "Edit" : "Create"}</Button>
+                            <Button isLoading={isLoading} mt="auto" colorScheme='red' alignSelf="end" type='submit'>{isEditable ? "Save" : "Create"}</Button>
                         </Box>
                     </Flex>
                 </Flex>
