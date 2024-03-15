@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Calistoga&display=swap');
 
+@media only screen and (max-width: 800px) {
+    .welcome-text, .welcome-text-homepage {
+        display: none;
+    }
+}
+
 .home-container, .welcome-container {
     font-family: "Calistoga", serif;
     margin-top: 50px;
@@ -21,8 +27,17 @@
     -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
 }
 
-@media only screen and (max-width: 800px) {
-    .welcome-text {
-        display: none;
-    }
+.welcome-text-homepage{
+    text-align: start;
+    font-family: Calistoga, serif;
+    color: #E53E3E;
+    margin: auto;
+    top: 25%;
+    right: 140px;
+    transform: translateY(-50%);
+    position: absolute;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
 }
