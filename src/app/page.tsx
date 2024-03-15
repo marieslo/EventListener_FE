@@ -28,6 +28,7 @@ const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false 
 
 const Welcome = () => {
     const [events, setEvents] = useState<Event[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     const [addresses, setAddresses] = useState<Event[]>([]);
 
     const handleSearch = () => { };
@@ -38,6 +39,7 @@ const Welcome = () => {
             try {
                 const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
                 setEvents(eventsResponse.data);
+                setLoading(false);
                 setAddresses(eventsResponse.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -65,7 +67,7 @@ const Welcome = () => {
                 </Box>
                 {isMobile ? (
                     <Box width="100%">
-                        <EventList events={events} />
+                        <EventList events={events} loading={loading}  />
                     </Box>
                 ) : (
                     <>
@@ -73,7 +75,7 @@ const Welcome = () => {
                             <DynamicMap height='72vh' events={addresses} isEventDetails={null} lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} />
                         </Box>
                         <Box justifyContent='space-around' alignItems='center' width="60%" marginTop='120px'>
-                            <EventList events={events} />
+                            <EventList events={events} loading={loading}  />
                         </Box>
 
                     </>
