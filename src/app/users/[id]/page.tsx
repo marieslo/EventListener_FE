@@ -36,6 +36,7 @@ const Profile: React.FC = () => {
     const [city, setCity] = useState<string>("")
     const [cityCoords, setCityCoords] = useState<CityCoordinates | null>(null);
     const [error, setError] = useState<string>('');
+    const [success, setSuccess] = useState(false);
 
     // formdata
     const [formData, setFormData] = useState<User>({
@@ -77,7 +78,9 @@ const Profile: React.FC = () => {
     }
 
     async function handleSaveChanges(token: string) {
+        
         try {
+            setSuccess(false);
             const formDataToSend = new FormData();
             formDataToSend.append('file', file);
             formDataToSend.append('email', formData.email);
@@ -95,6 +98,7 @@ const Profile: React.FC = () => {
                 }
             });
             console.log(formData);
+            setSuccess(true);
 
         } catch (error: any) {
             console.error('Error saving changes', error)
@@ -170,9 +174,9 @@ const Profile: React.FC = () => {
     const [password, setPassword] = useState('');
     return (
         <>
-            <Box display='flex' width='100wv' minHeight='100vh' pt='5%' pb='5%' backgroundColor='#fbffec' justifyContent='center'>
+            <Box display='flex' width='100wv' backgroundColor='white'  minHeight='100vh' pt='5%' pb='5%' justifyContent='center'>
                 <Flex flexDirection="column" borderRadius='10px'
-                    backgroundColor='white' width='fit-content' height='fit-content' p='20px'>
+                    backgroundColor='white' width='fit-content' height='fit-content' p='20px' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" mr='2rem'>
                     <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
                         <Flex flexDirection='column' gap='25px' alignItems="center">
                             <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`}
@@ -240,26 +244,26 @@ const Profile: React.FC = () => {
                                 <FormLabel>City</FormLabel>
                                 {/* <Input type="text" value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} /> */}
                                 <Input
-    type="text"
-    color='#4a5568'
-    placeholder="Enter city name"
-    value={formData.city || city}
-    onChange={(e) => {
-        const newValue = e.target.value;
-        setFormData({ ...formData, city: newValue });
-        setCity(newValue);
-    }}
-    onFocus={handleFocus}
-    onBlur={handleBlur}
-/>
+                                    type="text"
+                                    color='#4a5568'
+                                    placeholder="Enter city name"
+                                    value={formData.city || city}
+                                    onChange={(e) => {
+                                        const newValue = e.target.value;
+                                        setFormData({ ...formData, city: newValue });
+                                        setCity(newValue);
+                                    }}
+                                    onFocus={handleFocus}
+                                    onBlur={handleBlur}
+                                />
 
                             </FormControl>
                             {error && (
                                 <>
-                                <Alert mt='1rem' status="error" borderRadius='5px'>
-                                    <AlertIcon />
-                                    <AlertTitle>{error}</AlertTitle>
-                                </Alert>
+                                    <Alert mt='1rem' status="error" borderRadius='5px'>
+                                        <AlertIcon />
+                                        <AlertTitle>{error}</AlertTitle>
+                                    </Alert>
                                 </>
                             )}
                         </Box>
@@ -345,8 +349,15 @@ const Profile: React.FC = () => {
                         <Button mt='1rem' colorScheme="red" size='md' width='fit-content' onClick={() => handleSaveChanges(token)}>Save Changes</Button>
                     </Flex>
                 </Flex>
-                <Flex width='50%'><MyEvents/></Flex>
+                <Flex width='30%' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" borderRadius='10px' p='20px'><MyEvents /></Flex>
+   
             </Box>
+            {success && (
+                <Alert status="success" borderRadius='5px'mb='1rem'>
+  <AlertIcon />
+  Profile updated
+</Alert>
+                )}
         </>
     );
 
