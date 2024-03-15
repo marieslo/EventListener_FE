@@ -54,12 +54,9 @@ const Welcome = () => {
         <Flex className="welcome-container" direction="column">
             <NavBar onSearch={handleSearch} />
             <Flex
-                // direction={{ base: 'column', md: 'row' }}
                 flexDirection='row'
                 alignItems="center"
                 justifyContent="space-between"
-                // width="fit-content"
-                // marginTop="4rem" 
                 paddingLeft="50px"
                 paddingRight="50px"
             >
@@ -72,10 +69,10 @@ const Welcome = () => {
                     </Box>
                 ) : (
                     <>
-                        <Box flexGrow={2} marginTop='105px' marginRight='90px' zIndex={0}>
-                            <DynamicMap height='64vh' events={addresses} isEventDetails={null} lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} />
+                        <Box flexGrow={2} marginTop='125px' marginRight='50px' zIndex={0}>
+                            <DynamicMap height='72vh' events={addresses} isEventDetails={null} lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} />
                         </Box>
-                        <Box justifyContent='space-around' alignItems='center' width="75%" marginTop='120px'>
+                        <Box justifyContent='space-around' alignItems='center' width="60%" marginTop='120px'>
                             <EventList events={events} />
                         </Box>
 
