@@ -16,20 +16,30 @@ export default function MyEvents() {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         if (token) {
-          setToken(token);
-          console.log(token)
+            setToken(token);
+            fetchMyEvents(token); // Передаем токен в функцию fetchUser
         }
-        if (token) {
-        fetchMyEvents();
-    }
-      }, [token, activeTab]);
+    }, [activeTab]);
+
+    // async function fetchUser(token: string) {
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem('accessToken');
+    //     if (token) {
+    //       setToken(token);
+    //       console.log(token)
+    //     }
+    //     if (token) {
+    //     fetchMyEvents();
+    // }
+    //   }, [token, activeTab]);
      
     // useEffect(() => {
         
     // }, [activeTab]);
 
 
-    async function fetchMyEvents() {
+    async function fetchMyEvents(token: string) {
         try {
             const response = await axios.get(`${SERVER_URL}/users/profile/${activeTab}`,
                 {
