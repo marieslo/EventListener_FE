@@ -30,6 +30,7 @@ const Welcome = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [addresses, setAddresses] = useState<Event[]>([]);
+    const [userCoords, setUserCoords] = useState<any>('');
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -48,8 +49,10 @@ const Welcome = () => {
         fetchData();
     }, []);
 
-    const userCoordinates: any = localStorage.getItem("cityCoords");
-    const userCoordObj = JSON.parse(userCoordinates);
+    useEffect(() => {
+        setUserCoords(localStorage.getItem("cityCoords"));
+        //const userCoordObj = JSON.parse(userCoordinates);
+    }, [events]);
 
     return (
         <Flex className="welcome-container" direction="column">
@@ -71,7 +74,7 @@ const Welcome = () => {
                 ) : (
                     <>
                         <Box flexGrow={2} marginTop='125px' marginRight='50px' zIndex={0}>
-                            <DynamicMap height='72vh' events={addresses} isEventDetails={null} lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} />
+                            <DynamicMap height='72vh' events={addresses} isEventDetails={null} lonCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).latitude : 32.109333} latCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).longitude : 34.855499} />
                         </Box>
                         <Box justifyContent='space-around' alignItems='center' width="60%" marginTop='120px'>
                             <EventList events={events} loading={loading} />

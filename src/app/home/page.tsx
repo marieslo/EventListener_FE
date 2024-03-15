@@ -32,6 +32,7 @@ const Home = () => {
     const [addresses, setAddresses] = useState<Event[]>([]);
     const [username, setUsername] = useState('')
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const [userCoords, setUserCoords] = useState<any>('');
 
     useEffect(() => {
         const username = localStorage.getItem('userName');
@@ -55,8 +56,11 @@ const Home = () => {
         fetchData();
     }, []);
 
-    const userCoordinates: any = localStorage.getItem("cityCoords");
-    const userCoordObj = JSON.parse(userCoordinates);
+    useEffect(() => {
+        setUserCoords(localStorage.getItem("cityCoords"));
+        //const userCoordObj = JSON.parse(userCoordinates);
+    }, [events]);
+
 
     return (
         <Flex className="home-container" direction="column">
@@ -65,7 +69,7 @@ const Home = () => {
               <Text mb='0' mt='6rem' color='red.500'className="">
                     Hello, {username}
                 </Text></Flex> */}
-            
+
             <Flex
                 flexDirection='row'
                 alignItems="center"
@@ -73,7 +77,7 @@ const Home = () => {
                 paddingLeft="40px"
                 paddingRight="40px"
             >
-                
+
                 {isMobile ? (
                     <Box width="100%">
                         <EventList events={events} loading={loading} />
@@ -81,7 +85,7 @@ const Home = () => {
                 ) : (
                     <>
                         <Box flexGrow={2} width="30%" marginTop='125px' marginRight='20px' zIndex={0}>
-                            <DynamicMap lonCenter={userCoordObj ? userCoordObj.latitude : 32.109333} latCenter={userCoordObj ? userCoordObj.longitude : 34.855499} height='72vh' events={addresses} isEventDetails={null} />
+                            <DynamicMap lonCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).latitude : 32.109333} latCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).longitude : 34.855499} height='72vh' events={addresses} isEventDetails={null} />
                         </Box>
                         <Box flexGrow={1} width="40%" marginTop='120px'>
                             <EventList events={events} loading={loading} />
