@@ -1,6 +1,6 @@
 'use client'
 import { DeleteIcon, EditIcon, QuestionOutlineIcon, TimeIcon } from '@chakra-ui/icons';
-import { AbsoluteCenter, Avatar, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, CircularProgressLabel, Container, Divider, Flex, Heading, Image, Stack, StackDivider, Tag, TagLabel, Text, useDisclosure, useToast } from "@chakra-ui/react";
+import { AbsoluteCenter, Link, Avatar, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, CircularProgressLabel, Container, Divider, Flex, Heading, Image, Stack, StackDivider, Tag, TagLabel, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import axios from 'axios';
 import { redirect, useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -9,7 +9,6 @@ import { CATEGORY_URLS } from '@/Components/SignUpModal/categories/categories_ur
 import LikeButton from '@/Components/LikeButton/LikeButton';
 import '../../../Components/LikeButton/LikeButton.css';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import EditEventModal from '../../../Components/EditEventModal/EditEventModal'
 
 const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
