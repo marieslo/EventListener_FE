@@ -220,7 +220,6 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                     dateFormat="dd-MM-yyyy h:mm aa"
                                     showTimeSelect
                                     timeIntervals={15}
-
                                     popperClassName="date-picker-popper"
                                     popperPlacement="bottom-end"
                                     calendarClassName="custom-calendar"
@@ -228,15 +227,17 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                 // customTimeInput={<CustomTimeInput />}
                                 />
                                 <style jsx global>{`
+
     .date-picker-popper {
-        max-height: 10rem; // Максимальная высота окна
-        overflow-y: auto; // Включаем вертикальную прокрутку
+        max-height: 10rem;
+        overflow-y: auto;
+        min-width: 21rem;
     }
     .custom-calendar {
         
     }
     .react-datepicker__navigation {
-        transform: translateX(100%);
+        transform: translateX(0%);
         right: 50px;
     }
     .react-datepicker__navigation--next--with-today-button {
