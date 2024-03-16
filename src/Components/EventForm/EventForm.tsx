@@ -124,19 +124,21 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
 
     return (
         <form onSubmit={onSubmit}>
-            <Container maxW='4xl' mt={130}>
+
+            <Container maxW='4xl' backgroundColor='white' mt={{base:65, md:10}} borderRadius='10px'
+            boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" p={{ md: '1.5rem', base: 0 }}>
                 <Flex direction="column">
                     {!isEditable && <Flex bg="red.500" justifyContent="center">
                         <Heading color="white" lineHeight="9rem">Create New Event</Heading>
                     </Flex>}
-                    <Flex gap={10} justifyContent="center" mt={10}>
+                    <Flex flexDirection={{base:'column', md:'row'}} gap={{md: 10, base: 5}} p={{base:5}} justifyContent="center" mt={{md: 10, base: 2}}>
                         <Flex flexDirection="column" gap={5}>
                             <FormControl>
-                                <FormLabel fontWeight="bold" fontSize="xs">Topic</FormLabel>
-                                <Input required value={event.topic} onChange={(e: any) => setEvent({ ...event, topic: e.target.value })} type='text' variant='filled' />
+                                <FormLabel fontWeight="bold" fontSize="s" >Topic</FormLabel>
+                                <Input colorScheme='red' required value={event.topic} onChange={(e: any) => setEvent({ ...event, topic: e.target.value })} placeholder='Enter event name'type='text' variant='filled' />
                             </FormControl>
                             <FormControl>
-                                <Select required value={event.category} onChange={(e: any) => setEvent({ ...event, category: new Array(e.target.value) })} variant='filled' placeholder='Select Category'>
+                                <Select required value={event.category} onChange={(e: any) => setEvent({ ...event, category: new Array(e.target.value) })} variant='filled' placeholder='Select Category' colorScheme="red">
                                     <option value='Sport'>Sport</option>
                                     <option value='Travel'>Travel</option>
                                     <option value='Party'>Party</option>
@@ -162,7 +164,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                                 </NumberInputStepper>
                                             </NumberInput>
                                         </InputGroup>
-                                        <FormHelperText>Max Members</FormHelperText>
+                                        <FormHelperText ml='1rem'>Max Members</FormHelperText>
                                     </FormControl>
                                 </Box>
                                 <Box maxW={20}>
@@ -179,7 +181,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                                 <NumberDecrementStepper />
                                             </NumberInputStepper>
                                         </NumberInput>
-                                        <FormHelperText>Fees, ₪</FormHelperText>
+                                        <FormHelperText ml='1rem'>Fees, ₪</FormHelperText>
                                     </FormControl>
                                 </Box>
                             </Box>
@@ -189,15 +191,15 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                 {/* <Heading ml={10} size="md">Address</Heading> */}
                                 <VStack>
                                     <FormControl>
-                                        <FormLabel fontWeight="bold" fontSize="xs">City</FormLabel>
+                                        <FormLabel fontWeight="bold" fontSize="s">City</FormLabel>
                                         <Input required onMouseLeave={(e) => e.currentTarget.blur()} onFocus={onFocus} onBlur={onBlur} value={addressObj.city} onChange={(e: any) => setAddressObj({ ...addressObj, city: e.target.value })} type='text' />
                                     </FormControl>
                                     <FormControl>
-                                        <FormLabel fontWeight="bold" fontSize="xs">Street</FormLabel>
+                                        <FormLabel fontWeight="bold" fontSize="s">Street</FormLabel>
                                         <Input required onMouseLeave={(e) => e.currentTarget.blur()} onFocus={onFocus} onBlur={onBlur} value={addressObj.street} onChange={(e: any) => setAddressObj({ ...addressObj, street: e.target.value })} type='text' />
                                     </FormControl>
                                     <FormControl>
-                                        <FormLabel fontWeight="bold" fontSize="xs">Building or place</FormLabel>
+                                        <FormLabel fontWeight="bold" fontSize="s">Building or place</FormLabel>
                                         <Input required onMouseLeave={(e) => e.currentTarget.blur()} onFocus={onFocus} onBlur={onBlur} value={addressObj.place} onChange={(e: any) => setAddressObj({ ...addressObj, place: e.target.value })} type='text' />
                                     </FormControl>
                                 </VStack>
@@ -206,7 +208,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
 
                         <Box display="flex" flexDirection="column" flexGrow={1}>
                             <FormControl>
-                                <FormLabel fontWeight="bold" fontSize="xs">Date</FormLabel>
+                                <FormLabel fontWeight="bold" fontSize="s">Date</FormLabel>
                                 <DatePicker
                                     showIcon
                                     selected={new Date(event.date)}
@@ -218,8 +220,35 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                     dateFormat="dd-MM-yyyy h:mm aa"
                                     showTimeSelect
                                     timeIntervals={15}
+                                    
+                                    popperClassName="date-picker-popper"
+                                    popperPlacement="bottom-end"
+                                    calendarClassName="custom-calendar"
+                                    
                                 // customTimeInput={<CustomTimeInput />}
                                 />
+                                <style jsx global>{`
+    .date-picker-popper {
+        max-height: 10rem; // Максимальная высота окна
+        overflow-y: auto; // Включаем вертикальную прокрутку
+    }
+    .custom-calendar {
+        
+    }
+    .react-datepicker__navigation {
+        transform: translateX(100%);
+        right: 50px;
+    }
+    .react-datepicker__navigation--next--with-today-button {
+        right: 100px;
+    }
+    .react-datepicker__header {
+        background-color: #e53e3e;
+    }
+    .react-datepicker__day-name, .react-datepicker-time__header, .react-datepicker__current-month {
+        color: white;
+    }
+`}</style>
                             </FormControl>
                             <Box maxW={20} mt={4}>
                                 <FormControl>
@@ -235,7 +264,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                             <NumberDecrementStepper />
                                         </NumberInputStepper>
                                     </NumberInput>
-                                    <FormHelperText>Duration, min</FormHelperText>
+                                    <FormHelperText ml='1rem'>Duration, min</FormHelperText>
                                 </FormControl>
                             </Box>
                             <Button isLoading={isLoading} mt="auto" colorScheme='red' alignSelf="end" type='submit'>{isEditable ? "Save" : "Create"}</Button>
