@@ -125,17 +125,17 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
     return (
         <form onSubmit={onSubmit}>
 
-            <Container maxW='4xl' backgroundColor='white' mt={{base:65, md:10}} borderRadius='10px'
-            boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" p={{ md: '1.5rem', base: 0 }}>
+            <Container maxW='4xl' backgroundColor='white' mt={{ base: 65, md: 10 }} borderRadius='10px'
+                boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" p={{ md: '1.5rem', base: 0 }}>
                 <Flex direction="column">
                     {!isEditable && <Flex bg="red.500" justifyContent="center">
                         <Heading color="white" lineHeight="9rem">Create New Event</Heading>
                     </Flex>}
-                    <Flex flexDirection={{base:'column', md:'row'}} gap={{md: 10, base: 5}} p={{base:5}} justifyContent="center" mt={{md: 10, base: 2}}>
+                    <Flex flexDirection={{ base: 'column', md: 'row' }} gap={{ md: 10, base: 5 }} p={{ base: 5 }} justifyContent="center" mt={{ md: 10, base: 2 }}>
                         <Flex flexDirection="column" gap={5}>
                             <FormControl>
                                 <FormLabel fontWeight="bold" fontSize="s" >Topic</FormLabel>
-                                <Input colorScheme='red' required value={event.topic} onChange={(e: any) => setEvent({ ...event, topic: e.target.value })} placeholder='Enter event name'type='text' variant='filled' />
+                                <Input colorScheme='red' required value={event.topic} onChange={(e: any) => setEvent({ ...event, topic: e.target.value })} placeholder='Enter event name' type='text' variant='filled' />
                             </FormControl>
                             <FormControl>
                                 <Select required value={event.category} onChange={(e: any) => setEvent({ ...event, category: new Array(e.target.value) })} variant='filled' placeholder='Select Category' colorScheme="red">
@@ -220,11 +220,11 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                     dateFormat="dd-MM-yyyy h:mm aa"
                                     showTimeSelect
                                     timeIntervals={15}
-                                    
+
                                     popperClassName="date-picker-popper"
                                     popperPlacement="bottom-end"
                                     calendarClassName="custom-calendar"
-                                    
+
                                 // customTimeInput={<CustomTimeInput />}
                                 />
                                 <style jsx global>{`
