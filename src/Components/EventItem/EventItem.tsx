@@ -88,9 +88,11 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
                 setHumanAddress("");
                 setShowDetails(false)
             }}
-            transition="width 0.1s, height 01s"
-            _hover={{ width: "260px", height: "260px" }}
-        >
+            // transition="width 0.1s, height 01s"
+            _hover={{ height: "260px" }}
+            transition="height 0.3s"
+            // _hover={{ width: "260px", height: "260px" }}
+        > 
             <Box position="absolute" top="9px" left="1px" width="100%" height="100%">
                 <LikeButtonSmall setIsLiked={setIsLiked} isLiked={isLiked} eventId={_id} />
             </Box>
@@ -159,7 +161,8 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
                     </Text>
                 </Box>
             </Link>
-            <Image src={imageUrl} alt={topic} width="100%" height="100%" objectFit="cover" />
+            <Image _hover={{ width: "150%", height: "150%" }}
+            src={imageUrl} alt={topic} width="100%" height="100%" objectFit="cover"  />
         </Box>
     );
 };

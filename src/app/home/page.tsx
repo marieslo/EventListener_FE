@@ -75,7 +75,7 @@ const Home = () => {
                 alignItems="center"
                 justifyContent="space-between"
                 paddingLeft="40px"
-                paddingRight="40px"
+                paddingRight="40px" backgroundColor='red.50'
             >
 
                 {isMobile ? (
