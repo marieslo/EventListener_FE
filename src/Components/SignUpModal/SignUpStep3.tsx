@@ -25,7 +25,7 @@ const Step3: React.FC<Step3Props> = ({ onCategorySelection }) => {
 
     return (
         <Box pt="1.5rem">
-            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+            <Grid templateColumns={{base:"repeat(1, 1fr)", md:"repeat(2, 1fr)"}} gap={4}>
                 {Object.entries(CATEGORY_URLS).map(([category, url]) => (
                     <GridItem key={category}>
                         <Box position="relative" overflow="hidden" borderRadius="md">
