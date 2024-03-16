@@ -178,7 +178,7 @@ export default function EventDetailsPage() {
     return (
         <>
             <EditEventModal isLoading={isLoading} isOpen={isOpen} onClose={onClose} setIsLoading={setIsLoading} createEvent={null} updateEvent={updateEvent} isEditable={isEditable} existedEvent={event} setEvent={setEvent} />
-            <Flex flexDirection="column">
+            <Flex flexDirection="column" bg="red.50">
                 <NavBar />
                 <Box position="relative" display="flex" h="512px" justifyContent="center" alignItems="center">
                     {/* <Box maxW='md' h="auto"> */}
@@ -191,6 +191,7 @@ export default function EventDetailsPage() {
                         src={CATEGORY_URLS[categoryKey as keyof typeof CATEGORY_URLS]} alt=''
                     />
                     <Heading
+                        noOfLines={1}
                         size="2xl"
                         textAlign="center"
                         position="absolute"
@@ -207,12 +208,12 @@ export default function EventDetailsPage() {
                     {/* </Box> */}
                 </Box>
 
-                {event.creator && <Box display="flex" alignSelf="center" p="8">
-                    <Card width="2xl">
+                {event.creator && <Box display="flex" justifyContent="center" p="8">
+                    <Card minW={"350px"} width={{ xl: "5xl", lg: "4xl", md: "2xl", sm: "xl" }}>
                         <CardHeader>
                             {/* <Stack flexDirection="row" alignItems="baseline"> */}
                             <Flex gap='4' alignItems="center" flexWrap='wrap'>
-                                <Text fontSize="4xl">
+                                <Text display={{sm: "none", base: "none", md: "flex"}} fontSize="4xl">
                                     Creator:
                                 </Text>
                                 {/* <Box justifySelf="center"> */}
@@ -261,7 +262,7 @@ export default function EventDetailsPage() {
                                         <LikeButton setIsLiked={setIsLiked} isLiked={isLiked} id={id} />
                                     </Box>
                                 </Stack>
-                                <Flex gap={5}>
+                                <Flex gap={5} flexDirection={{ sm: "column", md: "row", base: "column" }}>
                                     <Box flexGrow={5}>
                                         <DynamicMap height="400px" events={[event]} isEventDetails={true} latCenter={event.address.coordinates[0]} lonCenter={event.address.coordinates[1]} />
                                     </Box>
@@ -294,7 +295,7 @@ export default function EventDetailsPage() {
                                 </Flex>
                                 <Box>
                                     <Heading size="md">Members:</Heading>
-                                    <Stack direction='row' mt={5}>
+                                    <Stack wrap="wrap" direction='row' mt={5}>
                                         {members.map((member: any) => {
                                             return <Box key={member._id} display="flex" flexDirection="column" alignItems="center">
                                                 <Link href={`/users/profile/${member._id}`}>
