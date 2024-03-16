@@ -41,8 +41,8 @@ export default function EventDetailsPage() {
             setEvent(response.data);
             setMembers(response.data.joinedBy);
             // setMembers(response.data.joined)
-            return response.data;
             setIsLiked(getLikeStatus(response.data, localStorage.getItem("userId")));
+            return response.data;
         } catch (error: any) {
             toast({
                 title: error.response.data.message,
