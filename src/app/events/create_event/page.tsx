@@ -25,7 +25,6 @@ import {
     Center,
     useToast,
     InputGroup,
-    Image,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
@@ -94,10 +93,6 @@ export default function CreateEvent() {
     return (
         <>
             <NavBar />
-            <Flex justifyContent='center' mt='15rem' mb='-5rem'>
-                <Image height='50vh' src='https://kartinkof.club/uploads/posts/2022-05/1653708558_39-kartinkof-club-p-chlen-veselii-kartinki-39.jpg' alt='Dick Pick' />
-                </Flex>
-            
             <EventForm isLoading={isLoading} isOpen={null} onClose={null} setIsLoading={setIsLoading} createEvent={createEvent} updateEvent={null} isEditable={false} existedEvent={event} setEvent={setEvent} />
         </>
     )
