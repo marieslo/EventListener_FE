@@ -12,10 +12,11 @@ import dynamic from 'next/dynamic';
 import EditEventModal from '../../../Components/EditEventModal/EditEventModal'
 
 const NavBar = dynamic(() => import('@/Components/NavBar/NavBar'), { ssr: false });
+const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
+
 
 export default function EventDetailsPage() {
 
-    const DynamicMap = dynamic(() => import('@/Components/Map/Map'), { ssr: false });
     const [isLoading, setIsLoading] = useState<any>(false);
     const [event, setEvent] = useState<any>({});
     const { id } = useParams<any>();
@@ -54,7 +55,7 @@ export default function EventDetailsPage() {
 
     async function joinEvent() {
         try {
-            // setIsLoading(true);
+            setIsLoading(true);
             const response: any = await axios.put(`${SERVER_URL}/events/join/${id}`, {}, config);
             const e = await fetchEvent();
             setMembers([...e.joinedBy]);
@@ -70,7 +71,7 @@ export default function EventDetailsPage() {
                 isClosable: true,
             })
         } finally {
-            // setIsLoading(false);
+            setIsLoading(false);
         }
     }
 
@@ -94,6 +95,7 @@ export default function EventDetailsPage() {
 
     async function leaveEvent() {
         try {
+            setIsLoading(true);
             const response = await axios.delete(`${SERVER_URL}/events/leave/${id}`, config);
             const e = await fetchEvent();
             setMembers([...e.joinedBy]);
@@ -108,6 +110,8 @@ export default function EventDetailsPage() {
                 status: 'error',
                 isClosable: true,
             })
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -315,7 +319,7 @@ export default function EventDetailsPage() {
                                 <Button isLoading={isLoading} onClick={handleJoin} colorScheme='red' variant='solid'>
                                     Join
                                 </Button>
-                                <Button onClick={handleLeave} colorScheme='gray' variant='solid'>
+                                <Button isLoading={isLoading} onClick={handleLeave} colorScheme='gray' variant='solid'>
                                     Leave
                                 </Button>
                                 {userID === event.creator._id && <Button leftIcon={<EditIcon />} onClick={handleEdit} colorScheme='red' variant='ghost'>
