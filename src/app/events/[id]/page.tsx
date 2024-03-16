@@ -39,6 +39,9 @@ export default function EventDetailsPage() {
         try {
             const response = await axios.get(`${SERVER_URL}/events/${id}`);
             setEvent(response.data);
+            setMembers(response.data.joinedBy);
+            // setMembers(response.data.joined)
+            return response.data;
             setIsLiked(getLikeStatus(response.data, localStorage.getItem("userId")));
         } catch (error: any) {
             toast({
@@ -51,8 +54,10 @@ export default function EventDetailsPage() {
 
     async function joinEvent() {
         try {
-            setIsLoading(true);
+            // setIsLoading(true);
             const response: any = await axios.put(`${SERVER_URL}/events/join/${id}`, {}, config);
+            const e = await fetchEvent();
+            setMembers([...e.joinedBy]);
             toast({
                 title: "You joined the event",
                 status: 'success',
@@ -65,7 +70,7 @@ export default function EventDetailsPage() {
                 isClosable: true,
             })
         } finally {
-            setIsLoading(false);
+            // setIsLoading(false);
         }
     }
 
@@ -90,6 +95,8 @@ export default function EventDetailsPage() {
     async function leaveEvent() {
         try {
             const response = await axios.delete(`${SERVER_URL}/events/leave/${id}`, config);
+            const e = await fetchEvent();
+            setMembers([...e.joinedBy]);
             toast({
                 title: "You left the event",
                 status: 'success',
@@ -217,8 +224,8 @@ export default function EventDetailsPage() {
                                     <Text>{event.creator.phone}</Text>
                                 </Box>
                                 <Box ml="auto">
-                                    <CircularProgress alignSelf="end" size='75px' value={(event.joinedBy.length / event.membersAmount) * 100} color='red.500'>
-                                        <CircularProgressLabel>{event.joinedBy.length}</CircularProgressLabel>
+                                    <CircularProgress alignSelf="end" size='75px' value={(members.length / event.membersAmount) * 100} color='red.500'>
+                                        <CircularProgressLabel>{members.length}</CircularProgressLabel>
                                     </CircularProgress>
                                 </Box>
                             </Flex>
@@ -288,7 +295,7 @@ export default function EventDetailsPage() {
                                 <Box>
                                     <Heading size="md">Members:</Heading>
                                     <Stack direction='row' mt={5}>
-                                        {event.joinedBy.map((member: any) => {
+                                        {members.map((member: any) => {
                                             return <Box key={member._id} display="flex" flexDirection="column" alignItems="center">
                                                 <Link href={`/users/profile/${member._id}`}>
                                                     <Avatar src={member.imageURL} />
