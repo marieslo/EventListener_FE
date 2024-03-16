@@ -92,8 +92,9 @@ export default function CreateEvent() {
 
     return (
         <>
+        <Flex flexDirection="column" height='100vh' bg="red.50" mt='9rem'>
             <NavBar />
-            <EventForm isLoading={isLoading} isOpen={null} onClose={null} setIsLoading={setIsLoading} createEvent={createEvent} updateEvent={null} isEditable={false} existedEvent={event} setEvent={setEvent} />
+            <EventForm isLoading={isLoading} isOpen={null} onClose={null} setIsLoading={setIsLoading} createEvent={createEvent} updateEvent={null} isEditable={false} existedEvent={event} setEvent={setEvent} /></Flex>
         </>
     )
 }
