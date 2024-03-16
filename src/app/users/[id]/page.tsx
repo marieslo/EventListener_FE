@@ -178,11 +178,12 @@ const Profile: React.FC = () => {
     return (
         <>
             <NavBar />
-            <Box display='flex' width='100wv' backgroundColor='white' minHeight='100vh' pt={120} pb='5%' justifyContent='center'>
+            <Box display='flex' width='100wv' backgroundColor='red.50' minHeight='100vh' pt={130} pb='5%' justifyContent={{base:'flex-start', md:'center'}}>
+                <Flex className='AAA' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" backgroundColor='white' width='fit-content' borderRadius='10px' height='fit-content' flexDirection={{base:'column', md:'row'}}>
                 <Flex flexDirection="column" borderRadius='10px'
-                    backgroundColor='white' width='fit-content' height='fit-content' p='20px' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" mr='2rem'>
-                    <Flex flexDirection='row' justifyContent='center' alignItems="center" gap='30px'>
-                        <Flex flexDirection='column' gap='25px' alignItems="center">
+                    backgroundColor='white' width={{base:'100%', md:'fit-content'}} height='fit-content' p='20px' mr={{base:0, md:'2rem'}}>
+                    <Flex flexDirection={{base:'column', md:'row'}} justifyContent='center' alignItems="center" gap={{base:0,md:'30px'}}>
+                        <Flex flexDirection='column' gap={{base:'10px',md:'25px'}} alignItems="center">
                             <Avatar color='white' size='2xl' backgroundColor='red.500' name={`${formData.firstName} ${formData.lastName}`}
                                 src={previewImage || formData.imageURL || undefined}
                             />
@@ -284,7 +285,7 @@ const Profile: React.FC = () => {
                     </Flex>
                     {/* Грид контейнер с интересами пользователя */}
                     {showInterests && (
-                        <Grid templateColumns="repeat(3, 1fr)" gap={4} mt={4}>
+                        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }} gap={4} mt={4}>
 
                             {/* Отображаем интересы пользователя */}
                             {Object.entries(CATEGORY_URLS).map(([category, url]) => (
@@ -353,7 +354,10 @@ const Profile: React.FC = () => {
                         <Button mt='1rem' colorScheme="red" size='md' width='fit-content' onClick={() => handleSaveChanges(token)}>Save Changes</Button>
                     </Flex>
                 </Flex>
-                <Flex width='30%' boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)" borderRadius='10px' p='20px'><MyEvents /></Flex>
+                <Flex width={{base:'100%', md:'fit-content'}} maxWidth='fit-content' backgroundColor='white'  borderRadius='10px' p={'20px'} height='100%'>
+                    <MyEvents />
+                    </Flex>
+                    </Flex>
 
             </Box>
             {success && (

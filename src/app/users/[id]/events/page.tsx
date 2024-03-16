@@ -58,14 +58,15 @@ export default function MyEvents() {
 
     return (
         <>
-            <Flex direction={"column"} align={'center'} gap={'10px'}>
-                <Box w='200px'>
+            <Flex direction={"column"} align={'center'} gap={'10px'} backgroundColor='white'>
+                <Box w=''>
                     <Select defaultValue={'joined'} onChange={(e) => setActiveTab(e.target.value)}>
                         <option value='joined'>Joined events</option>
                         <option value='saved'>Saved events</option>
                     </Select>
                 </Box>
-                <EventList loading={loading} events={events} />
+                <Box ml=''>
+                <EventList loading={loading} events={events} /></Box>
             </Flex >
         </>
     )
