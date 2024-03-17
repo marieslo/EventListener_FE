@@ -80,11 +80,11 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
         >
           <Box>
             <Flex align="center" flexDirection='row' fontFamily="'Calistoga', serif">
-                <Box maxW="50px">
+                <Box height="50px" w="50px">
               <Image
                 src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png"
                 alt="EventListener Logo"
-                style={{ height: '100%', marginRight: '10px' }}
+                style={{ marginRight: '10px' }}
               />
               </Box>
               <Box display={{base: "none", sm: "none", md: "none", lg: "flex"}} className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '1rem' }}>
