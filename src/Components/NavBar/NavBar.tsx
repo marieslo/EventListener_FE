@@ -72,8 +72,8 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
           flexDirection='row'
           align="center"
           justify="space-between"
-          pr={6}
-          pl={6}
+          pr={{base:2, md:6}}
+          pl={{base:2, md:6}}
           zIndex={10}
         >
           <Box>
@@ -83,7 +83,7 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
                 alt="EventListener Logo"
                 style={{ height: '50px', marginRight: '10px' }}
               />
-              <Box className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '2rem' }}>
+              <Box className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '1rem' }}>
                 EventListener
               </Box>
             </Flex>
@@ -148,7 +148,7 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
                 borderRadius='5px'
                 fontSize='md'
               >
-                Add Event
+                Create Event
               </Button>
             </Link>
           ) : (
@@ -161,7 +161,7 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
               borderRadius='5px'
               disabled={!isLoggedIn}
             >
-              Add Event
+              Create Event
             </Button>
           )}
         </Box>

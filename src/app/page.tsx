@@ -61,8 +61,8 @@ const Welcome = () => {
                 flexDirection='row'
                 alignItems="center"
                 justifyContent="space-between"
-                paddingLeft="50px"
-                paddingRight="50px"
+                paddingLeft="50px" paddingBottom="50px"
+                paddingRight="50px" backgroundColor='red.50'
             >
                 {/* <Box className="welcome-text">
                     Discover, create, and join events with us
