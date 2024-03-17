@@ -33,27 +33,51 @@ const Home = () => {
     const [username, setUsername] = useState('')
     const isMobile = useBreakpointValue({ base: true, md: false });
     const [userCoords, setUserCoords] = useState<any>('');
+    const [userID, setUserID] = useState('');
+    const [config, setConfig] = useState<any>('');
 
     useEffect(() => {
         const username = localStorage.getItem('userName');
-        if (username) {
+        const userId = localStorage.getItem('userId');
+        if (username && userId) {
             setUsername(username);
+            setUserID(userId)
         }
     }, []);
 
+    const fetchCategorizedEvents = async (config: any) => {
+        try {
+            const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events/categorized`, config);
+            setEvents(eventsResponse.data);
+            setAddresses(eventsResponse.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const fetchData = async () => {
+        try {
+            const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
+            // console.log("uid:" + userID);
+            setEvents(eventsResponse.data);
+            setAddresses(eventsResponse.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
-                setEvents(eventsResponse.data);
-                setAddresses(eventsResponse.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching data:', error);
+        const userId = localStorage.getItem('userId');
+        const t = localStorage.getItem("accessToken");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${t}`,
+                'Content-Type': 'application/json'
             }
         };
-
-        fetchData();
+        userId ? fetchCategorizedEvents(config) : fetchData();
     }, []);
 
     useEffect(() => {
