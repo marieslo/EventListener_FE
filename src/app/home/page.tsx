@@ -31,7 +31,7 @@ const Home = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [addresses, setAddresses] = useState<Event[]>([]);
     const [username, setUsername] = useState('')
-    const isMobile = useBreakpointValue({ base: true, md: false });
+    const isMobile = useBreakpointValue({ base: true, sm: true, md: true, lg: false });
     const [userCoords, setUserCoords] = useState<any>('');
     const [userID, setUserID] = useState('');
     const [config, setConfig] = useState<any>('');
@@ -89,10 +89,10 @@ const Home = () => {
     return (
         <Flex className="home-container" direction="column">
             <NavBar />
-            
+
 
             <Flex
-                flexDirection='row'
+                flexDirection={{ md: 'row', base: "column", sm: 'column' }}
                 alignItems="center"
                 justifyContent="space-between"
                 paddingLeft="40px"
@@ -101,12 +101,15 @@ const Home = () => {
 
                 {isMobile ? (
                     <Box width="100%">
+                        <Box marginTop='125px' marginBottom='50px' zIndex={0}>
+                            {userCoords && <DynamicMap lonCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).latitude : 32.109333} latCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).longitude : 34.855499} height='50vh' events={addresses} isEventDetails={null} />}
+                        </Box>
                         <EventList events={events} loading={loading} />
                     </Box>
                 ) : (
                     <>
                         <Box flexGrow={2} width="30%" marginTop='125px' marginRight='20px' zIndex={0}>
-                            <DynamicMap lonCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).latitude : 32.109333} latCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).longitude : 34.855499} height='72vh' events={addresses} isEventDetails={null} />
+                            {userCoords && <DynamicMap lonCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).latitude : 32.109333} latCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).longitude : 34.855499} height='72vh' events={addresses} isEventDetails={null} />}
                         </Box>
                         <Box flexGrow={1} width="40%" marginTop='120px'>
                             <EventList events={events} loading={loading} />
@@ -115,12 +118,12 @@ const Home = () => {
                 )}
                 <Box
                     flexGrow={0}
-                    // marginTop='80px'
+                // marginTop='80px'
                 >
                     <Flex flexDirection='row' justifyContent='center'>
-                <Text mb='0' mt='6rem' color='red.500'className="hello-user" fontSize={'20px'}>
-                    Hello, {username}
-                </Text></Flex>
+                        <Text mb='0' mt='6rem' color='red.500' className="hello-user" fontSize={'20px'}>
+                            Hello, {username}
+                        </Text></Flex>
                     <Calendar width="300px" />
                 </Box>
             </Flex>
