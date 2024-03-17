@@ -80,17 +80,19 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
         >
           <Box>
             <Flex align="center" flexDirection='row' fontFamily="'Calistoga', serif">
+                <Box maxW="50px">
               <Image
                 src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png"
                 alt="EventListener Logo"
-                style={{ height: '50px', marginRight: '10px' }}
+                style={{ height: '100%', marginRight: '10px' }}
               />
-              <Box className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '1rem' }}>
+              </Box>
+              <Box display={{base: "none", sm: "none", md: "none"}} className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '1rem' }}>
                 EventListener
               </Box>
             </Flex>
           </Box>
-          <Box flex="1" display={{ base: 'none', md: 'flex' }} justifyContent="center" alignItems="center">
+          <Box flex="1" display='flex' justifyContent="center" alignItems="center">
             <Search />
           </Box>
           {isLoggedIn ? (
@@ -101,6 +103,7 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
                     position='static'
                     marginTop='1px'
                     cursor="pointer"
+                    w="34px"
                   >
                     <Image
                       src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710258603/icons8-home-67_1_sd77pa.png"
