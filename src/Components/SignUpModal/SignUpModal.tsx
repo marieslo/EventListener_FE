@@ -6,7 +6,7 @@ import Step3 from './SignUpStep3';
 // import Link from 'next/link';
 import LoginModal from './LoginModal';
 import { SERVER_URL } from '../../../api';
-
+import { useRouter } from 'next/navigation';
 
 interface SignUpModalProps {
     isOpen: boolean;
@@ -17,6 +17,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [error, setError] = useState<string>("");
     const [activeModal, setActiveModal] = useState<'SignUp' | 'Login' | null>('SignUp');
+    const router = useRouter();
 
     const handleSignUpClick = () => {
         setActiveModal('SignUp');
@@ -98,6 +99,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
             console.log('User registered successfully');
             onClose();
             setError('');
+            router.push("/home");
 
         } catch (error) {
             console.error('Error during registration:', error);

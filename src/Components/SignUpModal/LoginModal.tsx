@@ -3,6 +3,7 @@ import { Input, Button, ModalBody, FormLabel, Flex, Alert, AlertIcon, AlertTitle
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import Link from 'next/link';
 import { SERVER_URL } from '../../../api';
+import { useRouter } from 'next/navigation';
 
 interface AuthResponse {
     success: boolean;
@@ -26,6 +27,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
     const [city, setCity] = useState<string>("")
     const [cityCoords, setCityCoords] = useState<CityCoordinates | null>(null);
     const [error, setError] = useState<string>('');
+    const router = useRouter();
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -58,9 +60,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
                 localStorage.setItem('userId', userId);
                 console.log('name', userName)
                 console.log('userId', userId)
-    
+                
                 console.log('Login successful');
                 onClose();
+                router.push("/home");
             } else {
                 throw new Error('Login failed: ' + JSON.stringify(response.data)); 
             }

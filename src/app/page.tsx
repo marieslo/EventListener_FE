@@ -34,19 +34,38 @@ const Welcome = () => {
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
+    const fetchData = async () => {
+        try {
+            const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
+            setEvents(eventsResponse.data);
+            setLoading(false);
+            setAddresses(eventsResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const fetchCategorizedEvents = async (config: any) => {
+        try {
+            const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events/categorized`, config);
+            setEvents(eventsResponse.data);
+            setAddresses(eventsResponse.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const eventsResponse = await axios.get<Event[]>(`${SERVER_URL}/events`);
-                setEvents(eventsResponse.data);
-                setLoading(false);
-                setAddresses(eventsResponse.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
+        const userId = localStorage.getItem('userId');
+        const t = localStorage.getItem("accessToken");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${t}`,
+                'Content-Type': 'application/json'
             }
         };
-
-        fetchData();
+        userId ? fetchCategorizedEvents(config) : fetchData();
     }, []);
 
     useEffect(() => {
