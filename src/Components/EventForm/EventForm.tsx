@@ -230,7 +230,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
 
     .date-picker-popper {
         max-height: 10rem;
-        min-width: 21rem;
+        min-width: 25rem;
     }
     .custom-calendar {
         
