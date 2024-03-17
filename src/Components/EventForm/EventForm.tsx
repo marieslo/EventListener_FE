@@ -206,7 +206,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                             </Box>
                         </Flex>
 
-                        <Box display="flex" flexDirection="column" flexGrow={1}>
+                        <Box display="flex" flexDirection="column">
                             <FormControl>
                                 <FormLabel fontWeight="bold" fontSize="s">Date</FormLabel>
                                 <DatePicker
@@ -230,7 +230,6 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
 
     .date-picker-popper {
         max-height: 10rem;
-        overflow-y: auto;
         min-width: 21rem;
     }
     .custom-calendar {
@@ -251,7 +250,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
     }
 `}</style>
                             </FormControl>
-                            <Box maxW={20} mt={4}>
+                            <Box maxW={20} mt={4} display="flex">
                                 <FormControl>
                                     <NumberInput
                                         min={1}
@@ -268,7 +267,7 @@ function EventForm({ isOpen, onClose, setIsLoading, createEvent, updateEvent, is
                                     <FormHelperText ml='1rem'>Duration, min</FormHelperText>
                                 </FormControl>
                             </Box>
-                            <Button isLoading={isLoading} mt="auto" colorScheme='red' alignSelf="end" type='submit'>{isEditable ? "Save" : "Create"}</Button>
+                            <Button isLoading={isLoading} mt="auto" colorScheme='red' alignSelf="center" type='submit'>{isEditable ? "Save" : "Create"}</Button>
                         </Box>
                     </Flex>
                 </Flex>
