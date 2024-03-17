@@ -4,7 +4,7 @@ import { AiOutlineLogin, AiOutlineLogout, AiOutlinePlus } from 'react-icons/ai';
 import SignUpModal from '@/Components/SignUpModal/SignUpModal';
 import Search from '@/Components/Search/Search';
 import useLocalStorage from '@/Hooks/useLocalStorage';
-
+import './NavBar.css'
 
 interface User {
   _id: string;
@@ -69,15 +69,17 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
       <Box backgroundColor='white' position="fixed" width="100%" top="0" zIndex={999}>
         <Flex
           // as="nav"
+          className="NavBarContainer"
           flexDirection='row'
           align="center"
           justify="space-between"
           pr={{base:2, md:6}}
           pl={{base:2, md:6}}
           zIndex={10}
+          fontFamily="'Calistoga', serif" 
         >
           <Box>
-            <Flex align="center" flexDirection='row'>
+            <Flex align="center" flexDirection='row' fontFamily="'Calistoga', serif">
               <Image
                 src="https://res.cloudinary.com/diunuo4xf/image/upload/v1710235202/EventListener/logo-big_without_bg_hclucu.png"
                 alt="EventListener Logo"
@@ -141,6 +143,7 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
           {isLoggedIn ? (
             <Link href='/events/create_event' textDecoration='none' _hover={{ textDecoration: 'none' }}>
               <Button
+                className="CreateEventButton" 
                 size="sm"
                 colorScheme="red"
                 leftIcon={<AiOutlinePlus />}

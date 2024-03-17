@@ -89,10 +89,7 @@ const Home = () => {
     return (
         <Flex className="home-container" direction="column">
             <NavBar />
-            {/* <Flex flexDirection='row' justifyContent='center'>
-              <Text mb='0' mt='6rem' color='red.500'className="">
-                    Hello, {username}
-                </Text></Flex> */}
+            
 
             <Flex
                 flexDirection='row'
@@ -118,8 +115,12 @@ const Home = () => {
                 )}
                 <Box
                     flexGrow={0}
-                    marginTop='120px'
+                    // marginTop='80px'
                 >
+                    <Flex flexDirection='row' justifyContent='center'>
+                <Text mb='0' mt='6rem' color='red.500'className="hello-user" fontSize={'20px'}>
+                    Hello, {username}
+                </Text></Flex>
                     <Calendar width="300px" />
                 </Box>
             </Flex>

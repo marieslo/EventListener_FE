@@ -150,13 +150,13 @@ const EventItem: React.FC<EventItemProps> = ({ event, imageUrl }) => {
                     // transition="opacity 0.3s ease"
                     color='red.500'
                 >
-                    <Text fontWeight="semibold" fontSize="sm">
+                    <Text fontWeight="semibold" fontSize="sm" style={{ fontFamily: 'Calistoga, serif' }}>
                         {formattedDateString}
                     </Text>
-                    <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated fontSize="lg">
+                    <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated fontSize="lg" style={{ fontFamily: 'Calistoga, serif' }}>
                         {topic}
                     </Text>
-                    <Text fontWeight="semibold" as="h4" lineHeight="tight" fontSize="sm">
+                    <Text fontWeight="semibold" as="h4" lineHeight="tight" fontSize="sm" style={{ fontFamily: 'Calistoga, serif' }}>
                         {humanAddress}
                     </Text>
                 </Box>

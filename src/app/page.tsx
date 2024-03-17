@@ -83,9 +83,6 @@ const Welcome = () => {
                 paddingLeft="50px" paddingBottom="50px"
                 paddingRight="50px" backgroundColor='red.50'
             >
-                {/* <Box className="welcome-text">
-                    Discover, create, and join events with us
-                </Box> */}
                 {isMobile ? (
                     <Box width="100%">
                         <EventList events={events} loading={loading} />
@@ -93,6 +90,9 @@ const Welcome = () => {
                 ) : (
                     <>
                         <Box flexGrow={2} marginTop='125px' marginRight='50px' zIndex={0}>
+                        <Box className="welcome-text" top={'150px'}>
+                    Discover, create, and join events with us
+                </Box> 
                             <DynamicMap height='72vh' events={addresses} isEventDetails={null} lonCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).latitude : 32.109333} latCenter={JSON.parse(userCoords) ? JSON.parse(userCoords).longitude : 34.855499} />
                         </Box>
                         <Box justifyContent='space-around' alignItems='center' width="60%" marginTop='120px'>

@@ -6,3 +6,9 @@
 .modal-content * {
     font-family: "Calistoga", serif;
 }
+
+@media only screen and (max-width: 768px) {
+    .hello-user {
+      display: none;
+    }
+  }
