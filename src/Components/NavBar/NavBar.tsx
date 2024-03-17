@@ -87,7 +87,7 @@ const NavBar: React.FC<NavBarProps> = ({ user }) => {
                 style={{ height: '100%', marginRight: '10px' }}
               />
               </Box>
-              <Box display={{base: "none", sm: "none", md: "none"}} className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '1rem' }}>
+              <Box display={{base: "none", sm: "none", md: "none", lg: "flex"}} className="navbar-brand" style={{ color: '#E53E3E', fontSize: '2.3rem', marginRight: '1rem' }}>
                 EventListener
               </Box>
             </Flex>
