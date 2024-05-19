@@ -1,18 +1,20 @@
-Event Listener - a website used to create groups that host local in-person and virtual events
+# Event Listener
 
-This is a full-stack group project.
+## Website used to create groups that host local in-person and virtual events
+## This is a full-stack group project.
 
-This is Frontend. Backend is (here)[https://github.com/marieslo/EventListener_BE]
+### This is Frontend. 
+### Backend is (here)[https://github.com/marieslo/EventListener_BE]
 
-Technology used:
-Next,
-Nest,
-Typescript,
-Chakra UI,
-Leaflet maps
+### Technology used:
+- Next,
+- Nest,
+- Typescript,
+- Chakra UI,
+- Leaflet maps
 
+### User Interface
 
-User Interface
 <img width="600" alt="Screenshot 2024-03-19 at 20 50 52" src="https://github.com/marieslo/EventListener_FE/assets/110108878/38db1470-b592-40eb-b42b-005b66f279c7">\
 <img width="600" alt="Screenshot 2024-03-19 at 20 55 47" src="https://github.com/marieslo/EventListener_FE/assets/110108878/6076ff2d-5a21-4801-b5d2-0370fa3f3634">\
 <img width="600" alt="Screenshot 2024-03-19 at 20 56 10" src="https://github.com/marieslo/EventListener_FE/assets/110108878/09b2a01c-2061-41a8-b451-503dddad23bf">\
