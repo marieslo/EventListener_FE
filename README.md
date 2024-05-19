@@ -10,6 +10,7 @@
 - Next,
 - Nest,
 - Typescript,
+- Mongo DB,
 - Chakra UI,
 - Leaflet maps
 
