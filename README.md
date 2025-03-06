@@ -15,14 +15,13 @@ This is the **Frontend** part of the project, developed using modern web technol
 ## Technologies Used
 
 ### Frontend:
-- **Next.js** - A powerful React framework for building static and server-rendered web applications.
-- **Chakra UI** - A simple, modular, and accessible component library for React.
-- **Leaflet Maps** - A leading JavaScript library for interactive maps.
+- **[Next.js](https://nextjs.org/)**
+- **[Chakra UI](https://chakra-ui.com/)**
+- **[Leaflet Maps](https://leafletjs.com/)**
 
 ### Backend:
-- **Nest.js** - A framework for building efficient, scalable Node.js server-side applications.
-- **TypeScript** - A superset of JavaScript that provides static typing.
-- **MongoDB** - A NoSQL database for storing event and user data.
+- **[Nest.js](https://nestjs.com/)**
+- **[MongoDB](https://www.mongodb.com)**
 
 ### User Interface:
 
