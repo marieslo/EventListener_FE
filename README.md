@@ -14,16 +14,18 @@ This is the **Frontend** part of the project, developed using modern web technol
 
 ## Technologies Used
 
+## Technologies Used
+
 ### Frontend:
-- **[Next.js](https://nextjs.org/)**
-- **[Chakra UI](https://chakra-ui.com/)**
-- **[Leaflet Maps](https://leafletjs.com/)**
+  - **[Next.js](https://nextjs.org/)**
+  - **[Chakra UI](https://chakra-ui.com/)**
+  - **[Leaflet Maps](https://leafletjs.com/)**
 
 ### Backend:
 - **[Nest.js](https://nestjs.com/)**
 - **[MongoDB](https://www.mongodb.com)**
 
-### User Interface:
+## User Interface:
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
   <img width="300" src="https://github.com/marieslo/EventListener_FE/assets/110108878/38db1470-b592-40eb-b42b-005b66f279c7">
@@ -36,7 +38,7 @@ This is the **Frontend** part of the project, developed using modern web technol
   <img width="300" src="https://github.com/marieslo/EventListener_FE/assets/110108878/96bde023-d36d-4378-a25e-0d1d2f130377">
 </div>
 
-### How to Run the Project locally
+## How to Run the Project locally
  ```bash
 
 1. Clone the repository:
